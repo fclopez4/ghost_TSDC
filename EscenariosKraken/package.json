@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "kraken-node": "^1.0.24"
+  },
+  "scripts": {
+    "krakenTest": ".\\node_modules\\kraken-node\\bin\\kraken-node run",
+    "krakenTest2": "./node_modules/kraken-node/bin/kraken-node run",
+    "krakenTest3": "node_modules/kraken-node/bin/kraken-node run"
+  }
+}
