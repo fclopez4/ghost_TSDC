@@ -12,6 +12,7 @@ npm-debug.log
 yarn-error.log
 reports
 .kraken
+screenshots
 
 # IDEs and editors
 .idea/

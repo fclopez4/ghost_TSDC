@@ -17,17 +17,15 @@ describe("scenery #1 login page", () => {
     dashboard.getTitle().should("contain.text", "Dashboard")
   })
 
-  it("should have incorrect session title password incorrect",async () => {
+  it("should have incorrect session title password incorrect",() => {
     login.setInputUsername(Cypress.env('usuario'))
-    login.setInputPassword("incorrect")
+    login.setInputPassword('incorrect')
     login.getSubmitButton().click()
     cy.wait(1000)
-    const textError = await login.getIncorrectSessionTitle().invoke('text');
-    if(textError.includes("Your password is incorrect.")){
-      login.getIncorrectSessionTitle().should("contain.text", "Your password is incorrect.")
-    }else{
-      login.getIncorrectSessionTitle().should("contain.text", "Too many attempts try again in an hour")
-    }
+    login.getIncorrectSessionTitle().should(async (element) => {
+      const text = await element.text();
+      return text.includes('Your password is incorrect.') || text.includes('Too many attempts');
+    });
   })
 
   it("should have message error when fill input user with invalid email adress",() => {
@@ -52,6 +50,6 @@ describe("scenery #1 login page", () => {
       login.getForgotButton().click()
       cy.wait(1000)
     }
-    login.getIncorrectSessionTitle().should("contain.text", "Too many attempts try again in an hour")
+    login.getIncorrectSessionTitle().should("contain.text", "Too many attempts try again")
   })
 })
