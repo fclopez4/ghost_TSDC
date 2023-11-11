@@ -49,9 +49,20 @@ class Tags {
     }
 
     getTagListTitle() {
-        return cy.get("section>ol>li").find("h3.gh-tag-list-name")
+        return cy.get('section>ol>li').find("h3.gh-tag-list-name")
+    }
+
+    getTagDeleteButton() {
+        return cy.get('button[data-test-button~="delete-tag"]').first()
+    }
+
+    getTagModalCancelButton() {
+        return cy.get('div.modal-footer>button[data-test-button~="cancel"]').first()
     }
     
+    getTagModalDeleteButton() {
+        return cy.get('div.modal-footer>button[data-test-button~="confirm"]').first()
+    }
 
 }
 
