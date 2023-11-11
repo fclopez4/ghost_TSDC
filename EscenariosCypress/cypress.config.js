@@ -5,7 +5,7 @@ module.exports = defineConfig({
     setupNodeEvents(on, config) {
       // implement node event listeners here
     },
-    baseUrl: "http://localhost:3001/ghost/",
+    baseUrl: "http://localhost:3001",
     env: {
       usuario: "a.clavijo1@uniandes.edu.co",
       password: "PIKA235chu",
