@@ -31,7 +31,7 @@ class Editor {
     }
 
     clickButtonPublishRighNow() {
-        return cy.get('button').contains('Publish post, right now').click()
+        return cy.get('[data-test-button="confirm-publish"]').click()
     }
 
     clickOptionMore(optionName) {
