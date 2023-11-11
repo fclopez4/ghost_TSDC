@@ -1,6 +1,7 @@
 import Post from "../pages/post"
 import Login from "../pages/login"
 import Editor from "../pages/editor"
+import { faker } from '@faker-js/faker'
 
 const post = new Post()
 const login = new Login()
@@ -8,7 +9,7 @@ const editor = new Editor()
 
 describe("scenery #2 create post", () => {
     context('Given I go to post page', () => {
-        var cockieValue
+        let cockieValue
 
         before(() => {
             login.insertLogin()
@@ -33,19 +34,20 @@ describe("scenery #2 create post", () => {
         })
 
         context("When I fill the title and content", () => {
+            const namePost = faker.animal.bear()
             beforeEach(() => {
                 post.clickNewPost()
                 cy.wait(1000)
-                editor.fillTitle('Post 1', 'Post title')
+                editor.fillTitle(namePost, 'Post title')
                 editor.fillContent('Content post 1')
             })
             it("Then I should see the title and content filled", () => {
-                editor.getTitle().should('have.value', 'Post 1');
+                editor.getTitle().should('have.value', namePost);
             })
         })
 
         context('When I fill the blog and publish', () => {
-            const namePost = createRandomWord(10)
+            const namePost = faker.animal.bear()
             beforeEach(() => {
                 post.clickNewPost()
                 cy.wait(1000)
@@ -67,8 +69,8 @@ describe("scenery #2 create post", () => {
         })
 
         context('When I add', () => {
-            const namePost = createRandomWord(10);
-            const nameImage = createRandomWord(10);
+            const namePost = faker.animal.bear();
+            const nameImage = faker.animal.bear();
             beforeEach(() => {
                 post.clickNewPost()
                 cy.wait(1000)
@@ -84,12 +86,12 @@ describe("scenery #2 create post", () => {
 
 
         context('When I fill the blog and dont publish to be create post', () => {
-            const namePost = createRandomWord(10)
+            const namePost = faker.animal.bird()
             beforeEach(() => {
                 post.clickNewPost()
                 cy.wait(1000)
                 editor.fillTitle(namePost, 'Post title')
-                editor.fillContent(createRandomWord(40))
+                editor.fillContent(faker.animal.bird())
                 cy.wait(1000)
                 post.visit()
             })
@@ -102,9 +104,9 @@ describe("scenery #2 create post", () => {
 
 })
 
-describe("scenery #3 Editar Post", () => {
+describe("scenery #3 edit Post", () => {
     context('Given I go to post page', () => {
-        var cockieValue
+        let cockieValue
 
         before(() => {
             login.insertLogin()
@@ -119,15 +121,15 @@ describe("scenery #3 Editar Post", () => {
         })
 
         context("when I update a post and I want to update de name", () => {
-            const namePost = createRandomWord(10)
-            const namePostUpdate = createRandomWord(10)
+            const namePost = faker.animal.cat()
+            const namePostUpdate = faker.animal.cat()
             beforeEach(() => {
                 post.createPost(namePost);
                 post.getPostByTitle(namePost).click()
                 cy.wait(1000)
                 editor.clearTitle('Post title')
                 editor.fillTitle(namePostUpdate, 'Post title')
-                editor.fillContent(createRandomWord(70))
+                editor.fillContent(faker.animal.cetacean())
                 editor.clickPublish()
                 cy.wait(1000)
                 editor.clickButtonFinalReview()
@@ -144,15 +146,15 @@ describe("scenery #3 Editar Post", () => {
         });
 
         context("when I update a post and I want to update de name in state draft", () => {
-            const namePost = createRandomWord(10)
-            const namePostUpdate = createRandomWord(10)
+            const namePost = faker.animal.cetacean()
+            const namePostUpdate = faker.animal.cetacean()
             beforeEach(() => {
                 post.createPost(namePost);
                 post.getPostByTitle(namePost).click()
                 cy.wait(1000)
                 editor.clearTitle('Post title')
                 editor.fillTitle(namePostUpdate, 'Post title')
-                editor.fillContent(createRandomWord(70))
+                editor.fillContent(faker.animal.cetacean())
                 editor.clickPublish()
                 post.visit()
             })
@@ -164,9 +166,9 @@ describe("scenery #3 Editar Post", () => {
     })
 })
 
-describe("scenery #4 Eliminar Post", () => {
+describe("scenery #4 delete Post", () => {
     context('Given I go to post page', () => {
-        var cockieValue
+        let cockieValue
 
         before(() => {
             login.insertLogin()
@@ -181,7 +183,7 @@ describe("scenery #4 Eliminar Post", () => {
         })
 
         context("when I create a post and I want to delete", () => {
-            const namePost = createRandomWord(10);
+            const namePost = faker.animal.cow();
             beforeEach(() => {
                 post.createPost(namePost);
                 post.getPostByTitle(namePost).scrollIntoView().rightclick();
@@ -200,7 +202,7 @@ describe("scenery #4 Eliminar Post", () => {
         })
 
         context("when I want to create a post and then delete it, but I cancel it ", () => {
-            const namePost = createRandomWord(10);
+            const namePost = faker.animal.crocodilia();
             beforeEach(() => {
                 post.createPost(namePost);
                 post.getPostByTitle(namePost).scrollIntoView().rightclick();
@@ -216,9 +218,9 @@ describe("scenery #4 Eliminar Post", () => {
     })
 });
 
-describe("scenery #5 listar post", () => {
+describe("scenery #5 list post", () => {
     context('Given I go to post page', () => {
-        var cockieValue
+        let cockieValue
 
         before(() => {
             login.insertLogin()
@@ -272,24 +274,3 @@ describe("scenery #5 listar post", () => {
         })
     })
 });
-
-
-
-function createRandomWord(length) {
-    var consonants = 'bcdfghjklmnpqrstvwxyz',
-        vowels = 'aeiou',
-        rand = function (limit) {
-            return Math.floor(Math.random() * limit);
-        },
-        i, word = '',
-        length = parseInt(length, 10),
-        consonants = consonants.split(''),
-        vowels = vowels.split('');
-    for (i = 0; i < length / 2; i++) {
-        var randConsonant = consonants[rand(consonants.length)],
-            randVowel = vowels[rand(vowels.length)];
-        word += (i === 0) ? randConsonant.toUpperCase() : randConsonant;
-        word += i * 2 < length - 1 ? randVowel : '';
-    }
-    return word;
-}
