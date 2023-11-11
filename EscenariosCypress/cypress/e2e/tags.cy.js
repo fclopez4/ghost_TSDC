@@ -205,6 +205,66 @@ describe('scenario #12 delete tag', () => {
     })
 });
 
+describe('scenario #13 list tags',()=>{
+    context('Given I go to tags page',()=>{
+        let cookieValue;
+
+        before(() => {
+            login.visit()
+            login.setInputUsername(Cypress.env('usuario'))
+            login.setInputPassword(Cypress.env('password'))
+            login.getSubmitButton().click()
+            cy.wait(3000)
+            cy.getCookie('ghost-admin-api-session').then((cookie) => {
+                cookieValue = cookie.value;
+            });
+        })
+
+        beforeEach(() => {
+            cy.setCookie('ghost-admin-api-session', cookieValue)
+        })
+
+        context('When I go to the tag path', () =>{
+            beforeEach(()=>{
+            tags.visit()
+            cy.wait(1000)
+            })
+
+            it('Then I should be see the tag title list', () => {
+                tags.getTagTitle().should("contain.text", "Tags")
+            })
+
+            it('And I should be see the button new tag', () => {
+                tags.getButtonNewTag().should("exist")
+            })
+            
+        })
+
+        context('When I go to the tag path and create some tags and return to tag list', () =>{
+            beforeEach(()=>{
+                tags.visit()
+                cy.wait(1000)
+                tags.getButtonNewTag().click()
+                fillDummyDataFormTag(faker.lorem.slug())
+                tags.getButtonSaveTag().click()                
+                tags.getTagBreadcrumb().click()
+                cy.wait(1000)
+                tags.getButtonNewTag().click()
+                fillDummyDataFormTag(faker.lorem.slug())
+                tags.getButtonSaveTag().click()                
+                tags.getTagBreadcrumb().click()
+                cy.wait(1000)
+            })
+
+            it('Then I should be see a tag list', () => {
+                tags.getTagListTitle().should("exist")
+            })
+        })
+
+    })
+
+})
+
 export function fillDummyDataFormTag(tagName) {
     tags.getTagNameInput().type(tagName)
     tags.getTagColorInput().type(faker.color.rgb({ prefix: '', casing: 'upper' }))

@@ -9,7 +9,7 @@ class Tags {
     }
 
     getButtonNewTag() {
-        return cy.get('a.ember-view.gh-btn.gh-btn-primary').first()
+        return cy.get('section.view-actions>a.ember-view.gh-btn.gh-btn-primary').first()
     }
 
     getButtonSaveTag() {
