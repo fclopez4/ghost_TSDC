@@ -1,6 +1,6 @@
 class Login {
     visit() {
-        cy.visit("http://localhost:3001/ghost/#/signin")
+        cy.visit("/ghost/#/signin")
         cy.wait(1000)
     }
 
