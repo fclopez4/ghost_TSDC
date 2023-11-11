@@ -5,6 +5,10 @@
   "scripts": {
     "krakenTest": ".\\node_modules\\kraken-node\\bin\\kraken-node run",
     "krakenTest2": "./node_modules/kraken-node/bin/kraken-node run",
-    "krakenTest3": "node_modules/kraken-node/bin/kraken-node run"
+    "krakenTest3": "node_modules/kraken-node/bin/kraken-node run",
+    "run-kraken": "kraken-node run"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^8.2.0"
   }
 }
