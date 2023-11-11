@@ -25,6 +25,17 @@ class Pagina {
             .first()
     }
 
+    getLinkPageByTitle(namePost) {
+        return cy.get("li>a.ember-view.permalink.gh-list-data.gh-post-list-title")
+            .contains(namePost)
+            .first()
+    }
+
+    getListLinkPageByTitle() {
+        return cy.get("li>a.ember-view.permalink.gh-list-data.gh-post-list-title")
+            .find("h3.gh-content-entry-title")
+    }
+
     
 }
 

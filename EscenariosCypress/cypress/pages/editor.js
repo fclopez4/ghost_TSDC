@@ -40,6 +40,14 @@ class Editor {
         return cy.get('button').contains(optionName).click()
     }
 
+    clickButtonBackEditor() {
+        return cy.get('a.ember-view.gh-btn-editor.gh-editor-back-button').click()
+    }
+
+    clickUpdate() {
+        return cy.get('button[data-test-button="publish-save"]').click()
+    }
+
     uploadImage(fileName) {
         cy.get('input[type="file"]').eq(1).selectFile({
             contents: 'cypress/fixtures/imagen.JPG',
@@ -55,6 +63,10 @@ class Editor {
             });
             return imagenConNombre;
         })
+    }
+
+    getModalHeaderMessage(){
+        return cy.get('header.modal-header').first()
     }
 
 
