@@ -24,7 +24,13 @@ class Login {
         return cy.get('#ember4').first()
     }
 
-    
+    insertLogin(){
+        this.visit()
+        this.setInputUsername(Cypress.env('usuario'))
+        this.setInputPassword(Cypress.env('password'))
+        this.getSubmitButton().click()
+        cy.wait(1000)
+    }
 }
 
 module.exports = Login
