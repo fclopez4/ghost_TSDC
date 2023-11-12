@@ -176,6 +176,38 @@ describe("scenery #3 archive newsletter ", () => {
     })
 })
 
+
+describe("scenery #4 list newsletter ", () => {
+    context('Given I go to newsletter page', () => {
+        var cockieValue
+        before(() => {
+            login.insertLogin()
+            cy.getCookie('ghost-admin-api-session').then((cookie) => {
+                cockieValue = cookie.value;
+            });
+        })
+
+        beforeEach(() => {
+            cy.setCookie('ghost-admin-api-session', cockieValue)
+            boletinPage.visit()
+        })
+
+                context("When I list Email newsletter", () => {
+                    let size = 0;
+                    beforeEach(() => {
+                        cy.get('.sortable-objects')
+                            .find('div.draggable-object')
+                            .should(($divs) => {
+                                size = $divs.length;
+                            });
+                    })
+                    it("Then I should see more than one newsletter", () => {
+                        cy.get('.sortable-objects').find('div.draggable-object').should('have.length.greaterThan', 1);
+                    })
+                })
+
+    })
+})
 function fillData(name, description) {
     boletinPage.clickNewLetter()
     cy.wait(1000)
