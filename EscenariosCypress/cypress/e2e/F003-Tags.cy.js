@@ -10,10 +10,7 @@ describe('scenario #10 create tag', () => {
         let cookieValue;
 
         before(() => {
-            login.visit()
-            login.setInputUsername(Cypress.env('usuario'))
-            login.setInputPassword(Cypress.env('password'))
-            login.getSubmitButton().click()
+            login.insertLogin()
             cy.wait(3000)
             cy.getCookie('ghost-admin-api-session').then((cookie) => {
                 cookieValue = cookie.value;
@@ -24,13 +21,13 @@ describe('scenario #10 create tag', () => {
             cy.setCookie('ghost-admin-api-session', cookieValue)
             tags.visit()
             cy.wait(1000)
-            tags.getButtonNewTag().click()
+            tags.clickButtonNewTag()
             cy.wait(1000)
         })
 
         context('When I click on save button without fill tag form fields', () => {
-            beforeEach(() => {             
-                tags.getButtonSaveTag().click()
+            beforeEach(() => {
+                tags.clickButtonSaveTag()
                 cy.wait(1000)
             })
 
@@ -41,7 +38,7 @@ describe('scenario #10 create tag', () => {
 
         context('When I click on tag breadcrum', () => {
             beforeEach(() => {
-                tags.getTagBreadcrumb().click()
+                tags.clickBreadcrumbTag()
                 cy.wait(1000)
             })
 
@@ -54,7 +51,7 @@ describe('scenario #10 create tag', () => {
             let tagName = faker.lorem.slug()
             beforeEach(() => {
                 fillDummyDataFormTag(tagName)
-                tags.getButtonSaveTag().click()
+                tags.clickButtonSaveTag()
                 cy.wait(1000)
             })
 
@@ -67,8 +64,8 @@ describe('scenario #10 create tag', () => {
             let tagName = faker.lorem.slug()
             beforeEach(() => {
                 fillDummyDataFormTag(tagName)
-                tags.getTagBreadcrumb().click()
-                tags.getTagFooterModalLeaveButton().click()
+                tags.clickBreadcrumbTag()
+                tags.clickButtonFooterModalLeaveTagForm()
                 cy.wait(1000)
             })
 
@@ -89,10 +86,7 @@ describe('scenario #11 edit tag', () => {
         let cookieValue;
 
         before(() => {
-            login.visit()
-            login.setInputUsername(Cypress.env('usuario'))
-            login.setInputPassword(Cypress.env('password'))
-            login.getSubmitButton().click()
+            login.insertLogin()
             cy.wait(3000)
             cy.getCookie('ghost-admin-api-session').then((cookie) => {
                 cookieValue = cookie.value;
@@ -103,18 +97,18 @@ describe('scenario #11 edit tag', () => {
             cy.setCookie('ghost-admin-api-session', cookieValue)
             tags.visit()
             cy.wait(1000)
-            tags.getButtonNewTag().click()
+            tags.clickButtonNewTag()
             cy.wait(1000)
         })
 
         context('When I click on save button after change tag name and return to tag list', () => {
             let tagName = faker.lorem.slug()
-            beforeEach(() => {             
+            beforeEach(() => {
                 fillDummyDataFormTag(faker.lorem.slug())
-                tags.getButtonSaveTag().click()
-                tags.getTagNameInput().clear().type(tagName)
-                tags.getButtonSaveTag().click()
-                tags.getTagBreadcrumb().click()
+                tags.clickButtonSaveTag()
+                tags.cleanFillTagNameInput(tagName)
+                tags.clickButtonSaveTag()
+                tags.clickBreadcrumbTag()
                 cy.wait(1000)
             })
 
@@ -127,11 +121,11 @@ describe('scenario #11 edit tag', () => {
             let tagName = faker.lorem.slug()
             beforeEach(() => {
                 fillDummyDataFormTag(faker.lorem.slug())
-                tags.getButtonSaveTag().click()
-                tags.getTagNameInput().clear().type(tagName)
-                tags.getTagBreadcrumb().click()
+                tags.clickButtonSaveTag()
+                tags.cleanFillTagNameInput(tagName)
+                tags.clickBreadcrumbTag()
                 cy.wait(1000)
-                tags.getTagFooterModalLeaveButton().click()
+                tags.clickButtonFooterModalLeaveTagForm()
                 cy.wait(1000)
             })
 
@@ -148,10 +142,7 @@ describe('scenario #12 delete tag', () => {
         let cookieValue;
 
         before(() => {
-            login.visit()
-            login.setInputUsername(Cypress.env('usuario'))
-            login.setInputPassword(Cypress.env('password'))
-            login.getSubmitButton().click()
+            login.insertLogin()
             cy.wait(3000)
             cy.getCookie('ghost-admin-api-session').then((cookie) => {
                 cookieValue = cookie.value;
@@ -162,7 +153,7 @@ describe('scenario #12 delete tag', () => {
             cy.setCookie('ghost-admin-api-session', cookieValue)
             tags.visit()
             cy.wait(1000)
-            tags.getButtonNewTag().click()
+            tags.clickButtonNewTag()
             cy.wait(1000)
         })
 
@@ -170,11 +161,11 @@ describe('scenario #12 delete tag', () => {
             const tagName = faker.lorem.slug()
             beforeEach(() => {
                 fillDummyDataFormTag(tagName)
-                tags.getButtonSaveTag().click()
+                tags.clickButtonSaveTag()
                 cy.wait(1000)
-                tags.getTagDeleteButton().click()  
-                tags.getTagModalCancelButton().click()
-                tags.getTagBreadcrumb().click()        
+                tags.clickButtonDeleteTag()
+                tags.clickButtonModalCancelTag()
+                tags.clickBreadcrumbTag()
             })
 
             it('Then I should be see that tag name on the tag list', () => {
@@ -185,15 +176,15 @@ describe('scenario #12 delete tag', () => {
 
         context('When I click on delete button and I click on modal delete button', () => {
             const tagName = faker.lorem.slug()
-            Cypress.on('uncaught:exception', (err, runnable) => {                   
+            Cypress.on('uncaught:exception', (err, runnable) => {
                 return false
             })
             beforeEach(() => {
                 fillDummyDataFormTag(tagName)
-                tags.getButtonSaveTag().click()
+                tags.clickButtonSaveTag()
                 cy.wait(1000)
-                tags.getTagDeleteButton().click()  
-                tags.getTagModalDeleteButton().click()          
+                tags.clickButtonDeleteTag()
+                tags.clickTagModalDeleteButton()
             })
 
             it('Then I should not be see that tag name on the tag list', () => {
@@ -205,15 +196,12 @@ describe('scenario #12 delete tag', () => {
     })
 });
 
-describe('scenario #13 list tags',()=>{
-    context('Given I go to tags page',()=>{
+describe('scenario #13 list tags', () => {
+    context('Given I go to tags page', () => {
         let cookieValue;
 
         before(() => {
-            login.visit()
-            login.setInputUsername(Cypress.env('usuario'))
-            login.setInputPassword(Cypress.env('password'))
-            login.getSubmitButton().click()
+            login.insertLogin()
             cy.wait(3000)
             cy.getCookie('ghost-admin-api-session').then((cookie) => {
                 cookieValue = cookie.value;
@@ -224,10 +212,15 @@ describe('scenario #13 list tags',()=>{
             cy.setCookie('ghost-admin-api-session', cookieValue)
         })
 
-        context('When I go to the tag path', () =>{
-            beforeEach(()=>{
-            tags.visit()
-            cy.wait(1000)
+        context('When I go to the tag path and I click on new tag button and I leave form new tag', () => {
+            beforeEach(() => {
+                tags.visit()
+                cy.wait(1000)
+                tags.clickButtonNewTag()
+                tags.clickBreadcrumbTag()
+                cy.wait(1000)
+                tags.clickButtonFooterModalLeaveTagForm()
+                cy.wait(1000)
             })
 
             it('Then I should be see the tag title list', () => {
@@ -237,22 +230,22 @@ describe('scenario #13 list tags',()=>{
             it('And I should be see the button new tag', () => {
                 tags.getButtonNewTag().should("exist")
             })
-            
+
         })
 
-        context('When I go to the tag path and create some tags and return to tag list', () =>{
-            beforeEach(()=>{
+        context('When I go to the tag path and create some tags and return to tag list', () => {
+            beforeEach(() => {
                 tags.visit()
                 cy.wait(1000)
-                tags.getButtonNewTag().click()
+                tags.clickButtonNewTag()
                 fillDummyDataFormTag(faker.lorem.slug())
-                tags.getButtonSaveTag().click()                
-                tags.getTagBreadcrumb().click()
+                tags.clickButtonSaveTag()
+                tags.clickBreadcrumbTag()
                 cy.wait(1000)
-                tags.getButtonNewTag().click()
+                tags.clickButtonNewTag()
                 fillDummyDataFormTag(faker.lorem.slug())
-                tags.getButtonSaveTag().click()                
-                tags.getTagBreadcrumb().click()
+                tags.clickButtonSaveTag()
+                tags.clickBreadcrumbTag()
                 cy.wait(1000)
             })
 
@@ -266,7 +259,7 @@ describe('scenario #13 list tags',()=>{
 })
 
 export function fillDummyDataFormTag(tagName) {
-    tags.getTagNameInput().type(tagName)
-    tags.getTagColorInput().type(faker.color.rgb({ prefix: '', casing: 'upper' }))
-    tags.getTagDescription().type(faker.lorem.sentences())
+    tags.fillTagNameInput(tagName)
+    tags.fillTagColorInput(faker.color.rgb({ prefix: '', casing: 'upper' }))
+    tags.fillTagDescription(faker.lorem.sentences())
 }

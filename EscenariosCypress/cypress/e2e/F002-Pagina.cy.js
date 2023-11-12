@@ -2,14 +2,14 @@ import { faker } from '@faker-js/faker';
 
 import Login from "../pages/login"
 import Editor from "../pages/editor"
-import Pagina from "../pages/pagina"
+import Pagina from "../pages/page"
 
 const login = new Login()
 const editor = new Editor()
 const page = new Pagina()
 
 
-describe("scenery #6 create page", () => {
+describe("scenario #6 create page", () => {
     context('Given I go to page page', () => {
         let cookieValue
 
@@ -105,7 +105,7 @@ describe("scenery #6 create page", () => {
 
 })
 
-describe('scenery #7 edit page', () => {
+describe('scenario #7 edit page', () => {
     context('Given I go to page page', () => {
         let cookieValue
 
@@ -127,7 +127,7 @@ describe('scenery #7 edit page', () => {
             beforeEach(() => {
                 createDummyPageData(pageFirstTitle)
                 saveDraftPage()
-                page.getLinkPageByTitle(pageFirstTitle).click()
+                page.getPageLinkByTitle(pageFirstTitle).click()
                 cy.wait(1000)
                 editor.clearTitle('Page title')
                 editor.fillTitle(pageSecondTitle, 'Page title')
@@ -135,7 +135,7 @@ describe('scenery #7 edit page', () => {
             })
 
             it('Then I should see the new title in the page list', () => {
-                page.getListLinkPageByTitle().contains(pageSecondTitle).should('exist')
+                page.getListPageTitles().contains(pageSecondTitle).should('exist')
             })
         })
 
@@ -145,22 +145,193 @@ describe('scenery #7 edit page', () => {
             beforeEach(() => {
                 createDummyPageData(pageFirstTitle)
                 publishNewPage()
-                page.getLinkPageByTitle(pageFirstTitle).click()
+                page.clickFilterButtonBySort()
+                page.clickFilterButtonByRecentlyUpdate()
+                page.getPageLinkByTitle(pageFirstTitle).click()
                 cy.wait(1000)
                 editor.clearTitle('Page title')
                 editor.fillTitle(pageSecondTitle, 'Page title')
                 publishUpdatePage()
+                cy.wait(1000)
+                page.clickFilterButtonBySort()
+                page.clickFilterButtonByRecentlyUpdate()
+                cy.wait(1000)
             })
 
             it('Then I should see the new title in the page list', () => {
-                page.getListLinkPageByTitle().contains(pageSecondTitle).should('exist')
+                page.getListPageTitles().contains(pageSecondTitle).should('exist')
             })
         })
-
 
     });
 })
 
+describe('scenario #8 delete page', () => {
+    context('Given I go to page page', () => {
+        let cookieValue
+
+        before(() => {
+            login.insertLogin()
+            cy.getCookie('ghost-admin-api-session').then((cookie) => {
+                cookieValue = cookie.value;
+            });
+        })
+
+        beforeEach(() => {
+            cy.setCookie('ghost-admin-api-session', cookieValue)
+            page.visit()
+        })
+
+        context('When I click on delete button and I click on modal delete button from draft page', () => {
+            let pageFirstTitle = faker.person.jobTitle()
+            beforeEach(() => {
+                createDummyPageData(pageFirstTitle)
+                saveDraftPage()
+                page.getPageLinkByTitle(pageFirstTitle).rightclick()
+                cy.wait(1000)
+                page.clickButtonDeletePage()
+                page.clickButtonModalDeletePage()
+                cy.wait(1000)
+            })
+
+            it('Then I should not be see that page name on the page list', () => {
+                page.getListPageTitles().contains(pageFirstTitle).should('not.exist')
+            })
+        })
+
+        context('When I click on delete button and I click on modal cancel button from draft page', () => {
+            let pageFirstTitle = faker.person.jobTitle()
+            beforeEach(() => {
+                createDummyPageData(pageFirstTitle)
+                saveDraftPage()
+                page.getPageLinkByTitle(pageFirstTitle).rightclick()
+                cy.wait(1000)
+                page.clickButtonDeletePage()
+                page.clickButtonModalCancelPage()
+                cy.wait(1000)
+            })
+
+            it('Then I should be see that page name on the page list', () => {
+                page.getListPageTitles().contains(pageFirstTitle).should('exist')
+            })
+        })
+
+        context('When I click on delete button and I click on modal delete button from published page', () => {
+            let pageFirstTitle = faker.person.jobTitle()
+            beforeEach(() => {
+                createDummyPageData(pageFirstTitle)
+                publishNewPage()
+                page.clickFilterButtonBySort()
+                page.clickFilterButtonByRecentlyUpdate()
+                page.getPageLinkByTitle(pageFirstTitle).rightclick()
+                cy.wait(1000)
+                page.clickButtonDeletePage()
+                page.clickButtonModalDeletePage()
+                cy.wait(1000)
+            })
+
+            it('Then I should be see that page name on the page list', () => {
+                page.getListPageTitles().contains(pageFirstTitle).should('not.exist')
+            })
+        })
+
+        context('When I click on delete button and I click on modal cancel button from published page', () => {
+            let pageFirstTitle = faker.person.jobTitle()
+            beforeEach(() => {
+                createDummyPageData(pageFirstTitle)
+                publishNewPage()
+                page.clickFilterButtonBySort()
+                page.clickFilterButtonByRecentlyUpdate()
+                page.getPageLinkByTitle(pageFirstTitle).rightclick()
+                cy.wait(1000)
+                page.clickButtonDeletePage()
+                page.clickButtonModalCancelPage()
+            })
+
+            it('Then I should be see that page name on the page list', () => {
+                page.getListPageTitles().contains(pageFirstTitle).should('exist')
+            })
+        })
+
+    });
+})
+
+describe('scenario #9 list page', () => {
+    context('Given I go to page page', () => {
+        let cookieValue
+
+        before(() => {
+            login.insertLogin()
+            cy.getCookie('ghost-admin-api-session').then((cookie) => {
+                cookieValue = cookie.value;
+            });
+        })
+
+        beforeEach(() => {
+            cy.setCookie('ghost-admin-api-session', cookieValue)
+        })
+
+        context('When I go to the page path and create some draft pages', () => {
+            beforeEach(() => {
+                page.visit()
+                cy.wait(1000)
+                createDummyPageData(faker.person.jobTitle())
+                saveDraftPage()
+                createDummyPageData(faker.person.jobTitle())
+                saveDraftPage()
+                page.visit()
+                cy.wait(1000)
+            })
+
+            it('Then I should be see a page list', () => {
+                page.getListPageTitles().should("exist")
+            })
+        })
+
+        context('When I go to the page path and create some published pages', () => {
+            beforeEach(() => {
+                page.visit()
+                cy.wait(1000)
+                createDummyPageData(faker.person.jobTitle())
+                publishNewPage()
+                createDummyPageData(faker.person.jobTitle())
+                publishNewPage()
+                cy.wait(1000)
+            })
+
+            it('Then I should be see a page list', () => {
+                page.getListPageTitles().should("exist")
+            })
+        })
+
+        context('When I go to the page path and click on draft type filter', () => {
+            beforeEach(() => {
+                page.visit()
+                cy.wait(1000)
+                page.clickFilterButtonByType()
+                page.clickFilterButtonByDraftPage()
+            })
+
+            it('Then I should be see only a page list with type draft', () => {
+                page.getListPageType().contains("published").should("not.exist")
+            })
+        }) 
+
+        context('When I go to the page path and click on published type filter', () => {
+            beforeEach(() => {
+                page.visit()
+                cy.wait(1000)
+                page.clickFilterButtonByType()
+                page.clickFilterButtonByPublishedPage()
+            })
+
+            it('Then I should be see only a page list with type published', () => {
+                page.getListPageType().contains("Draft").should("not.exist")
+            })
+        }) 
+
+    });
+})
 
 export function createDummyPageData(pageTitle) {
     page.clickNewPage()

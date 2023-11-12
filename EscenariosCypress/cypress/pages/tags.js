@@ -8,43 +8,59 @@ class Tags {
         cy.wait(1000)
     }
 
+    clickButtonNewTag() {
+        return cy.get('section.view-actions>a.ember-view.gh-btn.gh-btn-primary')
+            .first().click()
+    }
+
     getButtonNewTag() {
         return cy.get('section.view-actions>a.ember-view.gh-btn.gh-btn-primary').first()
     }
 
-    getButtonSaveTag() {
-        return cy.get('button.gh-btn.gh-btn-primary.gh-btn-icon.ember-view').first()
+    clickButtonSaveTag() {
+        return cy.get('button.gh-btn.gh-btn-primary.gh-btn-icon.ember-view')
+            .first().click()
     }
 
     getTagMessageError() {
         return cy.get('span.error>p.response').first()
     }
 
-    getTagBreadcrumb() {
-        return cy.get('div.gh-canvas-breadcrumb>a').first()
+    clickBreadcrumbTag() {
+        return cy.get('div.gh-canvas-breadcrumb>a')
+            .first().click()
     }
 
     getTagModalHeader() {
         return cy.get('header.modal-header').first()
     }
 
-    getTagFooterModalLeaveButton() {
-        return cy.get('div.modal-footer>button.gh-btn.gh-btn-red').first()
+    clickButtonFooterModalLeaveTagForm() {
+        return cy.get('div.modal-footer>button.gh-btn.gh-btn-red')
+            .first().click()
     }
 
-    getTagNameInput() {
+    fillTagNameInput(contentInput) {
         return cy.get('input#tag-name.gh-input').first()
+            .type(contentInput)
     }
 
-    getTagColorInput(){       
+    cleanFillTagNameInput(contentInput) {
+        return cy.get('input#tag-name.gh-input').first()
+            .clear().type(contentInput)
+    }
+
+    fillTagColorInput(contentInput) {
         return cy.get('div.input-color>input').first()
+            .type(contentInput)
     }
 
-    getTagDescription() {
-        return cy.get('textarea.gh-input.gh-tag-details-textarea').first();
+    fillTagDescription(contentInput) {
+        return cy.get('textarea.gh-input.gh-tag-details-textarea').first()
+            .type(contentInput)
     }
 
-    getTagTitle(){
+    getTagTitle() {
         return cy.get('h2.gh-canvas-title');
     }
 
@@ -52,16 +68,19 @@ class Tags {
         return cy.get('section>ol>li').find("h3.gh-tag-list-name")
     }
 
-    getTagDeleteButton() {
-        return cy.get('button[data-test-button~="delete-tag"]').first()
+    clickButtonDeleteTag() {
+        return cy.get('button[data-test-button~="delete-tag"]')
+            .first().click()
     }
 
-    getTagModalCancelButton() {
-        return cy.get('div.modal-footer>button[data-test-button~="cancel"]').first()
+    clickButtonModalCancelTag() {
+        return cy.get('div.modal-footer>button[data-test-button~="cancel"]')
+            .first().click()
     }
-    
-    getTagModalDeleteButton() {
-        return cy.get('div.modal-footer>button[data-test-button~="confirm"]').first()
+
+    clickTagModalDeleteButton() {
+        return cy.get('div.modal-footer>button[data-test-button~="confirm"]')
+            .first().click()
     }
 
 }
