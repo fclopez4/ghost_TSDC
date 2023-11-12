@@ -1,6 +1,6 @@
 import User from "../pages/user"
 import Login from "../pages/login"
-
+import { faker } from '@faker-js/faker'
 
 const login = new Login()
 const userPage = new User()
