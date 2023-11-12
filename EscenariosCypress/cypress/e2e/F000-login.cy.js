@@ -4,7 +4,7 @@ import Dashboard from "../pages/dashboard"
 const login = new Login()
 const dashboard = new Dashboard()
 
-describe("scenery #1 login page", () => {
+describe("EP000 login page", () => {
   context('Given I login in ghost page', () => {
     beforeEach(() => {
       login.visit()

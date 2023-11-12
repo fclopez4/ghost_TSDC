@@ -7,7 +7,7 @@ const post = new Post()
 const login = new Login()
 const editor = new Editor()
 
-describe("scenery #2 create post", () => {
+describe("EP002 create post", () => {
     context('Given I go to post page', () => {
         let cockieValue
 
@@ -104,7 +104,7 @@ describe("scenery #2 create post", () => {
 
 })
 
-describe("scenery #3 edit Post", () => {
+describe("EP003 edit Post", () => {
     context('Given I go to post page', () => {
         let cockieValue
 
@@ -166,7 +166,7 @@ describe("scenery #3 edit Post", () => {
     })
 })
 
-describe("scenery #4 delete Post", () => {
+describe("EP004 delete Post", () => {
     context('Given I go to post page', () => {
         let cockieValue
 
@@ -218,7 +218,7 @@ describe("scenery #4 delete Post", () => {
     })
 });
 
-describe("scenery #5 list post", () => {
+describe("EP005 list post", () => {
     context('Given I go to post page', () => {
         let cockieValue
 
