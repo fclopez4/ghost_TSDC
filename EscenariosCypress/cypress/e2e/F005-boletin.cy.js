@@ -122,6 +122,60 @@ describe("scenery #2 edit newsletter ", () => {
 })
 
 
+describe("scenery #3 archive newsletter ", () => {
+    context('Given I go to newsletter page', () => {
+        var cockieValue
+        before(() => {
+            login.insertLogin()
+            cy.getCookie('ghost-admin-api-session').then((cookie) => {
+                cockieValue = cookie.value;
+            });
+        })
+
+        beforeEach(() => {
+            cy.setCookie('ghost-admin-api-session', cockieValue)
+            boletinPage.visit()
+        })
+
+        context("When I select options newsletter", () => {
+            beforeEach(() => {
+                cy.wait(2000)
+                boletinPage.selectSelectOptions()
+                cy.wait(3000)
+            })
+            it("Then I should see menu options", () => {
+                boletinPage.getMenuArchive().should('exist');
+            })
+        })
+
+        context("When I select a archive option", () => {
+            beforeEach(() => {
+                cy.wait(2000)
+                boletinPage.selectSelectOptions()
+                cy.wait(2000)
+                boletinPage.clickOnArchive()
+            })
+            it("Then I should see the modal confirm", () => {
+                boletinPage.getTitleModalConfirm().should('contain.text', 'Archive newsletter');
+            })
+        })
+
+        context("When I click on Archive confirm", () => {
+            beforeEach(() => {
+                cy.wait(2000)
+                boletinPage.selectSelectOptions()
+                cy.wait(2000)
+                boletinPage.clickOnArchive()
+                cy.wait(2000)
+                boletinPage.clickOnArchiveConfirm()
+            })
+            it("Then I should see Email newsletter page", () => {
+                boletinPage.getTitle().should('contain.text', 'Email newsletter');
+            })
+        })
+    })
+})
+
 function fillData(name, description) {
     boletinPage.clickNewLetter()
     cy.wait(1000)
