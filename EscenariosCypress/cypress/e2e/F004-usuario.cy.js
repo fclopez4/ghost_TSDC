@@ -118,6 +118,67 @@ describe("scenery #2 edit user", () => {
     })
 })
 
+
+describe("scenery #3 delete user", () => {
+    context('Given I go to users page', () => {
+        var cockieValue
+
+        before(() => {
+            login.insertLogin()
+            cy.getCookie('ghost-admin-api-session').then((cookie) => {
+                cockieValue = cookie.value;
+            });
+        })
+
+        beforeEach(() => {
+            cy.setCookie('ghost-admin-api-session', cockieValue)
+            userPage.visit()
+        })
+
+        context("When I select a user", () => {
+            beforeEach(() => {
+                userPage.clickSelectUser()
+                cy.wait(1000)
+            })
+            it("Then I should see a edit member page", () => {
+                userPage.getEstatusTittleMember().should("contain.text", "Edit member")
+            })
+        })
+
+        context("When I click on setting button ", () => {
+            beforeEach(() => {
+                userPage.clickSelectUser()
+                cy.wait(1000)
+                userPage.clickSettingButton()
+            })
+            it("Then I should see the delete menu", () => {
+                userPage.getDeleteMenu().should('exist');
+            })
+        })
+
+        context("When I click on delete button ", () => {
+            beforeEach(() => {
+                clickOnDeleteButton()
+            })
+            it("Then I should see the confirmation pop-up", () => {
+                userPage.getConfirmationPopUp().should('exist');
+            })
+        })
+
+
+        context("When I click on confirm delete user ", () => {
+            beforeEach(() => {
+                clickOnDeleteButton()
+                userPage.clickConfirmationPopUp()
+                cy.wait(3000)
+            })
+            it("Then I should see the Members page", () => {
+                userPage.getTitle().should('contain.text', 'Members');
+            })
+        })
+    })
+})
+
 function clickOnDeleteButton(){
     userPage.clickSelectUser()
     cy.wait(1000)
