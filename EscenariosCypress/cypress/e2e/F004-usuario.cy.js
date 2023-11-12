@@ -66,6 +66,58 @@ describe("scenery #1 create user", () => {
     })
 })
 
+
+describe("scenery #2 edit user", () => {
+    context('Given I go to users page', () => {
+        var cockieValue
+
+        before(() => {
+            login.insertLogin()
+            cy.getCookie('ghost-admin-api-session').then((cookie) => {
+                cockieValue = cookie.value;
+            });
+        })
+
+        beforeEach(() => {
+            cy.setCookie('ghost-admin-api-session', cockieValue)
+            userPage.visit()
+        })
+
+        context("When I select a user", () => {
+            beforeEach(() => {
+                userPage.clickSelectUser()
+                cy.wait(1000)
+            })
+            it("Then I should see a edit member page", () => {
+                userPage.getEstatusTittleMember().should("contain.text", "Edit member")
+            })
+        })
+
+
+        context("When I change user name ", () => {
+            let memberName = faker.animal.bear();
+            beforeEach(() => {
+                selectUserAndChangeName(memberName)
+            })
+            it("Then I should see the new member name", () => {
+                userPage.getMemberName().should('have.value', memberName)
+            })
+        })
+
+        context("When I change user name and click on save button", () => {
+            let memberName = faker.animal.bear();
+            beforeEach(() => {
+                selectUserAndChangeName(memberName)
+                userPage.clickSaveMember()
+            })
+            it("Then I should see the save button with teh class gh-btn-green", () => {
+                userPage.getButtonSave().should('have.class', 'gh-btn-green')
+            })
+        })
+
+    })
+})
+
 function clickOnDeleteButton(){
     userPage.clickSelectUser()
     cy.wait(1000)
