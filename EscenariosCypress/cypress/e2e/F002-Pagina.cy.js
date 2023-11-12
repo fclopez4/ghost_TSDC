@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 
 import Login from "../pages/login"
 import Editor from "../pages/editor"
-import Pagina from "../pages/pagina"
+import Pagina from "../pages/page"
 
 const login = new Login()
 const editor = new Editor()
@@ -145,16 +145,16 @@ describe('scenario #7 edit page', () => {
             beforeEach(() => {
                 createDummyPageData(pageFirstTitle)
                 publishNewPage()
-                page.getFilterButtonBySort().click()
-                page.getFilterButtonByRecentlyUpdate().click()
+                page.clickFilterButtonBySort()
+                page.clickFilterButtonByRecentlyUpdate()
                 page.getPageLinkByTitle(pageFirstTitle).click()
                 cy.wait(1000)
                 editor.clearTitle('Page title')
                 editor.fillTitle(pageSecondTitle, 'Page title')
                 publishUpdatePage()
                 cy.wait(1000)
-                page.getFilterButtonBySort().click()
-                page.getFilterButtonByRecentlyUpdate().click()
+                page.clickFilterButtonBySort()
+                page.clickFilterButtonByRecentlyUpdate()
                 cy.wait(1000)
             })
 
@@ -189,8 +189,8 @@ describe('scenario #8 delete page', () => {
                 saveDraftPage()
                 page.getPageLinkByTitle(pageFirstTitle).rightclick()
                 cy.wait(1000)
-                page.getButtonDeletePage().click()
-                page.getButtonModalDeletePage().click()
+                page.clickButtonDeletePage()
+                page.clickButtonModalDeletePage()
                 cy.wait(1000)
             })
 
@@ -206,8 +206,8 @@ describe('scenario #8 delete page', () => {
                 saveDraftPage()
                 page.getPageLinkByTitle(pageFirstTitle).rightclick()
                 cy.wait(1000)
-                page.getButtonDeletePage().click()
-                page.getButtonModalCancelPage().click()
+                page.clickButtonDeletePage()
+                page.clickButtonModalCancelPage()
                 cy.wait(1000)
             })
 
@@ -221,12 +221,12 @@ describe('scenario #8 delete page', () => {
             beforeEach(() => {
                 createDummyPageData(pageFirstTitle)
                 publishNewPage()
-                page.getFilterButtonBySort().click()
-                page.getFilterButtonByRecentlyUpdate().click()
+                page.clickFilterButtonBySort()
+                page.clickFilterButtonByRecentlyUpdate()
                 page.getPageLinkByTitle(pageFirstTitle).rightclick()
                 cy.wait(1000)
-                page.getButtonDeletePage().click()
-                page.getButtonModalDeletePage().click()
+                page.clickButtonDeletePage()
+                page.clickButtonModalDeletePage()
                 cy.wait(1000)
             })
 
@@ -240,12 +240,12 @@ describe('scenario #8 delete page', () => {
             beforeEach(() => {
                 createDummyPageData(pageFirstTitle)
                 publishNewPage()
-                page.getFilterButtonBySort().click()
-                page.getFilterButtonByRecentlyUpdate().click()
+                page.clickFilterButtonBySort()
+                page.clickFilterButtonByRecentlyUpdate()
                 page.getPageLinkByTitle(pageFirstTitle).rightclick()
                 cy.wait(1000)
-                page.getButtonDeletePage().click()
-                page.getButtonModalCancelPage().click()
+                page.clickButtonDeletePage()
+                page.clickButtonModalCancelPage()
             })
 
             it('Then I should be see that page name on the page list', () => {
@@ -308,8 +308,8 @@ describe('scenario #9 list page', () => {
             beforeEach(() => {
                 page.visit()
                 cy.wait(1000)
-                page.getFilterButtonByType().click()
-                page.getFilterButtonByDraftPage().click()
+                page.clickFilterButtonByType()
+                page.clickFilterButtonByDraftPage()
             })
 
             it('Then I should be see only a page list with type draft', () => {
@@ -321,8 +321,8 @@ describe('scenario #9 list page', () => {
             beforeEach(() => {
                 page.visit()
                 cy.wait(1000)
-                page.getFilterButtonByType().click()
-                page.getFilterButtonByPublishedPage().click()
+                page.clickFilterButtonByType()
+                page.clickFilterButtonByPublishedPage()
             })
 
             it('Then I should be see only a page list with type published', () => {

@@ -1,5 +1,5 @@
 
-class Pagina {
+class Page {
     visit() {
         cy.visit("/ghost/#/pages")
         cy.wait(1000)
@@ -36,50 +36,50 @@ class Pagina {
             .find("h3.gh-content-entry-title")
     }
 
-    getButtonDeletePage() {
+    clickButtonDeletePage() {
         return cy.get('ul.gh-posts-context-menu>li>button')
             .contains('Delete')
-            .first()
+            .first().click()
     }
 
-    getButtonModalDeletePage() {
+    clickButtonModalDeletePage() {
         return cy.get('div.modal-footer>button')
             .contains('Delete')
-            .first()
+            .first().click()
     }
 
-    getButtonModalCancelPage() {
+    clickButtonModalCancelPage() {
         return cy.get('div.modal-footer>button')
             .contains('Cancel')
-            .first()
+            .first().click()
     }
 
-    getFilterButtonBySort() {
+    clickFilterButtonBySort() {
         return cy.get('div.gh-contentfilter-menu.gh-contentfilter-sort')
-            .first()
+            .first().click()
     }
 
-    getFilterButtonByRecentlyUpdate() {
+    clickFilterButtonByRecentlyUpdate() {
         return cy.get('div.gh-contentfilter-menu-dropdown>ul>li')
             .contains('Recently updated')
-            .first()
+            .first().click()
     }
 
-    getFilterButtonByType() {
+    clickFilterButtonByType() {
         return cy.get('div.gh-contentfilter-menu.gh-contentfilter-type')
-            .first()
+            .first().click()
     }
 
-    getFilterButtonByDraftPage() {
+    clickFilterButtonByDraftPage() {
         return cy.get('div.gh-contentfilter-menu-dropdown>ul>li')
             .contains('Draft pages')
-            .first()
+            .first().click()
     } 
 
-    getFilterButtonByPublishedPage() {
+    clickFilterButtonByPublishedPage() {
         return cy.get('div.gh-contentfilter-menu-dropdown>ul>li')
             .contains('Published pages')
-            .first()
+            .first().click()
     } 
 
     getListPageType() {
@@ -88,4 +88,4 @@ class Pagina {
     
 }
 
-module.exports = Pagina
+module.exports = Page
