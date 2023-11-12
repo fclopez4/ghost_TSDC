@@ -2,6 +2,11 @@
 
 Para el uso de los escenarios de pruebas se utilizo la version de Ghost 5.68.0 en las ventanas de administración.
 
+## Integrantes Equipo 04
+- Andres Clavijo Rodriguez
+- Wilson Andres Alarcon Cuchigay
+- Fabio Camilo López Castellanos
+
 ## Inicio Escenarios de prueba Cypress
 
 1. Descargue o clone e repositorio
