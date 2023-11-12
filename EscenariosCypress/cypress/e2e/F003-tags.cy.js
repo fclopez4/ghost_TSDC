@@ -5,7 +5,7 @@ import Tags from "../pages/tags"
 const login = new Login()
 const tags = new Tags()
 
-describe('scenario #10 create tag', () => {
+describe('EP010 create tag', () => {
     context('Given I go to tags page', () => {
         let cookieValue;
 
@@ -81,7 +81,7 @@ describe('scenario #10 create tag', () => {
 
 });
 
-describe('scenario #11 edit tag', () => {
+describe('EP011 edit tag', () => {
     context('Given I go to tags page', () => {
         let cookieValue;
 
@@ -137,7 +137,7 @@ describe('scenario #11 edit tag', () => {
 
 });
 
-describe('scenario #12 delete tag', () => {
+describe('EP012 delete tag', () => {
     context('Given I go to tags page', () => {
         let cookieValue;
 
@@ -196,7 +196,7 @@ describe('scenario #12 delete tag', () => {
     })
 });
 
-describe('scenario #13 list tags', () => {
+describe('EP013 list tags', () => {
     context('Given I go to tags page', () => {
         let cookieValue;
 

@@ -9,7 +9,7 @@ const editor = new Editor()
 const page = new Pagina()
 
 
-describe("scenario #6 create page", () => {
+describe("EP006 create page", () => {
     context('Given I go to page page', () => {
         let cookieValue
 
@@ -105,7 +105,7 @@ describe("scenario #6 create page", () => {
 
 })
 
-describe('scenario #7 edit page', () => {
+describe('EP007 edit page', () => {
     context('Given I go to page page', () => {
         let cookieValue
 
@@ -166,7 +166,7 @@ describe('scenario #7 edit page', () => {
     });
 })
 
-describe('scenario #8 delete page', () => {
+describe('EP008 delete page', () => {
     context('Given I go to page page', () => {
         let cookieValue
 
@@ -256,7 +256,7 @@ describe('scenario #8 delete page', () => {
     });
 })
 
-describe('scenario #9 list page', () => {
+describe('EP009 list page', () => {
     context('Given I go to page page', () => {
         let cookieValue
 

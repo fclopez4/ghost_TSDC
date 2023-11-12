@@ -5,19 +5,19 @@ import { faker } from '@faker-js/faker'
 const login = new Login()
 const boletinPage = new BoletinPage()
 
-describe("scenery #1 create newsletter ", () => {
+describe("EP017 create newsletter ", () => {
     context('Given I go to newsletter page', () => {
-        var cockieValue
+        let cookieValue
 
         before(() => {
             login.insertLogin()
             cy.getCookie('ghost-admin-api-session').then((cookie) => {
-                cockieValue = cookie.value;
+                cookieValue = cookie.value;
             });
         })
 
         beforeEach(() => {
-            cy.setCookie('ghost-admin-api-session', cockieValue)
+            cy.setCookie('ghost-admin-api-session', cookieValue)
             boletinPage.visit()
         })
 
@@ -63,18 +63,18 @@ describe("scenery #1 create newsletter ", () => {
     })
 })
 
-describe("scenery #2 edit newsletter ", () => {
+describe("EP018 edit newsletter ", () => {
     context('Given I go to newsletter page', () => {
-        var cockieValue
+        let cookieValue
         before(() => {
             login.insertLogin()
             cy.getCookie('ghost-admin-api-session').then((cookie) => {
-                cockieValue = cookie.value;
+                cookieValue = cookie.value;
             });
         })
 
         beforeEach(() => {
-            cy.setCookie('ghost-admin-api-session', cockieValue)
+            cy.setCookie('ghost-admin-api-session', cookieValue)
             boletinPage.visit()
         })
 
@@ -121,19 +121,18 @@ describe("scenery #2 edit newsletter ", () => {
 })
 })
 
-
-describe("scenery #3 archive newsletter ", () => {
+describe("EP019 archive newsletter ", () => {
     context('Given I go to newsletter page', () => {
-        var cockieValue
+        let cookieValue
         before(() => {
             login.insertLogin()
             cy.getCookie('ghost-admin-api-session').then((cookie) => {
-                cockieValue = cookie.value;
+                cookieValue = cookie.value;
             });
         })
 
         beforeEach(() => {
-            cy.setCookie('ghost-admin-api-session', cockieValue)
+            cy.setCookie('ghost-admin-api-session', cookieValue)
             boletinPage.visit()
         })
 
@@ -176,19 +175,18 @@ describe("scenery #3 archive newsletter ", () => {
     })
 })
 
-
-describe("scenery #4 list newsletter ", () => {
+describe("EP020 list newsletter ", () => {
     context('Given I go to newsletter page', () => {
-        var cockieValue
+        let cookieValue
         before(() => {
             login.insertLogin()
             cy.getCookie('ghost-admin-api-session').then((cookie) => {
-                cockieValue = cookie.value;
+                cookieValue = cookie.value;
             });
         })
 
         beforeEach(() => {
-            cy.setCookie('ghost-admin-api-session', cockieValue)
+            cy.setCookie('ghost-admin-api-session', cookieValue)
             boletinPage.visit()
         })
 
@@ -208,6 +206,7 @@ describe("scenery #4 list newsletter ", () => {
 
     })
 })
+
 function fillData(name, description) {
     boletinPage.clickNewLetter()
     cy.wait(1000)

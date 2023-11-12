@@ -5,19 +5,19 @@ import { faker } from '@faker-js/faker'
 const login = new Login()
 const userPage = new User()
 
-describe("scenery #1 create user", () => {
+describe("EP014 create user", () => {
     context('Given I go to users page', () => {
-        var cockieValue
+        let cookieValue
 
         before(() => {
             login.insertLogin()
             cy.getCookie('ghost-admin-api-session').then((cookie) => {
-                cockieValue = cookie.value;
+                cookieValue = cookie.value;
             });
         })
 
         beforeEach(() => {
-            cy.setCookie('ghost-admin-api-session', cockieValue)
+            cy.setCookie('ghost-admin-api-session', cookieValue)
             userPage.visit()
         })
 
@@ -67,19 +67,19 @@ describe("scenery #1 create user", () => {
 })
 
 
-describe("scenery #2 edit user", () => {
+describe("EP015 edit user", () => {
     context('Given I go to users page', () => {
-        var cockieValue
+        let cookieValue
 
         before(() => {
             login.insertLogin()
             cy.getCookie('ghost-admin-api-session').then((cookie) => {
-                cockieValue = cookie.value;
+                cookieValue = cookie.value;
             });
         })
 
         beforeEach(() => {
-            cy.setCookie('ghost-admin-api-session', cockieValue)
+            cy.setCookie('ghost-admin-api-session', cookieValue)
             userPage.visit()
         })
 
@@ -119,19 +119,19 @@ describe("scenery #2 edit user", () => {
 })
 
 
-describe("scenery #3 delete user", () => {
+describe("EP016 delete user", () => {
     context('Given I go to users page', () => {
-        var cockieValue
+        let cookieValue
 
         before(() => {
             login.insertLogin()
             cy.getCookie('ghost-admin-api-session').then((cookie) => {
-                cockieValue = cookie.value;
+                cookieValue = cookie.value;
             });
         })
 
         beforeEach(() => {
-            cy.setCookie('ghost-admin-api-session', cockieValue)
+            cy.setCookie('ghost-admin-api-session', cookieValue)
             userPage.visit()
         })
 
