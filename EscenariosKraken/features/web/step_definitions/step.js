@@ -43,8 +43,8 @@ Then('I should see {string} title head', async function (texto) {
 });
 
 // Escenarios Posts
-let namePost = faker.animal.lion();
-let descPost = faker.animal.cat();
+let namePost = faker.string.uuid();
+let descPost = faker.string.uuid();
 
 When('I click on new post', async function () {
     const button = await this.driver.$('a.ember-view.gh-btn.gh-btn-primary');
@@ -141,8 +141,8 @@ Then('The post should not be visible', async function () {
 
 // Escenarios Pages
 
-let namePage = faker.animal.bear();
-let descPage = faker.animal.bird();
+let namePage = faker.string.uuid();
+let descPage = faker.string.uuid();
 
 When('I click on new page', async function () {
     const button = await this.driver.$('a.ember-view.gh-btn.gh-btn-primary');
