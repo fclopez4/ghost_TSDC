@@ -69,6 +69,20 @@ class Editor {
         return cy.get('header.modal-header').first()
     }
 
+    getButtonPageSettings(){
+        return cy.get('button.settings-menu-toggle[title="Settings"]').first()
+    }
+
+    getButtonDeletePage(){
+        return cy.get('div.settings-menu-delete-button>button').first()
+    }
+
+    getButtonModalDeletePage() {
+        return cy.get('div.modal-footer>button')
+            .contains('Delete')
+            .first()
+    }
+
 
 }
 

@@ -25,17 +25,55 @@ class Pagina {
             .first()
     }
 
-    getLinkPageByTitle(namePost) {
-        return cy.get("li>a.ember-view.permalink.gh-list-data.gh-post-list-title")
+    getPageLinkByTitle(namePost) {
+        return cy.get("li>a.permalink.gh-list-data.gh-post-list-title")
             .contains(namePost)
             .first()
     }
 
-    getListLinkPageByTitle() {
-        return cy.get("li>a.ember-view.permalink.gh-list-data.gh-post-list-title")
+    getListPageTitles() {
+        return cy.get("li>a.permalink.gh-list-data.gh-post-list-title")
             .find("h3.gh-content-entry-title")
     }
 
+    getButtonDeletePage() {
+        return cy.get('ul.gh-posts-context-menu>li>button')
+            .contains('Delete')
+            .first()
+    }
+
+    getButtonModalDeletePage() {
+        return cy.get('div.modal-footer>button')
+            .contains('Delete')
+            .first()
+    }
+
+    getButtonModalCancelPage() {
+        return cy.get('div.modal-footer>button')
+            .contains('Cancel')
+            .first()
+    }
+
+    getFilterButtonByType() {
+        return cy.get('div.gh-contentfilter-menu.gh-contentfilter-type')
+            .first()
+    }
+
+    getFilterButtonByDraftPage() {
+        return cy.get('div.gh-contentfilter-menu-dropdown>ul>li')
+            .contains('Draft pages')
+            .first()
+    } 
+
+    getFilterButtonByPublishedPage() {
+        return cy.get('div.gh-contentfilter-menu-dropdown>ul>li')
+            .contains('Published pages')
+            .first()
+    } 
+
+    getListPageType() {
+        return cy.get("li>a>p.gh-content-entry-status")
+    }
     
 }
 
