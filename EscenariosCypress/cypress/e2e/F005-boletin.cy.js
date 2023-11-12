@@ -63,6 +63,65 @@ describe("scenery #1 create newsletter ", () => {
     })
 })
 
+describe("scenery #2 edit newsletter ", () => {
+    context('Given I go to newsletter page', () => {
+        var cockieValue
+        before(() => {
+            login.insertLogin()
+            cy.getCookie('ghost-admin-api-session').then((cookie) => {
+                cockieValue = cookie.value;
+            });
+        })
+
+        beforeEach(() => {
+            cy.setCookie('ghost-admin-api-session', cockieValue)
+            boletinPage.visit()
+        })
+
+        context("When I select a Newsletter from de list", () => {
+            beforeEach(() => {
+                boletinPage.selectNewsLetter()
+                cy.wait(3000)
+            })
+            it("Then I should see modal content", () => {
+                boletinPage.getTitleEdit().should('contain.text', 'Edit newsletter');
+            })
+        })
+
+        context("When I change name and description data", () => {
+            let name = faker.animal.bear();
+            let description = faker.lorem.paragraph(1);
+            beforeEach(() => {
+                boletinPage.selectNewsLetter()
+                editFillData(name, description)
+                cy.wait(2000)
+            })
+            it("Then I should see the name typed on the body", () => {
+                boletinPage.getTextBody().should('contain.text', name);
+            })
+        })
+
+
+        context("When I click on Save and close button", () => {
+            let name = faker.animal.bear();
+            let description = faker.lorem.paragraph(1);
+            beforeEach(() => {
+                boletinPage.selectNewsLetter()
+                editFillData(name, description)
+                cy.wait(2000)
+                boletinPage.clickSaveAndClose()
+                cy.wait(2000)
+            })
+            it("Then I should see Email newsletter page", () => {
+                boletinPage.getTitle().should('contain.text', 'Email newsletter');
+            })
+        })
+
+
+})
+})
+
+
 function fillData(name, description) {
     boletinPage.clickNewLetter()
     cy.wait(1000)
