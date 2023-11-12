@@ -54,6 +54,17 @@ class Pagina {
             .first()
     }
 
+    getFilterButtonBySort() {
+        return cy.get('div.gh-contentfilter-menu.gh-contentfilter-sort')
+            .first()
+    }
+
+    getFilterButtonByRecentlyUpdate() {
+        return cy.get('div.gh-contentfilter-menu-dropdown>ul>li')
+            .contains('Recently updated')
+            .first()
+    }
+
     getFilterButtonByType() {
         return cy.get('div.gh-contentfilter-menu.gh-contentfilter-type')
             .first()

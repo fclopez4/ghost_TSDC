@@ -145,18 +145,23 @@ describe('scenario #7 edit page', () => {
             beforeEach(() => {
                 createDummyPageData(pageFirstTitle)
                 publishNewPage()
+                page.getFilterButtonBySort().click()
+                page.getFilterButtonByRecentlyUpdate().click()
                 page.getPageLinkByTitle(pageFirstTitle).click()
                 cy.wait(1000)
                 editor.clearTitle('Page title')
                 editor.fillTitle(pageSecondTitle, 'Page title')
                 publishUpdatePage()
+                cy.wait(1000)
+                page.getFilterButtonBySort().click()
+                page.getFilterButtonByRecentlyUpdate().click()
+                cy.wait(1000)
             })
 
             it('Then I should see the new title in the page list', () => {
                 page.getListPageTitles().contains(pageSecondTitle).should('exist')
             })
         })
-
 
     });
 })
@@ -194,23 +199,6 @@ describe('scenario #8 delete page', () => {
             })
         })
 
-        context('When I click on delete button and I click on modal delete button from published page', () => {
-            let pageFirstTitle = faker.person.jobTitle()
-            beforeEach(() => {
-                createDummyPageData(pageFirstTitle)
-                publishNewPage()
-                page.getPageLinkByTitle(pageFirstTitle).rightclick()
-                cy.wait(1000)
-                page.getButtonDeletePage().click()
-                page.getButtonModalDeletePage().click()
-                cy.wait(1000)
-            })
-
-            it('Then I should be see that page name on the page list', () => {
-                page.getListPageTitles().contains(pageFirstTitle).should('not.exist')
-            })
-        })
-
         context('When I click on delete button and I click on modal cancel button from draft page', () => {
             let pageFirstTitle = faker.person.jobTitle()
             beforeEach(() => {
@@ -228,11 +216,32 @@ describe('scenario #8 delete page', () => {
             })
         })
 
+        context('When I click on delete button and I click on modal delete button from published page', () => {
+            let pageFirstTitle = faker.person.jobTitle()
+            beforeEach(() => {
+                createDummyPageData(pageFirstTitle)
+                publishNewPage()
+                page.getFilterButtonBySort().click()
+                page.getFilterButtonByRecentlyUpdate().click()
+                page.getPageLinkByTitle(pageFirstTitle).rightclick()
+                cy.wait(1000)
+                page.getButtonDeletePage().click()
+                page.getButtonModalDeletePage().click()
+                cy.wait(1000)
+            })
+
+            it('Then I should be see that page name on the page list', () => {
+                page.getListPageTitles().contains(pageFirstTitle).should('not.exist')
+            })
+        })
+
         context('When I click on delete button and I click on modal cancel button from published page', () => {
             let pageFirstTitle = faker.person.jobTitle()
             beforeEach(() => {
                 createDummyPageData(pageFirstTitle)
                 publishNewPage()
+                page.getFilterButtonBySort().click()
+                page.getFilterButtonByRecentlyUpdate().click()
                 page.getPageLinkByTitle(pageFirstTitle).rightclick()
                 cy.wait(1000)
                 page.getButtonDeletePage().click()
