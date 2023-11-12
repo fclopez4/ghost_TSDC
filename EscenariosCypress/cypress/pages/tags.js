@@ -35,7 +35,7 @@ class Tags {
         return cy.get('header.modal-header').first()
     }
 
-    clickTagFooterModalLeaveButton() {
+    clickButtonFooterModalLeaveTagForm() {
         return cy.get('div.modal-footer>button.gh-btn.gh-btn-red')
             .first().click()
     }

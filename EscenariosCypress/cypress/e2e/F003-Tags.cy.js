@@ -65,7 +65,7 @@ describe('scenario #10 create tag', () => {
             beforeEach(() => {
                 fillDummyDataFormTag(tagName)
                 tags.clickBreadcrumbTag()
-                tags.clickTagFooterModalLeaveButton()
+                tags.clickButtonFooterModalLeaveTagForm()
                 cy.wait(1000)
             })
 
@@ -125,7 +125,7 @@ describe('scenario #11 edit tag', () => {
                 tags.cleanFillTagNameInput(tagName)
                 tags.clickBreadcrumbTag()
                 cy.wait(1000)
-                tags.clickTagFooterModalLeaveButton()
+                tags.clickButtonFooterModalLeaveTagForm()
                 cy.wait(1000)
             })
 
@@ -212,9 +212,14 @@ describe('scenario #13 list tags', () => {
             cy.setCookie('ghost-admin-api-session', cookieValue)
         })
 
-        context('When I go to the tag path', () => {
+        context('When I go to the tag path and I click on new tag button and I leave form new tag', () => {
             beforeEach(() => {
                 tags.visit()
+                cy.wait(1000)
+                tags.clickButtonNewTag()
+                tags.clickBreadcrumbTag()
+                cy.wait(1000)
+                tags.clickButtonFooterModalLeaveTagForm()
                 cy.wait(1000)
             })
 
