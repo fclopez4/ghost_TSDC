@@ -31,6 +31,15 @@ class Login {
         this.getSubmitButton().click()
         cy.wait(1000)
     }
+
+    /**
+    * 
+    * @param {*} escenario nombre de la carpeta debe ser con nomenclatura F000-EP000 
+    * @param {*} nombre numero de paso
+    */
+    tomarPantallazo(escenario, nombre) {
+        cy.screenshot(`${escenario}/${nombre}`)
+    }
 }
 
 module.exports = Login
