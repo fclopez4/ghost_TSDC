@@ -38,7 +38,7 @@ class Login {
      * @param {*} nombre numero de paso
      */
     tomarPantallazo(escenario, nombre){
-        cy.screenshot(`${escenario}/${nombre}`)
+        cy.screenshot(`${escenario}/${nombre}`, { overwrite: true, capture: 'fullPage' })
     }
 }
 

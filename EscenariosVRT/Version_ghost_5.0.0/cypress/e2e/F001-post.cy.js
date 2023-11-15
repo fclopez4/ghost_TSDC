@@ -84,11 +84,10 @@ describe("EP002 create post", () => {
                 cy.wait(1000)
                 editor.uploadImage(nameImage)
                 cy.wait(2000)
-                login.tomarPantallazo("F001-EP002", "4")
             })
             it("Then I should see the post published", () => {
                 expect(editor.getImage(nameImage)).to.exist;
-                login.tomarPantallazo("F001-EP002", "5")
+                login.tomarPantallazo("F001-EP002", "4")
             })
         })
 
