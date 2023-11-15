@@ -19,7 +19,7 @@ class Post {
     }
 
     getPostByTitle(namePost) {
-        return cy.get(".posts-list.gh-list.feature-memberAttribution")
+        return cy.get(".gh-list-row.gh-posts-list-item")
             .find(".gh-content-entry-title")
             .contains(namePost)
             .first()

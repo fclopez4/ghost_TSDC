@@ -15,7 +15,7 @@ class Editor {
     }
 
     fillContent(contentPost) {
-        return cy.get('.kg-prose').click().type(contentPost)
+        return cy.get('[data-kg="editor"]').click().type(contentPost)
     }
 
     getTitle() {
@@ -31,13 +31,13 @@ class Editor {
     }
 
     clickButtonPublishRighNow() {
-        return cy.get('[data-test-button="confirm-publish"]').click()
+        return cy.get('button.gh-btn-large:nth-child(1)').click()
     }
 
     clickOptionMore(optionName) {
-        cy.get('.kg-prose').click()
+        cy.get('[data-kg="editor"]').click()
         cy.get('[aria-label="Add a card"]').click()
-        return cy.get('button').contains(optionName).click()
+        return cy.get(`[title="${optionName}"]`).click()
     }
 
     clickButtonBackEditor() {

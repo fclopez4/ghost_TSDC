@@ -21,7 +21,7 @@ class Login {
     }
 
     getForgotButton(){
-        return cy.get('#ember4').first()
+        return cy.get('#ember10').first()
     }
 
     insertLogin(){
@@ -38,7 +38,7 @@ class Login {
      * @param {*} nombre numero de paso
      */
     tomarPantallazo(escenario, nombre){
-        cy.screenshot(`${escenario}/${nombre}`)
+        cy.screenshot(`${escenario}/${nombre}`, { overwrite: true, capture: 'fullPage' })
     }
 }
 
