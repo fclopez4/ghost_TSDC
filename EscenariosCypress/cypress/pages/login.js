@@ -5,26 +5,26 @@ class Login {
     }
 
     setInputUsername(value) {
-        return cy.get('#identification').first().type(value)
+        return cy.get('[name=identification]').first().type(value)
     }
 
     setInputPassword(value) {
-        return cy.get('#password').first().type(value)
+        return cy.get('[name=password]').first().type(value)
     }
 
     getSubmitButton() {
         return cy.get("button[type=submit]").first()
     }
 
-    getIncorrectSessionTitle(){
+    getIncorrectSessionTitle() {
         return cy.get('.main-error').first()
     }
 
-    getForgotButton(){
+    getForgotButton() {
         return cy.get('#ember4').first()
     }
 
-    insertLogin(){
+    insertLogin() {
         this.visit()
         this.setInputUsername(Cypress.env('usuario'))
         this.setInputPassword(Cypress.env('password'))
@@ -38,7 +38,7 @@ class Login {
     * @param {*} nombre numero de paso
     */
     tomarPantallazo(escenario, nombre) {
-        cy.screenshot(`${escenario}/${nombre}`)
+        cy.screenshot(`${escenario}/${nombre}`, { overwrite: true, capture: 'fullPage' })
     }
 }
 

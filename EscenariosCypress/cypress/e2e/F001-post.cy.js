@@ -30,6 +30,7 @@ describe("EP002 create post", () => {
             })
             it("Then I should see a new post page", () => {
                 editor.getEstatusTittle().should("contain.text", "New")
+                login.tomarPantallazo("F001-EP002", "1")
             })
         })
 
@@ -43,6 +44,7 @@ describe("EP002 create post", () => {
             })
             it("Then I should see the title and content filled", () => {
                 editor.getTitle().should('have.value', namePost);
+                login.tomarPantallazo("F001-EP002", "2")
             })
         })
 
@@ -65,6 +67,7 @@ describe("EP002 create post", () => {
             })
             it("Then I should see the post published", () => {
                 expect(post.getPostByTitle(namePost)).to.exist
+                login.tomarPantallazo("F001-EP002", "3")
             })
         })
 
@@ -81,6 +84,7 @@ describe("EP002 create post", () => {
             })
             it("Then I should see the post published", () => {
                 expect(editor.getImage(nameImage)).to.exist;
+                login.tomarPantallazo("F001-EP002", "4")
             })
         })
 
@@ -97,6 +101,7 @@ describe("EP002 create post", () => {
             })
             it("Then I should see the post published", () => {
                 post.getPostByTitle(namePost).should("contain.text", namePost)
+                login.tomarPantallazo("F001-EP002", "5")
             })
         })
 
@@ -118,6 +123,46 @@ describe("EP003 edit Post", () => {
         beforeEach(() => {
             cy.setCookie('ghost-admin-api-session', cockieValue)
             post.visit()
+        })
+
+        context("When I click on post to edit", () => {
+            const namePost = faker.animal.dog()
+
+            beforeEach(() => {
+                post.createPost(namePost);
+                post.getPostByTitle(namePost).click()
+                cy.wait(1000)
+            })
+            it("Then I should see a edit post page", () => {
+                editor.getEstatusTittle().should("contain.text", "- Saved")
+                login.tomarPantallazo("F001-EP003", "1")
+            })
+        })
+
+        context("When I click on post published to edit", () => {
+            const namePost = faker.animal.dog()
+
+            beforeEach(() => {
+                post.clickNewPost()
+                cy.wait(1000)
+                editor.fillTitle(namePost, 'Post title')
+                editor.fillContent('Content post 1')
+                editor.clickPublish()
+                cy.wait(1000)
+                editor.clickButtonFinalReview()
+                cy.wait(1000)
+                editor.clickButtonPublishRighNow();
+                cy.wait(1000)
+                post.visit()
+                post.clickFilterByTypeAndName('All posts', 'Published posts');
+                cy.wait(1000)
+                post.getPostByTitle(namePost).click()
+                cy.wait(1000)
+            })
+            it("Then I should see a edit post page", () => {
+                editor.getEstatusTittle().get("[data-test-editor-post-status]>a").should("contain.text", "Published")
+                login.tomarPantallazo("F001-EP003", "2")
+            })
         })
 
         context("when I update a post and I want to update de name", () => {
@@ -142,6 +187,7 @@ describe("EP003 edit Post", () => {
             })
             it("Then I should see the post published wiht de new name", () => {
                 post.getPostByTitle(namePostUpdate).should("contain.text", namePostUpdate)
+                login.tomarPantallazo("F001-EP003", "3")
             })
         });
 
@@ -160,6 +206,7 @@ describe("EP003 edit Post", () => {
             })
             it("Then I should see the post wiht de new name", () => {
                 post.getPostByTitle(namePostUpdate).should("contain.text", namePostUpdate)
+                login.tomarPantallazo("F001-EP003", "4")
             })
         });
 
@@ -194,10 +241,12 @@ describe("EP004 delete Post", () => {
 
             it("Then I see the alert Post deleted successfully", () => {
                 post.getTitle().should("contain.text", "Posts")
+                login.tomarPantallazo("F001-EP004", "1")
             })
 
             it("And it does not have to exist", () => {
                 post.searhNotExistPostByTittle(namePost).should('not.exist')
+                login.tomarPantallazo("F001-EP004", "2")
             })
         })
 
@@ -213,6 +262,7 @@ describe("EP004 delete Post", () => {
 
             it("Then I see the post", () => {
                 expect(post.getPostByTitle(namePost)).to.exist;
+                login.tomarPantallazo("F001-EP004", "3")
             })
         })
     })
@@ -237,12 +287,14 @@ describe("EP005 list post", () => {
         context("when I visit the page post I should see a post title", () => {
             it("Then I see the title post", () => {
                 post.getTitle().should("contain.text", "Posts")
+                login.tomarPantallazo("F001-EP005", "1")
             })
         })
 
         context("When I visit the page post I should see a list post ", () => {
             it("Then I should see a list of post", () => {
                 post.getListPosts().should("exist")
+                login.tomarPantallazo("F001-EP005", "2")
             })
         })
 
@@ -252,6 +304,7 @@ describe("EP005 list post", () => {
             })
             it("Then I should see a page with type draft", () => {
                 cy.url().should('include', 'type=draft');
+                login.tomarPantallazo("F001-EP005", "3")
             })
         })
 
@@ -261,6 +314,7 @@ describe("EP005 list post", () => {
             })
             it("Then I should see a page with visibility members", () => {
                 cy.url().should('include', 'visibility=members');
+                login.tomarPantallazo("F001-EP005", "4")
             })
         })
 
@@ -270,6 +324,7 @@ describe("EP005 list post", () => {
             })
             it("Then I should see a page with visibility members", () => {
                 cy.url().should('include', 'order=published_at%20asc');
+                login.tomarPantallazo("F001-EP005", "5")
             })
         })
     })

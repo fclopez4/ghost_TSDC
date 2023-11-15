@@ -4,8 +4,9 @@ import Dashboard from "../pages/dashboard"
 const login = new Login()
 const dashboard = new Dashboard()
 
-describe("EP000 login page", () => {
+describe("EP001 login page", () => {
   context('Given I login in ghost page', () => {
+
     beforeEach(() => {
       login.visit()
     })
@@ -19,7 +20,8 @@ describe("EP000 login page", () => {
       })
 
       it("Then I see the title dashboard", () => {
-        dashboard.getTitle().should("contain.text", "Dashboard")
+        dashboard.getTitle().should("contain.text", "Dashboard");
+        login.tomarPantallazo("F000-EP001", "1")
       })
     })
 
@@ -36,6 +38,7 @@ describe("EP000 login page", () => {
           const text = await element.text();
           return text.includes('Your password is incorrect.') || text.includes('Too many attempts');
         });
+        login.tomarPantallazo("F000-EP001", "2")
       })
     })
 
@@ -49,6 +52,7 @@ describe("EP000 login page", () => {
 
       it("Then I see the title user not found", () => {
         login.getIncorrectSessionTitle().should("contain.text", "There is no user with that email address.")
+        login.tomarPantallazo("F000-EP001", "3")
       })
     })
 
@@ -60,6 +64,7 @@ describe("EP000 login page", () => {
 
       it("Then I see the alert fill form", () => {
         login.getIncorrectSessionTitle().should("contain.text", "Please fill out the form to sign in.")
+        login.tomarPantallazo("F000-EP001", "4")
       })
     })
 
@@ -75,6 +80,7 @@ describe("EP000 login page", () => {
 
       it("Then I see the alert fill form", () => {
         login.getIncorrectSessionTitle().should("contain.text", "Too many attempts try again")
+        login.tomarPantallazo("F000-EP001", "5")
       })
     })
   })
