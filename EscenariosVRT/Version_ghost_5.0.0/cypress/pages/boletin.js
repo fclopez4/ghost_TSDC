@@ -10,10 +10,7 @@ class Boletin {
     }
 
     selectNewsLetter() {
-        return cy.get('.sortable-objects')
-            .find('div.draggable-object')
-            .first()
-            .click();
+        return cy.get('.sortable-objects').find('div.draggable-object').first().click();
     }
 
     openEditName() {

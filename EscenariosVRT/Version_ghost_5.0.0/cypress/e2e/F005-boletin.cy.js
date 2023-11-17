@@ -183,6 +183,7 @@ describe("EP019 archive newsletter ", () => {
     })
 })
 
+
 describe("EP020 list newsletter ", () => {
     context('Given I go to newsletter page', () => {
         let cookieValue
