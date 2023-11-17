@@ -28,6 +28,7 @@ describe("EP017 create newsletter ", () => {
             })
             it("Then I should see modal content", () => {
                 boletinPage.getModalContent().should('exist');
+                login.tomarPantallazo("F005-EP017", "1")
             })
         })
 
@@ -40,6 +41,7 @@ describe("EP017 create newsletter ", () => {
             })
             it("Then I should see modal content", () => {
                 boletinPage.getModalContent().should('exist');
+                login.tomarPantallazo("F005-EP017", "2")
             })
         })
 
@@ -57,6 +59,7 @@ describe("EP017 create newsletter ", () => {
             })
             it("Then I should add a new element  to the card", () => {
                 cy.get('.sortable-objects').find('div.draggable-object').should('have.length', (size+1));
+                login.tomarPantallazo("F005-EP017", "3")
             })
         })
 
@@ -89,6 +92,7 @@ describe("EP018 edit newsletter ", () => {
             })
             it("Then I should see modal content", () => {
                 boletinPage.getTitleEdit().should('contain.text', 'Edit newsletter');
+                login.tomarPantallazo("F005-EP018", "1")
             })
         })
 
@@ -105,6 +109,7 @@ describe("EP018 edit newsletter ", () => {
             })
             it("Then I should see the name typed on the body", () => {
                 boletinPage.getTextBody().should('contain.text', name);
+                login.tomarPantallazo("F005-EP018", "2")
             })
         })
 
@@ -122,6 +127,7 @@ describe("EP018 edit newsletter ", () => {
             })
             it("Then I should see Email newsletter page", () => {
                 boletinPage.getTitle().should('contain.text', 'Email newsletter');
+                login.tomarPantallazo("F005-EP018", "3")
             })
         })
 
@@ -152,6 +158,7 @@ describe("EP019 archive newsletter ", () => {
             })
             it("Then I should see menu options", () => {
                 boletinPage.getMenuArchive().should('exist');
+                login.tomarPantallazo("F005-EP019", "1")
             })
         })
 
@@ -164,6 +171,7 @@ describe("EP019 archive newsletter ", () => {
             })
             it("Then I should see the modal confirm", () => {
                 boletinPage.getTitleModalConfirm().should('contain.text', 'Archive newsletter');
+                login.tomarPantallazo("F005-EP019", "2")
             })
         })
 
@@ -178,6 +186,7 @@ describe("EP019 archive newsletter ", () => {
             })
             it("Then I should see Email newsletter page", () => {
                 boletinPage.getTitle().should('contain.text', 'Email newsletter');
+                login.tomarPantallazo("F005-EP019", "3")
             })
         })
     })
@@ -199,19 +208,20 @@ describe("EP020 list newsletter ", () => {
             boletinPage.visit()
         })
 
-                context("When I list Email newsletter", () => {
-                    let size = 0;
-                    beforeEach(() => {
-                        cy.get('.sortable-objects')
-                            .find('div.draggable-object')
-                            .should(($divs) => {
-                                size = $divs.length;
-                            });
+    context("When I list Email newsletter", () => {
+        let size = 0;
+        beforeEach(() => {
+            cy.get('.sortable-objects')
+                .find('div.draggable-object')
+                .should(($divs) => {
+                    size = $divs.length;
+                });
                     })
-                    it("Then I should see more than one newsletter", () => {
-                        cy.get('.sortable-objects').find('div.draggable-object').should('have.length.greaterThan', 0);
-                    })
-                })
+        it("Then I should see more than one newsletter", () => {
+            cy.get('.sortable-objects').find('div.draggable-object').should('have.length.greaterThan', 0);
+            login.tomarPantallazo("F005-EP020", "1")
+        })
+    })
 
     })
 })
