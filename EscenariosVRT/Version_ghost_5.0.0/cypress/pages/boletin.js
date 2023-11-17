@@ -16,6 +16,10 @@ class Boletin {
             .click();
     }
 
+    openEditName() {
+        return cy.get('.modal-fullsettings-tab').contains('Name and desc').click()
+    }
+
     selectSelectOptions() {
         return cy.get('.gh-tier-card-actions-button:first-child').first().click()
     }
