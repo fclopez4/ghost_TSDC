@@ -25,16 +25,12 @@ class User {
         return cy.get('.gh-member-actions-menu li:eq(1)').click()
     }
 
-    clickOutOfForm() {
-        return cy.get('.gh-member-details').click();
-    }
-
     clickSaveMember() {
         return cy.get('button').contains('Save').click()
     }
 
-	getEstatusTittleMember() {
-        return cy.get('.gh-canvas-breadcrumb').first()
+    getEditTitlePage() {
+        return cy.get('.view-actions').first()
     }
 
     getMemberName(){
@@ -50,7 +46,7 @@ class User {
     }
 
     clickConfirmationPopUp(){
-        return cy.get('.gh-btn-red').click()
+        return cy.get('.gh-btn-red').contains('Delete member').click()
     }
 
     getButtonSave() {
@@ -71,10 +67,6 @@ class User {
 
     fillTagById(idTag,value) {
         return cy.get(idTag).type(value);
-    }
-
-    clearTagById(idTag) {
-        return cy.get(idTag).clear()
     }
 }
 
