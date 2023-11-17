@@ -223,3 +223,8 @@ Then('The page should not be visible', async function () {
     postFound = textos.includes(namePost);
     return assert.strictEqual(postFound, false);
 })
+
+
+Then('Take a screenshot {kraken-string}', async function (name) {
+    return await this.driver.saveScreenshot(`./screenshots/${name}.png`);
+});
