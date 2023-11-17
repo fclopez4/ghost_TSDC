@@ -27,7 +27,8 @@ describe("EP014 create user", () => {
                 cy.wait(1000)
             })
             it("Then I should see a new member page", () => {
-                userPage.getEstatusTittleMember().should("contain.text", "New member")
+                userPage.getTitle().should('contain.text', 'New member');
+                login.tomarPantallazo("F004-EP014", "1")
             })
         })
 
@@ -45,6 +46,7 @@ describe("EP014 create user", () => {
                 userPage.geMemberEmail().should('have.value', memberEmail);
                 userPage.getMemberLabel().should('have.value', memberLabel);
                 userPage.getMemberNote().should('have.value', memberNota);
+                login.tomarPantallazo("F004-EP014", "2")
             })
         })
 
@@ -59,6 +61,7 @@ describe("EP014 create user", () => {
             })
             it("Then I should see the detail user", () => {
                 userPage.getTitle().should('contain.text', memberName);
+                login.tomarPantallazo("F004-EP014", "3")
             })
 
         })
@@ -89,29 +92,38 @@ describe("EP015 edit user", () => {
                 cy.wait(1000)
             })
             it("Then I should see a edit member page", () => {
-                userPage.getEstatusTittleMember().should("contain.text", "Edit member")
+                userPage.getEditTitlePage().should('exist');
+                login.tomarPantallazo("F004-EP015", "1")
             })
         })
 
 
-        context("When I change user name ", () => {
-            let memberName = faker.animal.bear();
+        context("When I change user name, email, label and note ", () => {
+            const memberName =  faker.animal.bear();
+            const memberEmail = faker.word.adjective(4) + '@algo.com';
+            const memberLabel = faker.word.adjective(4);
+            const memberNota = faker.lorem.paragraph(1);
             beforeEach(() => {
-                selectUserAndChangeName(memberName)
+                fillData(memberName, memberEmail, memberLabel, memberNota)
             })
             it("Then I should see the new member name", () => {
                 userPage.getMemberName().should('have.value', memberName)
+                login.tomarPantallazo("F004-EP015", "2")
             })
         })
 
         context("When I change user name and click on save button", () => {
-            let memberName = faker.animal.bear();
+            const memberName =  faker.animal.bear();
+            const memberEmail = faker.word.adjective(4) + '@algo.com';
+            const memberLabel = faker.word.adjective(4);
+            const memberNota = faker.lorem.paragraph(1);
             beforeEach(() => {
-                selectUserAndChangeName(memberName)
+                fillData(memberName, memberEmail, memberLabel, memberNota)
                 userPage.clickSaveMember()
             })
             it("Then I should see the save button with teh class gh-btn-green", () => {
                 userPage.getButtonSave().should('have.class', 'gh-btn-green')
+                login.tomarPantallazo("F004-EP015", "3")
             })
         })
 
@@ -135,47 +147,53 @@ describe("EP016 delete user", () => {
             userPage.visit()
         })
 
-        context("When I select a user", () => {
-            beforeEach(() => {
-                userPage.clickSelectUser()
-                cy.wait(1000)
-            })
-            it("Then I should see a edit member page", () => {
-                userPage.getEstatusTittleMember().should("contain.text", "Edit member")
-            })
+    context("When I select a user", () => {
+        beforeEach(() => {
+            userPage.clickSelectUser()
+            cy.wait(1000)
+        })
+        it("Then I should see a edit member page", () => {
+            userPage.getEditTitlePage().should('exist');
+            login.tomarPantallazo("F004-EP016", "1")
+         })
         })
 
-        context("When I click on setting button ", () => {
-            beforeEach(() => {
-                userPage.clickSelectUser()
-                cy.wait(1000)
-                userPage.clickSettingButton()
-            })
-            it("Then I should see the delete menu", () => {
-                userPage.getDeleteMenu().should('exist');
-            })
+    context("When I click on setting button ", () => {
+        beforeEach(() => {
+            userPage.clickSelectUser()
+            cy.wait(1000)
+            userPage.clickSettingButton()
         })
-
-        context("When I click on delete button ", () => {
-            beforeEach(() => {
-                clickOnDeleteButton()
-            })
-            it("Then I should see the confirmation pop-up", () => {
-                userPage.getConfirmationPopUp().should('exist');
-            })
+        it("Then I should see the delete menu", () => {
+            userPage.getDeleteMenu().should('exist');
+            login.tomarPantallazo("F004-EP016", "2")
         })
+    })
 
 
-        context("When I click on confirm delete user ", () => {
-            beforeEach(() => {
-                clickOnDeleteButton()
-                userPage.clickConfirmationPopUp()
-                cy.wait(3000)
-            })
-            it("Then I should see the Members page", () => {
-                userPage.getTitle().should('contain.text', 'Members');
-            })
+    context("When I click on delete button ", () => {
+         beforeEach(() => {
+             clickOnDeleteButton()
+         })
+        it("Then I should see the confirmation pop-up", () => {
+            userPage.getConfirmationPopUp().should('exist');
+            login.tomarPantallazo("F004-EP016", "3")
         })
+    })
+
+
+    context("When I click on confirm delete user ", () => {
+          beforeEach(() => {
+               clickOnDeleteButton()
+               userPage.clickConfirmationPopUp()
+               cy.wait(3000)
+          })
+        it("Then I should see the Members page", () => {
+            userPage.getTitle().should('contain.text', 'Members');
+            login.tomarPantallazo("F004-EP016", "4")
+        })
+    })
+
     })
 })
 
@@ -189,17 +207,8 @@ function clickOnDeleteButton(){
 function fillData(memberName, memberEmail, memberLabel, memberNota) {
     userPage.clickNewMember()
     cy.wait(1000)
-    userPage.fillTagById('#member-name',memberName)
     userPage.fillTagById('#member-email',memberEmail)
+    userPage.fillTagById('#member-name',memberName)
     userPage.fillTagById('.ember-power-select-trigger-multiple-input', memberLabel)
     userPage.fillTagById('#member-note', memberNota)
-}
-
-function selectUserAndChangeName(memberName) {
-    userPage.clickSelectUser()
-    cy.wait(1000)
-    userPage.clearTagById('#member-name')
-    userPage.fillTagById('#member-name',memberName)
-    userPage.clickOutOfForm()
-    cy.wait(1000)
 }
