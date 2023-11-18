@@ -6,18 +6,27 @@ class Boletin {
     }
 
     clickNewLetter() {
-        return cy.get('.gh-add-newsletter').click()
+        return cy.get('.text-green').contains('Add newsletter').click()
     }
 
     selectNewsLetter() {
-        return cy.get('.sortable-objects')
-            .find('div.draggable-object')
-            .first()
-            .click();
+        return cy.get('table').find('tr').first().click();
     }
 
-    selectSelectOptions() {
-        return cy.get('.gh-tier-card-actions-button:first-child').first().click()
+    getNewsLetterButton() {
+        return cy.get('table').find('tr').first();
+    }
+
+    selectSelectArchiveOption() {
+        return cy.get('span').contains('Archive new').click();
+    }
+
+    selectConfirmArchive() {
+        return cy.get('span:contains("Archive"):last').click();
+    }
+
+    getConfirmationArchivedMessage() {
+        return cy.get('span').contains('Reactivate newsletter');
     }
 
     clickSaveAndClose() {
@@ -25,15 +34,31 @@ class Boletin {
     }
 
     clickCreate() {
-        return cy.get('.gh-btn-primary').contains('Create').click()
+        return cy.get('.gap-3 button').contains('Create').click()
+    }
+
+    clickSave() {
+        return cy.get('.gap-3 button').contains('Save').click()
+    }
+
+    clickClose() {
+        return cy.get('.gap-3 button').contains('Close').click()
+    }
+
+    getBottonSave() {
+        return cy.get('.gap-3 button').contains('Save')
+    }
+
+    clickOnButtonSave() {
+        return cy.get('.gap-3 button').contains('Save').click()
     }
 
     getModalContent(){
-        return cy.get('.modal-content')
+        return cy.get('h3').first();
     }
 
-    getMenuArchive(){
-        return cy.get('.dropdown-triangle-top-right')
+    getModalArchive(){
+        return cy.get('h3').contains('Archive newsletter')
     }
 
     clickOnArchive(){
