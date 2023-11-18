@@ -33,7 +33,7 @@ describe("EP017 create newsletter ", () => {
         })
 
         context("When I fill name and description", () => {
-            let name = faker.animal.bear();
+            let name = faker.word.adjective(4);
             let description = faker.lorem.paragraph(1);
             beforeEach(() => {
                 fillData(name, description)
@@ -46,7 +46,7 @@ describe("EP017 create newsletter ", () => {
         })
 
         context("When I click on Create button", () => {
-            let name = faker.animal.bear();
+            let name = faker.word.adjective(4);
             let description = faker.lorem.paragraph(1);
             let size = 0;
             beforeEach(() => {
@@ -93,7 +93,7 @@ describe("EP018 edit newsletter ", () => {
         })
 
         context("When I change name and description data", () => {
-            let name = faker.animal.bear();
+            let name = faker.word.adjective(4);
             let description = faker.lorem.paragraph(1);
             beforeEach(() => {
                 boletinPage.selectNewsLetter()
@@ -108,7 +108,7 @@ describe("EP018 edit newsletter ", () => {
 
 
         context("When I click on Save and close button", () => {
-            let name = faker.animal.bear();
+            let name = faker.word.adjective(4);
             let description = faker.lorem.paragraph(1);
             beforeEach(() => {
                 boletinPage.selectNewsLetter()

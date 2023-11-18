@@ -132,7 +132,7 @@ describe("EP018 edit newsletter ", () => {
         })
 
 
-})
+    })
 })
 
 describe("EP019 archive newsletter ", () => {
@@ -208,20 +208,20 @@ describe("EP020 list newsletter ", () => {
             boletinPage.visit()
         })
 
-    context("When I list Email newsletter", () => {
-        let size = 0;
-        beforeEach(() => {
-            cy.get('.sortable-objects')
-                .find('div.draggable-object')
-                .should(($divs) => {
-                    size = $divs.length;
-                });
-                    })
-        it("Then I should see more than one newsletter", () => {
-            cy.get('.sortable-objects').find('div.draggable-object').should('have.length.greaterThan', 0);
-            login.tomarPantallazo("F005-EP020", "1")
+        context("When I list Email newsletter", () => {
+            let size = 0;
+            beforeEach(() => {
+                cy.get('.sortable-objects')
+                    .find('div.draggable-object')
+                    .should(($divs) => {
+                        size = $divs.length;
+                    });
+            })
+            it("Then I should see more than one newsletter", () => {
+                cy.get('.sortable-objects').find('div.draggable-object').should('have.length.greaterThan', 0);
+                login.tomarPantallazo("F005-EP020", "1")
+            })
         })
-    })
 
     })
 })

@@ -27,12 +27,12 @@ class Tags {
     }
 
     clickBreadcrumbTag() {
-        return cy.get('div.gh-canvas-breadcrumb>a')
+        return cy.get('header>h2.gh-canvas-title>a')
             .first().click()
     }
 
     getTagModalHeader() {
-        return cy.get('header.modal-header').first()
+        return cy.get('section>header.modal-header').first()
     }
 
     clickButtonFooterModalLeaveTagForm() {
@@ -41,13 +41,13 @@ class Tags {
     }
 
     fillTagNameInput(contentInput) {
-        return cy.get('input#tag-name.gh-input').first()
-            .type(contentInput)
+        return cy.get('input#tag-name.gh-input').first().focus()
+            .type(contentInput, { force: true })
     }
 
     cleanFillTagNameInput(contentInput) {
-        return cy.get('input#tag-name.gh-input').first()
-            .clear().type(contentInput)
+        return cy.get('input#tag-name.gh-input').first().focus()
+            .clear({ force: true }).type(contentInput, { force: true })
     }
 
     fillTagColorInput(contentInput) {

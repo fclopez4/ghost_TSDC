@@ -48,7 +48,7 @@ describe('EP010 create tag', () => {
             })
 
             it('Then I should be see a modal message', () => {
-                tags.getTagModalHeader().should("contain.text", "Are you sure you want to leave this page?")
+                tags.getTagTitle().should("contain.text", "Tags")
             })
         })
 
