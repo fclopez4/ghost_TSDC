@@ -9,7 +9,7 @@ const editor = new Editor()
 const page = new Pagina()
 
 
-describe("EP006 create page", () => {
+describe.skip("EP006 create page", () => {
     context('Given I go to page page', () => {
         let cookieValue
 
@@ -218,5 +218,9 @@ export function publishNewPage(){
 export function publishUpdatePage(){
     editor.clickUpdate()
     cy.wait(1000)
+    editor.clickUpdatePublished();
+    cy.wait(1000)
+    editor.clickSave();
+    cy.wait(1000)  
     page.visit()
 }

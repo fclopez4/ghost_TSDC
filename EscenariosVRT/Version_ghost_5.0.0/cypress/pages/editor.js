@@ -45,7 +45,7 @@ class Editor {
     }
 
     clickUpdate() {
-        return cy.get('button[data-test-button="publish-save"]').click()
+        return cy.get('button.gh-btn.gh-btn-editor.darkgrey.gh-publish-trigger > span').click()
     }
 
     uploadImage(fileName) {
@@ -83,7 +83,13 @@ class Editor {
             .first()
     }
 
+    clickUpdatePublished(){
+        return cy.get('.gh-publish-header > .flex > .gh-btn > span').click()
+    }
 
+    clickSave(){
+        return cy.get('button.gh-btn.gh-btn-editor.gh-publish-trigger.green.ember-view').click()
+    }
 }
 
 module.exports = Editor
