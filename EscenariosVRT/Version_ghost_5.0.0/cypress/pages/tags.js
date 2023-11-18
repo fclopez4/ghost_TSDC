@@ -41,13 +41,13 @@ class Tags {
     }
 
     fillTagNameInput(contentInput) {
-        return cy.get('input#tag-name.gh-input').first()
-            .type(contentInput)
+        return cy.get('input#tag-name.gh-input').first().focus()
+            .type(contentInput, { force: true })
     }
 
     cleanFillTagNameInput(contentInput) {
-        return cy.get('input#tag-name.gh-input').first()
-            .clear().type(contentInput)
+        return cy.get('input#tag-name.gh-input').first().focus()
+            .clear({ force: true }).type(contentInput, { force: true })
     }
 
     fillTagColorInput(contentInput) {
