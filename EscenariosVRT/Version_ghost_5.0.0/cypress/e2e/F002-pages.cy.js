@@ -116,9 +116,11 @@ describe("EP006 create page", () => {
 describe('EP007 edit page', () => {
     context('Given I go to page page', () => {
         let cookieValue
+        let indicator = 'F002-EP007';
 
         before(() => {
             login.insertLogin()
+            login.tomarPantallazo(indicator,'01')
             cy.getCookie('ghost-admin-api-session').then((cookie) => {
                 cookieValue = cookie.value;
             });
@@ -127,6 +129,7 @@ describe('EP007 edit page', () => {
         beforeEach(() => {
             cy.setCookie('ghost-admin-api-session', cookieValue)
             page.visit()
+            login.tomarPantallazo(indicator,'02')
         })
 
         context('When I edit a page title from draft page and return to page list', () => {
@@ -134,12 +137,18 @@ describe('EP007 edit page', () => {
             let pageSecondTitle = faker.person.jobTitle()
             beforeEach(() => {
                 createDummyPageData(pageFirstTitle)
+                login.tomarPantallazo(indicator,'03')
                 saveDraftPage()
+                login.tomarPantallazo(indicator,'04')
                 page.getPageLinkByTitle(pageFirstTitle).click()
                 cy.wait(1000)
+                login.tomarPantallazo(indicator,'05')
                 editor.clearTitle('Page title')
+                login.tomarPantallazo(indicator,'06')
                 editor.fillTitle(pageSecondTitle, 'Page title')
+                login.tomarPantallazo(indicator,'07')
                 saveDraftPage()
+                login.tomarPantallazo(indicator,'08')
             })
 
             it('Then I should see the new title in the page list', () => {
@@ -152,18 +161,28 @@ describe('EP007 edit page', () => {
             let pageSecondTitle = faker.person.jobTitle()
             beforeEach(() => {
                 createDummyPageData(pageFirstTitle)
+                login.tomarPantallazo(indicator,'09')
                 publishNewPage()
+                login.tomarPantallazo(indicator,'10')
                 page.clickFilterButtonBySort()
+                login.tomarPantallazo(indicator,'11')
                 page.clickFilterButtonByRecentlyUpdate()
+                login.tomarPantallazo(indicator,'12')
                 page.getPageLinkByTitle(pageFirstTitle).click()
                 cy.wait(1000)
+                login.tomarPantallazo(indicator,'13')
                 editor.clearTitle('Page title')
+                login.tomarPantallazo(indicator,'14')
                 editor.fillTitle(pageSecondTitle, 'Page title')
+                login.tomarPantallazo(indicator,'15')
                 publishUpdatePage()
                 cy.wait(1000)
+                login.tomarPantallazo(indicator,'16')
                 page.clickFilterButtonBySort()
+                login.tomarPantallazo(indicator,'17')
                 page.clickFilterButtonByRecentlyUpdate()
                 cy.wait(1000)
+                login.tomarPantallazo(indicator,'18')
             })
 
             it('Then I should see the new title in the page list', () => {
@@ -173,6 +192,7 @@ describe('EP007 edit page', () => {
 
     });
 })
+
 
 
 export function createDummyPageData(pageTitle) {

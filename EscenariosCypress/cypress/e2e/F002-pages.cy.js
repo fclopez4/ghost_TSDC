@@ -113,9 +113,11 @@ describe("EP006 create page", () => {
 describe('EP007 edit page', () => {
     context('Given I go to page page', () => {
         let cookieValue
+        let indicator = 'F002-EP007';
 
         before(() => {
             login.insertLogin()
+            login.tomarPantallazo(indicator,'01')
             cy.getCookie('ghost-admin-api-session').then((cookie) => {
                 cookieValue = cookie.value;
             });
@@ -124,6 +126,7 @@ describe('EP007 edit page', () => {
         beforeEach(() => {
             cy.setCookie('ghost-admin-api-session', cookieValue)
             page.visit()
+            login.tomarPantallazo(indicator,'02')
         })
 
         context('When I edit a page title from draft page and return to page list', () => {
@@ -131,12 +134,18 @@ describe('EP007 edit page', () => {
             let pageSecondTitle = faker.person.jobTitle()
             beforeEach(() => {
                 createDummyPageData(pageFirstTitle)
+                login.tomarPantallazo(indicator,'03')
                 saveDraftPage()
+                login.tomarPantallazo(indicator,'04')
                 page.getPageLinkByTitle(pageFirstTitle).click()
                 cy.wait(1000)
+                login.tomarPantallazo(indicator,'05')
                 editor.clearTitle('Page title')
+                login.tomarPantallazo(indicator,'06')
                 editor.fillTitle(pageSecondTitle, 'Page title')
+                login.tomarPantallazo(indicator,'07')
                 saveDraftPage()
+                login.tomarPantallazo(indicator,'08')
             })
 
             it('Then I should see the new title in the page list', () => {
@@ -149,18 +158,28 @@ describe('EP007 edit page', () => {
             let pageSecondTitle = faker.person.jobTitle()
             beforeEach(() => {
                 createDummyPageData(pageFirstTitle)
+                login.tomarPantallazo(indicator,'09')
                 publishNewPage()
+                login.tomarPantallazo(indicator,'10')
                 page.clickFilterButtonBySort()
+                login.tomarPantallazo(indicator,'11')
                 page.clickFilterButtonByRecentlyUpdate()
+                login.tomarPantallazo(indicator,'12')
                 page.getPageLinkByTitle(pageFirstTitle).click()
                 cy.wait(1000)
+                login.tomarPantallazo(indicator,'13')
                 editor.clearTitle('Page title')
+                login.tomarPantallazo(indicator,'14')
                 editor.fillTitle(pageSecondTitle, 'Page title')
+                login.tomarPantallazo(indicator,'15')
                 publishUpdatePage()
                 cy.wait(1000)
+                login.tomarPantallazo(indicator,'16')
                 page.clickFilterButtonBySort()
+                login.tomarPantallazo(indicator,'17')
                 page.clickFilterButtonByRecentlyUpdate()
                 cy.wait(1000)
+                login.tomarPantallazo(indicator,'18')
             })
 
             it('Then I should see the new title in the page list', () => {
@@ -174,9 +193,11 @@ describe('EP007 edit page', () => {
 describe('EP008 delete page', () => {
     context('Given I go to page page', () => {
         let cookieValue
+        let indicator = 'F002-EP008';
 
         before(() => {
             login.insertLogin()
+            login.tomarPantallazo(indicator,'01')
             cy.getCookie('ghost-admin-api-session').then((cookie) => {
                 cookieValue = cookie.value;
             });
@@ -185,18 +206,24 @@ describe('EP008 delete page', () => {
         beforeEach(() => {
             cy.setCookie('ghost-admin-api-session', cookieValue)
             page.visit()
+            login.tomarPantallazo(indicator,'02')
         })
 
         context('When I click on delete button and I click on modal delete button from draft page', () => {
             let pageFirstTitle = faker.person.jobTitle()
             beforeEach(() => {
                 createDummyPageData(pageFirstTitle)
+                login.tomarPantallazo(indicator,'02')
                 saveDraftPage()
+                login.tomarPantallazo(indicator,'03')
                 page.getPageLinkByTitle(pageFirstTitle).rightclick()
                 cy.wait(1000)
+                login.tomarPantallazo(indicator,'04')
                 page.clickButtonDeletePage()
+                login.tomarPantallazo(indicator,'05')
                 page.clickButtonModalDeletePage()
                 cy.wait(1000)
+                login.tomarPantallazo(indicator,'06')
             })
 
             it('Then I should not be see that page name on the page list', () => {
@@ -208,12 +235,17 @@ describe('EP008 delete page', () => {
             let pageFirstTitle = faker.person.jobTitle()
             beforeEach(() => {
                 createDummyPageData(pageFirstTitle)
+                login.tomarPantallazo(indicator,'07')
                 saveDraftPage()
+                login.tomarPantallazo(indicator,'08')
                 page.getPageLinkByTitle(pageFirstTitle).rightclick()
                 cy.wait(1000)
+                login.tomarPantallazo(indicator,'09')
                 page.clickButtonDeletePage()
+                login.tomarPantallazo(indicator,'10')
                 page.clickButtonModalCancelPage()
                 cy.wait(1000)
+                login.tomarPantallazo(indicator,'11')
             })
 
             it('Then I should be see that page name on the page list', () => {
@@ -225,14 +257,21 @@ describe('EP008 delete page', () => {
             let pageFirstTitle = faker.person.jobTitle()
             beforeEach(() => {
                 createDummyPageData(pageFirstTitle)
+                login.tomarPantallazo(indicator,'12')
                 publishNewPage()
+                login.tomarPantallazo(indicator,'13')
                 page.clickFilterButtonBySort()
+                login.tomarPantallazo(indicator,'14')
                 page.clickFilterButtonByRecentlyUpdate()
+                login.tomarPantallazo(indicator,'15')
                 page.getPageLinkByTitle(pageFirstTitle).rightclick()
                 cy.wait(1000)
+                login.tomarPantallazo(indicator,'16')
                 page.clickButtonDeletePage()
+                login.tomarPantallazo(indicator,'17')
                 page.clickButtonModalDeletePage()
                 cy.wait(1000)
+                login.tomarPantallazo(indicator,'18')
             })
 
             it('Then I should be see that page name on the page list', () => {
@@ -244,13 +283,20 @@ describe('EP008 delete page', () => {
             let pageFirstTitle = faker.person.jobTitle()
             beforeEach(() => {
                 createDummyPageData(pageFirstTitle)
+                login.tomarPantallazo(indicator,'19')
                 publishNewPage()
+                login.tomarPantallazo(indicator,'20')
                 page.clickFilterButtonBySort()
+                login.tomarPantallazo(indicator,'21')
                 page.clickFilterButtonByRecentlyUpdate()
+                login.tomarPantallazo(indicator,'22')
                 page.getPageLinkByTitle(pageFirstTitle).rightclick()
                 cy.wait(1000)
+                login.tomarPantallazo(indicator,'23')
                 page.clickButtonDeletePage()
+                login.tomarPantallazo(indicator,'24')
                 page.clickButtonModalCancelPage()
+                login.tomarPantallazo(indicator,'25')
             })
 
             it('Then I should be see that page name on the page list', () => {
@@ -264,9 +310,11 @@ describe('EP008 delete page', () => {
 describe('EP009 list page', () => {
     context('Given I go to page page', () => {
         let cookieValue
+        let indicator = 'F002-EP009';
 
         before(() => {
             login.insertLogin()
+            login.tomarPantallazo(indicator,'01')
             cy.getCookie('ghost-admin-api-session').then((cookie) => {
                 cookieValue = cookie.value;
             });
@@ -279,13 +327,17 @@ describe('EP009 list page', () => {
         context('When I go to the page path and create some draft pages', () => {
             beforeEach(() => {
                 page.visit()
-                cy.wait(1000)
+                login.tomarPantallazo(indicator,'02')
                 createDummyPageData(faker.person.jobTitle())
+                login.tomarPantallazo(indicator,'03')
                 saveDraftPage()
+                login.tomarPantallazo(indicator,'04')
                 createDummyPageData(faker.person.jobTitle())
+                login.tomarPantallazo(indicator,'05')
                 saveDraftPage()
+                login.tomarPantallazo(indicator,'06')
                 page.visit()
-                cy.wait(1000)
+                login.tomarPantallazo(indicator,'07')
             })
 
             it('Then I should be see a page list', () => {
@@ -296,12 +348,15 @@ describe('EP009 list page', () => {
         context('When I go to the page path and create some published pages', () => {
             beforeEach(() => {
                 page.visit()
-                cy.wait(1000)
+                login.tomarPantallazo(indicator,'08')
                 createDummyPageData(faker.person.jobTitle())
+                login.tomarPantallazo(indicator,'09')
                 publishNewPage()
+                login.tomarPantallazo(indicator,'10')
                 createDummyPageData(faker.person.jobTitle())
+                login.tomarPantallazo(indicator,'11')
                 publishNewPage()
-                cy.wait(1000)
+                login.tomarPantallazo(indicator,'12')
             })
 
             it('Then I should be see a page list', () => {
@@ -312,9 +367,11 @@ describe('EP009 list page', () => {
         context('When I go to the page path and click on draft type filter', () => {
             beforeEach(() => {
                 page.visit()
-                cy.wait(1000)
+                login.tomarPantallazo(indicator,'13')
                 page.clickFilterButtonByType()
+                login.tomarPantallazo(indicator,'14')
                 page.clickFilterButtonByDraftPage()
+                login.tomarPantallazo(indicator,'15')
             })
 
             it('Then I should be see only a page list with type draft', () => {
@@ -325,9 +382,11 @@ describe('EP009 list page', () => {
         context('When I go to the page path and click on published type filter', () => {
             beforeEach(() => {
                 page.visit()
-                cy.wait(1000)
+                login.tomarPantallazo(indicator,'16')
                 page.clickFilterButtonByType()
+                login.tomarPantallazo(indicator,'17')
                 page.clickFilterButtonByPublishedPage()
+                login.tomarPantallazo(indicator,'18')
             })
 
             it('Then I should be see only a page list with type published', () => {
