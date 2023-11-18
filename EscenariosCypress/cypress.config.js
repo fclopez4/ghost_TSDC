@@ -7,8 +7,8 @@ module.exports = defineConfig({
     },
     baseUrl: "http://localhost:3001",
     env: {
-      usuario: "a.clavijo1@uniandes.edu.co",
-      password: "PIKA235chu",
+      usuario: "ing_andresalarcon@outlook.com",
+      password: "@ndresRcw448",
     },
   },
 });
