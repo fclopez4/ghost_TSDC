@@ -3,9 +3,14 @@
 Para el uso de los escenarios de pruebas se utilizo la version de Ghost 5.68.0 en las ventanas de administración.
 
 ## Integrantes Equipo 04
-- Andres Clavijo Rodriguez
-- Wilson Andres Alarcon Cuchigay
-- Fabio Camilo López Castellanos
+|Nombre|Correo|
+|-|-|
+|Andres Clavijo Rodriguez|a.clavijo1@uniandes.edu.co|
+|Wilson Andres Alarcon Cuchigay|w.alarconc@uniandes.edu.co|
+|Fabio Camilo López Castellanos|fc.lopez@uniandes.edu.co|
+
+## Requisitos previos 
+
 
 ## Inicio Escenarios de prueba Cypress
 
@@ -14,7 +19,7 @@ Para el uso de los escenarios de pruebas se utilizo la version de Ghost 5.68.0 e
 3. Inserte el comando `npm install`
 4. por favor cambie en el archivo *cypress.config.js* el usuario y la contraseña por un usuario valido en su ambiente Ghost
 5. por favor cambie en el archivo *cypress.config.js* la url que dirige a la pagina de Ghost como se ve en el ejemplo
-6. Cuando termine la instalación de dependencias inserte el comando `npm run cypress:run` o si quiere abrir el proyecto en una ventana de Cypress inserte el comando npm `run cypress:open`
+6. Cuando termine la instalación de dependencias inserte el comando `npm run cypress:run` o si quiere abrir el proyecto en una ventana de Cypress inserte el comando `npm run cypress:open`
 
 ## Inicio de escenarios de Kraken
 
