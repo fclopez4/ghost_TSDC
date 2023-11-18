@@ -27,12 +27,12 @@ class Tags {
     }
 
     clickBreadcrumbTag() {
-        return cy.get('div.gh-canvas-breadcrumb>a')
+        return cy.get('header>h2.gh-canvas-title>a')
             .first().click()
     }
 
     getTagModalHeader() {
-        return cy.get('header.modal-header').first()
+        return cy.get('section>header.modal-header').first()
     }
 
     clickButtonFooterModalLeaveTagForm() {
