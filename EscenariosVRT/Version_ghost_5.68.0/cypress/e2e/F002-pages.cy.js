@@ -32,7 +32,7 @@ describe("EP006 create page", () => {
             })
             it("Then I should see a new  page", () => {
                 editor.getEstatusTittle().should("contain.text", "New")
-                login.tomarPantallazo("F002-EP006", "1")
+                login.tomarPantallazo("F002-EP006", "01")
             })
         })
 
@@ -46,7 +46,7 @@ describe("EP006 create page", () => {
             })
             it("Then I should see the title and content filled", () => {
                 editor.getTitle().should('have.value', namePage);
-                login.tomarPantallazo("F002-EP006", "2")
+                login.tomarPantallazo("F002-EP006", "02")
             })
         })
 
@@ -68,7 +68,7 @@ describe("EP006 create page", () => {
                 cy.wait(1000)
             })
             it("Then I should see the page published", () => {
-                login.tomarPantallazo("F002-EP006", "3")
+                login.tomarPantallazo("F002-EP006", "03")
                 expect(page.getPageByTitle(namePage)).to.exist
             })
         })
@@ -86,7 +86,7 @@ describe("EP006 create page", () => {
             })
             it("Then I should see the page published", () => {
                 expect(editor.getImage(nameImage)).to.exist;
-                login.tomarPantallazo("F002-EP006", "4")
+                login.tomarPantallazo("F002-EP006", "04")
             })
         })
 
@@ -103,7 +103,7 @@ describe("EP006 create page", () => {
             })
             it("Then I should see the page published", () => {
                 page.getPageByTitle(namePage).should("contain.text", namePage)
-                login.tomarPantallazo("F002-EP006", "5")
+                login.tomarPantallazo("F002-EP006", "05")
             })
         })
     })

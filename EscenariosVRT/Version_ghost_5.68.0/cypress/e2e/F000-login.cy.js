@@ -21,7 +21,7 @@ describe("EP001 login page", () => {
 
       it("Then I see the title dashboard", () => {
         dashboard.getTitle().should("contain.text", "Dashboard");
-        login.tomarPantallazo("F000-EP001", "1")
+        login.tomarPantallazo("F000-EP001", "01")
       })
     })
 
@@ -38,7 +38,7 @@ describe("EP001 login page", () => {
           const text = await element.text();
           return text.includes('Your password is incorrect.') || text.includes('Too many attempts');
         });
-        login.tomarPantallazo("F000-EP001", "2")
+        login.tomarPantallazo("F000-EP001", "02")
       })
     })
 
@@ -52,7 +52,7 @@ describe("EP001 login page", () => {
 
       it("Then I see the title user not found", () => {
         login.getIncorrectSessionTitle().should("contain.text", "There is no user with that email address.")
-        login.tomarPantallazo("F000-EP001", "3")
+        login.tomarPantallazo("F000-EP001", "03")
       })
     })
 
@@ -64,7 +64,7 @@ describe("EP001 login page", () => {
 
       it("Then I see the alert fill form", () => {
         login.getIncorrectSessionTitle().should("contain.text", "Please fill out the form to sign in.")
-        login.tomarPantallazo("F000-EP001", "4")
+        login.tomarPantallazo("F000-EP001", "04")
       })
     })
 
@@ -80,7 +80,7 @@ describe("EP001 login page", () => {
 
       it("Then I see the alert fill form", () => {
         login.getIncorrectSessionTitle().should("contain.text", "Too many attempts try again")
-        login.tomarPantallazo("F000-EP001", "5")
+        login.tomarPantallazo("F000-EP001", "05")
       })
     })
   })

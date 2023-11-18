@@ -30,7 +30,7 @@ describe("EP002 create post", () => {
             })
             it("Then I should see a new post page", () => {
                 editor.getEstatusTittle().should("contain.text", "New")
-                login.tomarPantallazo("F001-EP002", "1")
+                login.tomarPantallazo("F001-EP002", "01")
             })
         })
 
@@ -44,7 +44,7 @@ describe("EP002 create post", () => {
             })
             it("Then I should see the title and content filled", () => {
                 editor.getTitle().should('have.value', namePost);
-                login.tomarPantallazo("F001-EP002", "2")
+                login.tomarPantallazo("F001-EP002", "02")
             })
         })
 
@@ -67,7 +67,7 @@ describe("EP002 create post", () => {
             })
             it("Then I should see the post published", () => {
                 expect(post.getPostByTitle(namePost)).to.exist
-                login.tomarPantallazo("F001-EP002", "3")
+                login.tomarPantallazo("F001-EP002", "03")
             })
         })
 
@@ -84,7 +84,7 @@ describe("EP002 create post", () => {
             })
             it("Then I should see the post published", () => {
                 expect(editor.getImage(nameImage)).to.exist;
-                login.tomarPantallazo("F001-EP002", "4")
+                login.tomarPantallazo("F001-EP002", "04")
             })
         })
 
@@ -101,7 +101,7 @@ describe("EP002 create post", () => {
             })
             it("Then I should see the post published", () => {
                 post.getPostByTitle(namePost).should("contain.text", namePost)
-                login.tomarPantallazo("F001-EP002", "5")
+                login.tomarPantallazo("F001-EP002", "05")
             })
         })
 
@@ -135,7 +135,7 @@ describe("EP003 edit Post", () => {
             })
             it("Then I should see a edit post page", () => {
                 editor.getEstatusTittle().should("contain.text", "- Saved")
-                login.tomarPantallazo("F001-EP003", "1")
+                login.tomarPantallazo("F001-EP003", "01")
             })
         })
 
@@ -161,7 +161,7 @@ describe("EP003 edit Post", () => {
             })
             it("Then I should see a edit post page", () => {
                 editor.getEstatusTittle().get("[data-test-editor-post-status]>a").should("contain.text", "Published")
-                login.tomarPantallazo("F001-EP003", "2")
+                login.tomarPantallazo("F001-EP003", "02")
             })
         })
 
@@ -187,7 +187,7 @@ describe("EP003 edit Post", () => {
             })
             it("Then I should see the post published wiht de new name", () => {
                 post.getPostByTitle(namePostUpdate).should("contain.text", namePostUpdate)
-                login.tomarPantallazo("F001-EP003", "3")
+                login.tomarPantallazo("F001-EP003", "03")
             })
         });
 
@@ -206,7 +206,7 @@ describe("EP003 edit Post", () => {
             })
             it("Then I should see the post wiht de new name", () => {
                 post.getPostByTitle(namePostUpdate).should("contain.text", namePostUpdate)
-                login.tomarPantallazo("F001-EP003", "4")
+                login.tomarPantallazo("F001-EP003", "04")
             })
         });
 
@@ -241,12 +241,12 @@ describe("EP004 delete Post", () => {
 
             it("Then I see the alert Post deleted successfully", () => {
                 post.getTitle().should("contain.text", "Posts")
-                login.tomarPantallazo("F001-EP004", "1")
+                login.tomarPantallazo("F001-EP004", "01")
             })
 
             it("And it does not have to exist", () => {
                 post.searhNotExistPostByTittle(namePost).should('not.exist')
-                login.tomarPantallazo("F001-EP004", "2")
+                login.tomarPantallazo("F001-EP004", "02")
             })
         })
 
@@ -262,7 +262,7 @@ describe("EP004 delete Post", () => {
 
             it("Then I see the post", () => {
                 expect(post.getPostByTitle(namePost)).to.exist;
-                login.tomarPantallazo("F001-EP004", "3")
+                login.tomarPantallazo("F001-EP004", "03")
             })
         })
     })
@@ -287,14 +287,14 @@ describe("EP005 list post", () => {
         context("when I visit the page post I should see a post title", () => {
             it("Then I see the title post", () => {
                 post.getTitle().should("contain.text", "Posts")
-                login.tomarPantallazo("F001-EP005", "1")
+                login.tomarPantallazo("F001-EP005", "01")
             })
         })
 
         context("When I visit the page post I should see a list post ", () => {
             it("Then I should see a list of post", () => {
                 post.getListPosts().should("exist")
-                login.tomarPantallazo("F001-EP005", "2")
+                login.tomarPantallazo("F001-EP005", "02")
             })
         })
 
@@ -304,7 +304,7 @@ describe("EP005 list post", () => {
             })
             it("Then I should see a page with type draft", () => {
                 cy.url().should('include', 'type=draft');
-                login.tomarPantallazo("F001-EP005", "3")
+                login.tomarPantallazo("F001-EP005", "03")
             })
         })
 
@@ -314,7 +314,7 @@ describe("EP005 list post", () => {
             })
             it("Then I should see a page with visibility members", () => {
                 cy.url().should('include', 'visibility=members');
-                login.tomarPantallazo("F001-EP005", "4")
+                login.tomarPantallazo("F001-EP005", "04")
             })
         })
 
@@ -324,7 +324,7 @@ describe("EP005 list post", () => {
             })
             it("Then I should see a page with visibility members", () => {
                 cy.url().should('include', 'order=published_at%20asc');
-                login.tomarPantallazo("F001-EP005", "5")
+                login.tomarPantallazo("F001-EP005", "05")
             })
         })
     })

@@ -28,7 +28,7 @@ describe("EP014 create user", () => {
             })
             it("Then I should see a new member page", () => {
                 userPage.getEstatusTittleMember().should("contain.text", "New member")
-                login.tomarPantallazo("F004-EP014", "1")
+                login.tomarPantallazo("F004-EP014", "01")
             })
         })
 
@@ -46,7 +46,7 @@ describe("EP014 create user", () => {
                 userPage.geMemberEmail().should('have.value', memberEmail);
                 userPage.getMemberLabel().should('have.value', memberLabel);
                 userPage.getMemberNote().should('have.value', memberNota);
-                login.tomarPantallazo("F004-EP014", "2")
+                login.tomarPantallazo("F004-EP014", "02")
             })
         })
 
@@ -61,7 +61,7 @@ describe("EP014 create user", () => {
             })
             it("Then I should see the detail user", () => {
                 userPage.getTitle().should('contain.text', memberName);
-                login.tomarPantallazo("F004-EP014", "3")
+                login.tomarPantallazo("F004-EP014", "03")
             })
 
         })
@@ -93,7 +93,7 @@ describe("EP015 edit user", () => {
             })
             it("Then I should see a edit member page", () => {
                 userPage.getEstatusTittleMember().should("contain.text", "Edit member")
-                login.tomarPantallazo("F004-EP015", "1")
+                login.tomarPantallazo("F004-EP015", "01")
             })
         })
 
@@ -105,7 +105,7 @@ describe("EP015 edit user", () => {
             })
             it("Then I should see the new member name", () => {
                 userPage.getMemberName().should('have.value', memberName)
-                login.tomarPantallazo("F004-EP015", "2")
+                login.tomarPantallazo("F004-EP015", "02")
             })
         })
 
@@ -117,7 +117,7 @@ describe("EP015 edit user", () => {
             })
             it("Then I should see the save button with teh class gh-btn-green", () => {
                 userPage.getButtonSave().should('have.class', 'gh-btn-green')
-                login.tomarPantallazo("F004-EP015", "3")
+                login.tomarPantallazo("F004-EP015", "03")
             })
         })
 
@@ -148,7 +148,7 @@ describe("EP016 delete user", () => {
             })
             it("Then I should see a edit member page", () => {
                 userPage.getEstatusTittleMember().should("contain.text", "Edit member")
-                login.tomarPantallazo("F004-EP016", "1")
+                login.tomarPantallazo("F004-EP016", "01")
             })
         })
 
@@ -160,7 +160,7 @@ describe("EP016 delete user", () => {
             })
             it("Then I should see the delete menu", () => {
                 userPage.getDeleteMenu().should('exist');
-                login.tomarPantallazo("F004-EP016", "2")
+                login.tomarPantallazo("F004-EP016", "02")
             })
         })
 
@@ -170,7 +170,7 @@ describe("EP016 delete user", () => {
             })
             it("Then I should see the confirmation pop-up", () => {
                 userPage.getConfirmationPopUp().should('exist');
-                login.tomarPantallazo("F004-EP016", "3")
+                login.tomarPantallazo("F004-EP016", "03")
             })
         })
 
@@ -183,7 +183,7 @@ describe("EP016 delete user", () => {
             })
             it("Then I should see the Members page", () => {
                 userPage.getTitle().should('contain.text', 'Members');
-                login.tomarPantallazo("F004-EP016", "4")
+                login.tomarPantallazo("F004-EP016", "04")
             })
         })
     })
