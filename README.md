@@ -15,6 +15,10 @@ Para el uso de los escenarios de pruebas se utilizo la version de Ghost 5.68.0 e
 
 ### Requisitos previos Cypress
 1. Instalar **Ghost CMS v5.68.0**, esta acción puede realizarse utilizando un contenedor docker
+    ``````
+    docker pull ghost:5.68.0
+    docker run -d --name current-ghost -e NODE_ENV=development -e url=http://localhost:3001 -p 3001:2368 ghost:5.68.0
+    ``````
 2. Descargar o clonar este repositorio
 3. Con una terminal o una ventana de comandos diríjase a la ruta  **GHOST_TSDC/EscenariosVRT/Version_ghost_5.68.0**
 4. Inserte el comando `npm install`
@@ -32,6 +36,10 @@ Para el uso de los escenarios de pruebas se utilizo la version de Ghost 5.68.0 e
 5. Instalar appium *En forma global* usando comando `npm install -g appium`
 6. Instalar Kraken *En forma global* `npm install kraken-node -g`
 7. Instalar **Ghost CMS v5.68.0**, esta acción puede realizarse utilizando un contenedor docker
+    ``````
+    docker pull ghost:5.68.0
+    docker run -d --name current-ghost -e NODE_ENV=development -e url=http://localhost:3001 -p 3001:2368 ghost:5.68.0
+    ``````
 8. Descargar o clonar este repositorio
 9. Con una terminal o una ventana de comandos diríjase a la ruta  **GHOST_TSDC/EscenariosVRT/Escenarios Kraken**
 10. Inserte el comando `npm install`
@@ -46,6 +54,10 @@ Para el uso de los escenarios de pruebas se utilizo la version de Ghost 5.68.0 e
 
 ### Requisitos previos
 1. Instalar **Ghost CMS v5.0.0**, esta acción puede realizarse utilizando un contenedor docker
+    ``````
+    docker pull ghost:5.0.0
+    docker run -d --name current-ghost -e NODE_ENV=development -e url=http://localhost:3002 -p 3002:2368 ghost:5.0.0
+    ``````
 2. Descargar o clonar este repositorio
 3. Con una terminal o una ventana de comandos diríjase a la ruta  **GHOST_TSDC/EscenariosVRT/Version_ghost_5.0.0**
 4. Inserte el comando `npm install`
