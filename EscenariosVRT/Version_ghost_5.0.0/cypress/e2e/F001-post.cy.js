@@ -104,7 +104,7 @@ describe("EP002 create post", () => {
             })
             it("Then I should see the post published", () => {
                 post.getPostByTitle(namePost).should("contain.text", namePost)
-                login.tomarPantallazo("F001-EP002", "6")
+                login.tomarPantallazo("F001-EP002", "5")
             })
         })
 
