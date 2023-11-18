@@ -67,7 +67,20 @@ Para el uso de los escenarios de pruebas se utilizo la version de Ghost 5.68.0 e
 ### Ejecución Cypress
 1. Para ejecutar los escenarios de pruebas inserte el comando `npm run cypress:run`
 2. Para abrir el proyecto en una ventana de Cypress inserte el comando `npm run cypress:open`
+3. Para generar el
 
+## Reportes HTML VRT
+
+### Reporte VRT BackstopJS
+1. Con el explorador de archivo diríjase a la ruta **EscenariosVRT\ReporteVRT-backstopjs** y abra el archivo **confReporte.json** en el debera colocar las rutas absolutas de las capturas a comparar.
+2. Con una terminal o una ventana de comandos diríjase a la ruta **EscenariosVRT\ReporteVRT-backstopjs**
+3. Ejecute el comando `npm run reporte-backstop`
+4. El programa generara abrirá un pestaña en el navegador predeterminado en donde se visualizaran todos los escenarios.
+
+### Reporte VRT ResembleJS
+1. Con una terminal o una ventana de comandos diríjase a la ruta **EscenariosVRT\ReporteVRT-Resemblejs**
+2. Ejecute el comando `npm run start`
+3. Una vez terminada la ejecución en la carpeta de la ruta anterior, encontrará un archivo llamado report.html, por favor ábralo y se le abrirá una pestaña en el navegador predeterminado, en donde se visualizaran todos los escenarios.
 
 # Pruebas E2E
 

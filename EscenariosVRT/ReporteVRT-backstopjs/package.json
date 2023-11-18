@@ -1,0 +1,13 @@
+{
+  "name": "generador_escenarios_backstop",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "reporte-backstop":"npm run start && backstop reference && backstop test"
+  },
+  "author": "",
+  "license": "ISC"
+}
