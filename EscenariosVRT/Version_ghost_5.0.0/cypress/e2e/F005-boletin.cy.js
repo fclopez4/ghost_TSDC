@@ -33,7 +33,7 @@ describe("EP017 create newsletter ", () => {
         })
 
         context("When I fill name and description", () => {
-            let name = faker.word.adjective(4);
+            let name = faker.animal.bear();
             let description = faker.lorem.paragraph(1);
             beforeEach(() => {
                 fillData(name, description)
@@ -46,7 +46,7 @@ describe("EP017 create newsletter ", () => {
         })
 
         context("When I click on Create button", () => {
-            let name = faker.word.adjective(4);
+            let name = faker.animal.bear();
             let description = faker.lorem.paragraph(1);
             let size = 0;
             beforeEach(() => {
@@ -81,8 +81,12 @@ describe("EP018 edit newsletter ", () => {
             boletinPage.visit()
         })
 
-        context("When I select a Newsletter from de list", () => {
+        context("When I select a Newsletter from de list ", () => {
+            let name = faker.word.adjective(4);
+            let description = faker.lorem.paragraph(1);
             beforeEach(() => {
+                create(name, description)
+                cy.wait(3000)
                 boletinPage.selectNewsLetter()
                 cy.wait(3000)
             })
@@ -92,11 +96,14 @@ describe("EP018 edit newsletter ", () => {
             })
         })
 
+
         context("When I change name and description data", () => {
             let name = faker.word.adjective(4);
             let description = faker.lorem.paragraph(1);
             beforeEach(() => {
                 boletinPage.selectNewsLetter()
+                boletinPage.openEditName()
+                cy.wait(3000)
                 editFillData(name, description)
                 cy.wait(2000)
             })
@@ -106,12 +113,13 @@ describe("EP018 edit newsletter ", () => {
             })
         })
 
-
         context("When I click on Save and close button", () => {
             let name = faker.word.adjective(4);
             let description = faker.lorem.paragraph(1);
             beforeEach(() => {
                 boletinPage.selectNewsLetter()
+                boletinPage.openEditName()
+                cy.wait(3000)
                 editFillData(name, description)
                 cy.wait(2000)
                 boletinPage.clickSaveAndClose()
@@ -154,7 +162,7 @@ describe("EP019 archive newsletter ", () => {
             })
         })
 
-        context("When I select a archive option", () => {
+        context("When I select archive option", () => {
             beforeEach(() => {
                 cy.wait(2000)
                 boletinPage.selectSelectOptions()
@@ -184,6 +192,7 @@ describe("EP019 archive newsletter ", () => {
     })
 })
 
+
 describe("EP020 list newsletter ", () => {
     context('Given I go to newsletter page', () => {
         let cookieValue
@@ -210,7 +219,7 @@ describe("EP020 list newsletter ", () => {
             })
             it("Then I should see more than one newsletter", () => {
                 cy.get('.sortable-objects').find('div.draggable-object').should('have.length.greaterThan', 0);
-                login.tomarPantallazo("F005-EP019", "4")
+                login.tomarPantallazo("F005-EP020", "1")
             })
         })
 

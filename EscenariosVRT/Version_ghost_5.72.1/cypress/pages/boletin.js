@@ -29,16 +29,8 @@ class Boletin {
         return cy.get('span').contains('Reactivate newsletter');
     }
 
-    clickSaveAndClose() {
-        return cy.get('.gh-btn-icon').contains('Save and close').click()
-    }
-
     clickCreate() {
         return cy.get('.gap-3 button').contains('Create').click()
-    }
-
-    clickSave() {
-        return cy.get('.gap-3 button').contains('Save').click()
     }
 
     clickClose() {
@@ -61,28 +53,8 @@ class Boletin {
         return cy.get('h3').contains('Archive newsletter')
     }
 
-    clickOnArchive(){
-        return cy.get('.dropdown-triangle-top-right li:eq(1)').click()
-    }
-
-    clickOnArchiveConfirm(){
-        return cy.get('.gh-btn-icon').contains('Archive').click()
-    }
-
-    getTitleEdit() {
-        return cy.get(".modal-fullsettings-heading-labs").first()
-    }
-
     getTitle() {
         return cy.get(".gh-canvas-title").first()
-    }
-
-    getTitleModalConfirm() {
-        return cy.get(".modal-header").first()
-    }
-
-    getTextBody() {
-        return cy.get("h5").first()
     }
 
     fillTagById(idTag,value) {
