@@ -8,10 +8,12 @@ const tags = new Tags()
 describe('EP010 create tag', () => {
     context('Given I go to tags page', () => {
         let cookieValue;
+        let indicator = 'F003-EP010';
 
         before(() => {
-            login.insertLogin()
+            login.insertLogin()            
             cy.wait(3000)
+            login.tomarPantallazo(indicator,'01')
             cy.getCookie('ghost-admin-api-session').then((cookie) => {
                 cookieValue = cookie.value;
             });
@@ -20,15 +22,17 @@ describe('EP010 create tag', () => {
         beforeEach(() => {
             cy.setCookie('ghost-admin-api-session', cookieValue)
             tags.visit()
-            cy.wait(1000)
+            login.tomarPantallazo(indicator,'02')
             tags.clickButtonNewTag()
             cy.wait(1000)
+            login.tomarPantallazo(indicator,'03')
         })
 
         context('When I click on save button without fill tag form fields', () => {
             beforeEach(() => {
                 tags.clickButtonSaveTag()
                 cy.wait(1000)
+                login.tomarPantallazo(indicator,'04')
             })
 
             it('Then I should be see a message about empty name', () => {
@@ -40,6 +44,7 @@ describe('EP010 create tag', () => {
             beforeEach(() => {
                 tags.clickBreadcrumbTag()
                 cy.wait(1000)
+                login.tomarPantallazo(indicator,'05')
             })
 
             it('Then I should be see a modal message', () => {
@@ -51,8 +56,10 @@ describe('EP010 create tag', () => {
             let tagName = faker.lorem.slug()
             beforeEach(() => {
                 fillDummyDataFormTag(tagName)
+                login.tomarPantallazo(indicator,'06')
                 tags.clickButtonSaveTag()
                 cy.wait(1000)
+                login.tomarPantallazo(indicator,'07')
             })
 
             it('Then I should be see the tag name like a title', () => {
@@ -64,9 +71,12 @@ describe('EP010 create tag', () => {
             let tagName = faker.lorem.slug()
             beforeEach(() => {
                 fillDummyDataFormTag(tagName)
+                login.tomarPantallazo(indicator,'08')
                 tags.clickBreadcrumbTag()
+                login.tomarPantallazo(indicator,'09')
                 tags.clickButtonFooterModalLeaveTagForm()
                 cy.wait(1000)
+                login.tomarPantallazo(indicator,'10')
             })
 
             it('Then I should be return to tag list', () => {
@@ -84,10 +94,12 @@ describe('EP010 create tag', () => {
 describe('EP011 edit tag', () => {
     context('Given I go to tags page', () => {
         let cookieValue;
+        let indicator = 'F003-EP011';
 
         before(() => {
             login.insertLogin()
             cy.wait(3000)
+            login.tomarPantallazo(indicator,'01')
             cy.getCookie('ghost-admin-api-session').then((cookie) => {
                 cookieValue = cookie.value;
             });
@@ -96,20 +108,26 @@ describe('EP011 edit tag', () => {
         beforeEach(() => {
             cy.setCookie('ghost-admin-api-session', cookieValue)
             tags.visit()
-            cy.wait(1000)
+            login.tomarPantallazo(indicator,'02')
             tags.clickButtonNewTag()
             cy.wait(1000)
+            login.tomarPantallazo(indicator,'03')
         })
 
         context('When I click on save button after change tag name and return to tag list', () => {
             let tagName = faker.lorem.slug()
             beforeEach(() => {
                 fillDummyDataFormTag(faker.lorem.slug())
+                login.tomarPantallazo(indicator,'04')
                 tags.clickButtonSaveTag()
+                login.tomarPantallazo(indicator,'05')
                 tags.cleanFillTagNameInput(tagName)
+                login.tomarPantallazo(indicator,'06')
                 tags.clickButtonSaveTag()
+                login.tomarPantallazo(indicator,'07')
                 tags.clickBreadcrumbTag()
                 cy.wait(1000)
+                login.tomarPantallazo(indicator,'08')
             })
 
             it('Then I should be see the new tag name on the tag list', () => {
@@ -121,12 +139,17 @@ describe('EP011 edit tag', () => {
             let tagName = faker.lorem.slug()
             beforeEach(() => {
                 fillDummyDataFormTag(faker.lorem.slug())
+                login.tomarPantallazo(indicator,'09')
                 tags.clickButtonSaveTag()
+                login.tomarPantallazo(indicator,'10')
                 tags.cleanFillTagNameInput(tagName)
+                login.tomarPantallazo(indicator,'11')
                 tags.clickBreadcrumbTag()
                 cy.wait(1000)
+                login.tomarPantallazo(indicator,'12')
                 tags.clickButtonFooterModalLeaveTagForm()
                 cy.wait(1000)
+                login.tomarPantallazo(indicator,'13')
             })
 
             it('Then I should not be see that new tag name on the tag list', () => {
@@ -136,7 +159,6 @@ describe('EP011 edit tag', () => {
     })
 
 });
-
 export function fillDummyDataFormTag(tagName) {
     tags.fillTagNameInput(tagName)
     tags.fillTagColorInput(faker.color.rgb({ prefix: '', casing: 'upper' }))
