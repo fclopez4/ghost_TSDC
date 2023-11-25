@@ -41,7 +41,7 @@ describe("F006 Profile user", () => {
         })
     })
 
-    describe('EP020 Validate input user name - DINAMICO', () => {
+    describe('EP021 Validate input user name - DINAMICO', () => {
         it('should modify profile user name valid', () => {
             cy.ands('I visit profile', () => {
                 profile.visit()
@@ -76,7 +76,7 @@ describe("F006 Profile user", () => {
         })
     })
 
-    describe('EP021 Validate input slug - DINAMICO', () => {
+    describe('EP022 Validate input slug - DINAMICO', () => {
         it('should modify profile slug valid', () => {
             cy.ands('I visit profile', () => {
                 profile.visit()
@@ -87,15 +87,15 @@ describe("F006 Profile user", () => {
                 cy.wait(500)
             })
 
-            cy.then2('Then I see a valid input class', () => {
+            cy.then2('I see a valid input class', () => {
                 expect(profile.slugInputIsValid(), true)
             })
 
-            cy.when('When I complete the entry with data with more than the character limit', () => {
+            cy.when('I complete the entry with data with more than 191 characters', () => {
                 profile.fillSlug(datosInvalidos.slug)
             })
 
-            cy.then2('Then I see a invalid input class', () => {
+            cy.then2('I see a invalid input class', () => {
                 expect(profile.slugInputIsInvalid(), true)
             })
 
@@ -110,7 +110,7 @@ describe("F006 Profile user", () => {
         })
     })
 
-    describe('EP022 Validate input email - DINAMICO', () => {
+    describe('EP023 Validate input email - DINAMICO', () => {
         it('should modify profile email valid', () => {
             cy.ands('I visit profile', () => {
                 profile.visit()
@@ -145,7 +145,7 @@ describe("F006 Profile user", () => {
         })
     })
 
-    describe('EP023 Validate input Location - DINAMICO', () => {
+    describe('EP024 Validate input Location - DINAMICO', () => {
         it('should modify profile location valid', () => {
             cy.ands('I visit profile', () => {
                 profile.visit()
@@ -179,7 +179,7 @@ describe("F006 Profile user", () => {
         })
     })
 
-    describe('EP024 Validate input Website - DINAMICO', () => {
+    describe('EP025 Validate input Website - DINAMICO', () => {
         it('should modify profile website valid', () => {
             cy.ands('I visit profile', () => {
                 profile.visit()
@@ -214,7 +214,7 @@ describe("F006 Profile user", () => {
         })
     })
 
-    describe('EP025 Validate input Facebook profile - DINAMICO', () => {
+    describe('EP026 Validate input Facebook profile - DINAMICO', () => {
         it('should modify profile facebook profile valid', () => {
             cy.ands('I visit profile', () => {
                 profile.visit()
@@ -226,11 +226,12 @@ describe("F006 Profile user", () => {
             })
 
             cy.then2('Then I see a valid input class', () => {
+                cy.wait(500)
                 expect(profile.facebookInputIsValid(), true)
 
             })
 
-            cy.when('When I complete the entry with data with more than the character limit', () => {
+            cy.when('When I complete the entry with data with more than the 2000 character limit', () => {
                 profile.fillFacebook(datosInvalidos.facebook_profile)
                 cy.wait(500)
             })
@@ -250,7 +251,7 @@ describe("F006 Profile user", () => {
         })
     })
 
-    describe('EP026 Validate input Twitter profile - DINAMICO', () => {
+    describe('EP027 Validate input Twitter profile - DINAMICO', () => {
         it('should modify profile twitter profile valid', () => {
             cy.ands('I visit profile', () => {
                 profile.visit()
@@ -285,7 +286,7 @@ describe("F006 Profile user", () => {
         })
     })
 
-    describe('EP027 Validate input bio - DINAMICO', () => {
+    describe('EP028 Validate input bio - DINAMICO', () => {
         it('should modify profile bio valid', () => {
             cy.ands('I visit profile', () => {
                 profile.visit()
@@ -320,7 +321,7 @@ describe("F006 Profile user", () => {
         })
     })
 
-    describe('EP028 change password valid data - DINAMICO', () => {
+    describe('EP029 change password valid data - DINAMICO', () => {
         it('should modify profile password valid', () => {
             cy.ands('I visit profile', () => {
                 profile.visit()
@@ -358,7 +359,7 @@ describe("F006 Profile user", () => {
         })
     })
 
-    describe('EP029 change password with invalid old password - DINAMICO', () => {
+    describe('EP030 change password with invalid old password - DINAMICO', () => {
         it('should modify profile password invalid', () => {
             cy.ands('I visit profile', () => {
                 profile.visit()

@@ -158,31 +158,31 @@ class Profile {
 
 
     // Start password input
-    fillOldPassword(password){
+    fillOldPassword(password) {
         return cy.get("#user-password-old").clear().type(password).tab();
     }
-    
-    fillNewPassword(password){
+
+    fillNewPassword(password) {
         return cy.get("#user-password-new").clear().type(password).tab();
     }
 
-    fillNewPasswordConfirmation(password){
+    fillNewPasswordConfirmation(password) {
         return cy.get("#user-new-password-verification").clear().type(password).tab();
     }
 
-    clickChangePassword(){
+    clickChangePassword() {
         return cy.get(`[data-test-save-pw-button="true"]`).click();
     }
 
-    notificactionPassword(){
+    notificactionPassword() {
         return cy.get(`.gh-notification.gh-notification-passive > [data-test-text="notification-content"]`).should('be.visible');
     }
 
-    notificactionPasswordIncorrect(){
+    notificactionPasswordIncorrect() {
         return cy.get(`.gh-alert.gh-alert-red>.gh-alert-content`).should('contain.text', 'Your password is incorrect.');
     }
 
-    restorePassword(password){
+    restorePassword(password) {
         this.fillOldPassword(password);
         this.fillNewPassword(Cypress.env('password'));
         this.fillNewPasswordConfirmation(Cypress.env('password'));

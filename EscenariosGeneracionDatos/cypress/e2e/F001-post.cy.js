@@ -1,7 +1,8 @@
 import Post from "../pages/post"
 import Login from "../pages/login"
-import Editor from "../pages/editor"
+
 import { faker } from '@faker-js/faker'
+import Editor from "../pages/editor"
 
 const post = new Post()
 const login = new Login()
@@ -465,4 +466,304 @@ describe("F001 post", () => {
         })
     })
 
+    describe("EP015 update publish date in post with data valid - ALEATORIO", () => {
+        it('should add a valid date in post', () => {
+            const namePost = faker.animal.bear()
+            const contentPost = faker.lorem.words(15)
+            const date = faker.date.past()
+            const dateInput = editor.generateDate(date)
+            const timeInput = editor.gerateTime(date)
+
+            cy.ands('I visit post page', () => {
+                post.visit()
+            })
+
+            cy.ands('I click on new post page', () => {
+                post.clickNewPost()
+            })
+
+            cy.ands('I insert title', () => {
+                editor.fillTitle(namePost, 'Post title')
+            })
+
+            cy.ands('I insert content', () => {
+                editor.fillContent(contentPost);
+            })
+
+            cy.when('I click in post option settings', () => {
+                editor.clickSettingsOption();
+            })
+
+            cy.ands('I insert publish date', () => {
+                editor.fillPublishDate(dateInput);
+            });
+
+            cy.ands('I insert a time', () => {
+                editor.fillPublishTime(timeInput)
+            })
+
+            cy.ands('I validate error date time', () => {
+                expect(editor.getErrorDateTime().should('not.exist'));
+            })
+        })
+    })
+
+    describe("EP016 update publish date in post with future date - ALEATORIO", () => {
+        it('should add a valid date in post', () => {
+            const namePost = faker.animal.bear()
+            const contentPost = faker.lorem.words(15)
+            const date = faker.date.future()
+            const dateInput = editor.generateDate(date)
+            const timeInput = editor.gerateTime(date)
+
+            cy.ands('I visit post page', () => {
+                post.visit()
+            })
+
+            cy.ands('I click on new post page', () => {
+                post.clickNewPost()
+            })
+
+            cy.ands('I insert title', () => {
+                editor.fillTitle(namePost, 'Post title')
+            })
+
+            cy.ands('I insert content', () => {
+                editor.fillContent(contentPost);
+            })
+
+            cy.when('I click in post option settings', () => {
+                editor.clickSettingsOption();
+            })
+
+            cy.ands('I insert publish date', () => {
+                editor.fillPublishDate(dateInput);
+            });
+
+            cy.ands('I insert a time', () => {
+                editor.fillPublishTime(timeInput)
+            })
+
+            cy.ands('I validate error date time', () => {
+                expect(editor.getErrorDateTime().should('exist'));
+            })
+        })
+
+    })
+
+    describe("EP017 update publish date in post with today date - ALEATORIO", () => {
+        it('should add a valid date in post', () => {
+            const namePost = faker.animal.bear()
+            const contentPost = faker.lorem.words(15)
+            const date = new Date()
+            const dateInput = editor.generateDate(date)
+            const timeInput = editor.gerateTime(date)
+
+            cy.ands('I visit post page', () => {
+                post.visit()
+            })
+
+            cy.ands('I click on new post page', () => {
+                post.clickNewPost()
+            })
+
+            cy.ands('I insert title', () => {
+                editor.fillTitle(namePost, 'Post title')
+            })
+
+            cy.ands('I insert content', () => {
+                editor.fillContent(contentPost);
+            })
+
+            cy.when('I click in post option settings', () => {
+                editor.clickSettingsOption();
+            })
+
+            cy.ands('I insert publish date', () => {
+                editor.fillPublishDate(dateInput);
+            });
+
+            cy.ands('I insert a time', () => {
+                editor.fillPublishTime(timeInput)
+            })
+
+            cy.ands('I validate error date time', () => {
+                expect(editor.getErrorDateTime().should('not.exist'));
+            })
+        })
+    })
+
+    describe("EP018 create facebook card with valid data  - ALEATORIO", () => {
+        it('should create a facebook card', () => {
+            const namePost = faker.animal.bear()
+            const titleFacebook = faker.animal.cat()
+            const descriptionFacebook = faker.lorem.words(15)
+            const fileName = datosValidos[2].name_image;
+            const filePath = 'cypress/fixtures/Post/files/image-valid-post.jpg';
+
+
+            cy.ands('I visit post page', () => {
+                post.visit()
+            })
+
+            cy.ands('I click on new post page', () => {
+                post.clickNewPost()
+            })
+
+            cy.ands('I insert title', () => {
+                editor.fillTitle(namePost, 'Post title')
+            })
+
+            cy.ands('I click in post option settings', () => {
+                editor.clickSettingsOption();
+            })
+
+            cy.ands('I click in facebook card', () => {
+                editor.clickFacebookCard();
+            })
+
+            cy.when('I insert facebook image', () => {
+                editor.fillFacebookImage(fileName, filePath);
+            })
+
+            cy.then2('I see the image feature', () => {
+                expect(editor.getImage(fileName)).exist
+            })
+
+            cy.when('I insert facebook title', () => {
+                editor.fillFacebookTitle(titleFacebook);
+            })
+
+            cy.then2('I see the title facebook form valid', () => {
+                cy.wait(1000)
+                expect(editor.facebookInputTitleIsValid(), true);
+            })
+
+            cy.when('I insert facebook description', () => {
+                editor.fillFacebookDescription(descriptionFacebook);
+            })
+
+            cy.then2('I see the description facebook form valid', () => {
+                cy.wait(1000)
+                expect(editor.facebookInputDescIsValid(), true);
+            })
+            
+        })
+    })
+
+    describe("EP019 create facebook card with invalid data", () => {
+        it('should create a facebook card', () => {
+            const namePost = faker.animal.bear()
+            const titleFacebook = faker.lorem.words(300).substring(0, 301)
+            const descriptionFacebook = faker.lorem.words(500).substring(0, 501)
+            const fileName = datosValidos[2].name_image;
+            const filePath = 'cypress/fixtures/Post/files/invalid-file.json';
+
+
+            cy.ands('I visit post page', () => {
+                post.visit()
+            })
+
+            cy.ands('I click on new post page', () => {
+                post.clickNewPost()
+            })
+
+            cy.ands('I insert title', () => {
+                editor.fillTitle(namePost, 'Post title')
+            })
+
+            cy.ands('I click in post option settings', () => {
+                editor.clickSettingsOption();
+            })
+
+            cy.ands('I click in facebook card', () => {
+                editor.clickFacebookCard();
+            })
+
+            cy.when('I insert facebook invalid format image', () => {
+                editor.fillFacebookImage(fileName, filePath);
+            })
+
+            cy.then2('I see the image error', () => {
+                expect(editor.getErrorFacebookImageUpload()).exist;
+            })
+
+            cy.when('I insert facebook title with more than 300 characters', () => {
+                editor.fillFacebookTitle(titleFacebook);
+            })
+
+            cy.then2('I see the title facebook form invalid', () => {
+                cy.wait(1000)
+                expect(editor.facebookInputTitleIsInvalid(), true);
+            })
+
+            cy.when('I insert facebook description more than 300 characters', () => {
+                editor.fillFacebookDescription(descriptionFacebook);
+            })
+
+            cy.then2('I see the description facebook form invalid', () => {
+                cy.wait(1000)
+                expect(editor.facebookInputDescIsInvalid(), true);
+            })
+            
+        })
+    })
+
+    describe("EP020 create facebook card with limit data", () => {
+        it('should create a facebook card', () => {
+            const namePost = faker.animal.bear()
+            const titleFacebook = faker.lorem.words(300).substring(0, 300)
+            const descriptionFacebook = faker.lorem.words(500).substring(0, 500)
+            const fileName = datosValidos[2].name_image;
+            const filePath = 'cypress/fixtures/Post/files/image-valid-post.jpg';
+
+
+            cy.ands('I visit post page', () => {
+                post.visit()
+            })
+
+            cy.ands('I click on new post page', () => {
+                post.clickNewPost()
+            })
+
+            cy.ands('I insert title', () => {
+                editor.fillTitle(namePost, 'Post title')
+            })
+
+            cy.ands('I click in post option settings', () => {
+                editor.clickSettingsOption();
+            })
+
+            cy.ands('I click in facebook card', () => {
+                editor.clickFacebookCard();
+            })
+
+            cy.when('I insert facebook image', () => {
+                editor.fillFacebookImage(fileName, filePath);
+            })
+
+            cy.then2('I see the image feature', () => {
+                expect(editor.getImage(fileName)).exist
+            })
+
+            cy.when('I insert facebook title with 300 characters', () => {
+                editor.fillFacebookTitle(titleFacebook);
+            })
+
+            cy.then2('I see the title facebook form valid', () => {
+                cy.wait(1000)
+                expect(editor.facebookInputTitleIsValid(), true);
+            })
+
+            cy.when('I insert facebook description with 500 characters', () => {
+                editor.fillFacebookDescription(descriptionFacebook);
+            })
+
+            cy.then2('I see the description facebook form valid', () => {
+                cy.wait(1000)
+                expect(editor.facebookInputDescIsValid(), true);
+            })
+            
+        })
+    })
 })
