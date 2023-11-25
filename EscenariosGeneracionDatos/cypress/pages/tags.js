@@ -8,13 +8,80 @@ class Tags {
         cy.wait(1000)
     }
 
-    clickButtonNewTag() {
-        return cy.get('section.view-actions>a.ember-view.gh-btn.gh-btn-primary')
-            .first().click()
+    reload(){
+        cy.reload()
     }
 
     getButtonNewTag() {
         return cy.get('section.view-actions>a.ember-view.gh-btn.gh-btn-primary').first()
+    }
+
+    getTagMessageError() {
+        return cy.get('span.error>p.response').first()
+    }
+
+    getTagModalHeader() {
+        return cy.get('header.modal-header').first()
+    }
+
+    getTagTitle() {
+        return cy.get('h2.gh-canvas-title');
+    }
+
+    getTagListTitle() {
+        return cy.get('section>ol>li').find("h3.gh-tag-list-name")
+    }
+
+    getTagNameError(){
+        return cy.get('.mr2 > .error > :nth-child(1)')
+    }
+
+    getTagDescriptionError(){
+        return cy.get('.no-margin > .response')
+    }
+
+    getTagMetadataTitle(){
+        return cy.get('#meta-title')
+    }
+
+    getTagMetadataDescription(){
+        return cy.get('#meta-description')
+    }
+
+    getTagMetadataUrl(){
+        return cy.get('#canonical-url')
+    }
+
+    getTagMetadataTitleError(){
+        return cy.get(':nth-child(1) > .response')
+    }
+
+    getTagMetadataDescriptionError(){
+        return cy.get('.gh-seo-settings-left > :nth-child(2) > .response')
+    }
+
+    getTagXcardTitle(){
+        return cy.get('#twitter-title')
+    }
+
+    getTagXcardDescription(){
+        return cy.get('#twitter-description')
+    }
+
+    getTagXcardError(){
+        return cy.get('.gh-alert')
+    }
+
+    clickButtonGoogleMetadata(){
+        return cy.get(':nth-child(1) > .gh-expandable-header > .gh-btn > span').click()
+    }
+
+    clickButtonXcard(){
+        return cy.get(':nth-child(2) > .gh-expandable-header > .gh-btn > span').click()
+    }
+
+    clickButtonFacebookMetadata(){
+        return cy.get(':nth-child(2) > .gh-expandable-header > .gh-btn > span').click()
     }
 
     clickButtonSaveTag() {
@@ -22,8 +89,9 @@ class Tags {
             .first().click()
     }
 
-    getTagMessageError() {
-        return cy.get('span.error>p.response').first()
+    clickButtonNewTag() {
+        return cy.get('section.view-actions>a.ember-view.gh-btn.gh-btn-primary')
+            .first().click()
     }
 
     clickBreadcrumbTag() {
@@ -31,14 +99,26 @@ class Tags {
             .first().click()
     }
 
-    getTagModalHeader() {
-        return cy.get('header.modal-header').first()
-    }
-
     clickButtonFooterModalLeaveTagForm() {
         return cy.get('div.modal-footer>button.gh-btn.gh-btn-red')
             .first().click()
     }
+
+    clickButtonDeleteTag() {
+        return cy.get('button[data-test-button~="delete-tag"]')
+            .first().click()
+    }
+
+    clickButtonModalCancelTag() {
+        return cy.get('div.modal-footer>button[data-test-button~="cancel"]')
+            .first().click()
+    }
+
+    clickTagModalDeleteButton() {
+        return cy.get('div.modal-footer>button[data-test-button~="confirm"]')
+            .first().click()
+    }
+
 
     fillTagNameInput(contentInput) {
         return cy.get('input#tag-name.gh-input').first()
@@ -60,27 +140,24 @@ class Tags {
             .type(contentInput)
     }
 
-    getTagTitle() {
-        return cy.get('h2.gh-canvas-title');
+    fillTagMetadataTitle(contentInput){
+        return this.getTagMetadataTitle().type(contentInput)
     }
 
-    getTagListTitle() {
-        return cy.get('section>ol>li').find("h3.gh-tag-list-name")
+    fillTagMetadataDescription(contentInput){
+        return this.getTagMetadataDescription().type(contentInput)
     }
 
-    clickButtonDeleteTag() {
-        return cy.get('button[data-test-button~="delete-tag"]')
-            .first().click()
+    fillTagMetadataUrl(contentInput){
+        return this.getTagMetadataUrl().type(contentInput)
+    }
+    
+    fillTagXcardTitle(contentInput){
+        return this.getTagXcardTitle().type(contentInput)
     }
 
-    clickButtonModalCancelTag() {
-        return cy.get('div.modal-footer>button[data-test-button~="cancel"]')
-            .first().click()
-    }
-
-    clickTagModalDeleteButton() {
-        return cy.get('div.modal-footer>button[data-test-button~="confirm"]')
-            .first().click()
+    fillTagXcardDescription(contentInput){
+        return this.getTagXcardDescription().type(contentInput)
     }
 
 }

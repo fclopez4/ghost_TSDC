@@ -5,6 +5,336 @@ import Tags from "../pages/tags"
 const login = new Login()
 const tags = new Tags()
 
+Cypress.Commands.add('given', (description, callback) => {
+    cy.log(`GIVEN: ${description}`)
+    callback()
+})
+
+Cypress.Commands.add('ands', (description, callback) => {
+    cy.log(`AND: ${description}`)
+    callback()
+})
+
+Cypress.Commands.add('when', (description, callback) => {
+    cy.log(`WHEN: ${description}`)
+    callback()
+})
+
+Cypress.Commands.add('then2', (description, callback) => {
+    cy.log(`THEN: ${description}`)
+    callback()
+})
+
+
+describe('Fill tag title and description - ALEATORIO', () => {
+    let cookieValue
+    before(() => {
+        login.insertLogin()
+        cy.getCookie('ghost-admin-api-session').then((cookie) => {
+            cookieValue = cookie.value;
+        });
+    })
+
+    beforeEach(() => {
+        cy.setCookie('ghost-admin-api-session', cookieValue)
+        tags.visit()
+    })
+
+    it('should create a tag with max characters -1', () => {
+        let tagName;
+
+        cy.given('I click on create tag button', () => {
+            tags.clickButtonNewTag()
+        })
+
+        cy.when('I show the title of new tag form', () => {
+            tags.getTagTitle().should("contain.text", "New tag")
+        })
+
+        cy.ands('I fill and submit the form', () => {
+            tagName = faker.string.alphanumeric(190)
+            tags.fillTagNameInput(tagName)
+            tags.fillTagDescription(faker.string.alphanumeric(499))
+            tags.clickButtonSaveTag()
+            tags.visit()
+        })
+
+        cy.then2('I should be see the tag created', () => {
+            tags.getTagListTitle().contains(tagName).should('exist');
+        })
+
+    });
+
+    it('should create a tag with max characters', () => {
+        let tagName;
+
+        cy.given('I click on create tag button', () => {
+            tags.clickButtonNewTag()
+        })
+
+        cy.when('I show the title of new tag form', () => {
+            tags.getTagTitle().should("contain.text", "New tag")
+        })
+
+        cy.ands('I fill and submit the form', () => {
+            tagName = faker.string.alphanumeric(191)
+            tags.fillTagNameInput(tagName)
+            tags.fillTagDescription(faker.string.alphanumeric(500))
+            tags.clickButtonSaveTag()
+            tags.visit()
+        })
+
+        cy.then2('I should be see the tag created', () => {
+            tags.getTagListTitle().contains(tagName).should('exist');
+        })
+
+    });
+
+    it('should create a tag with max characters +1', () => {
+        let tagName;
+
+        cy.given('I click on create tag button', () => {
+            tags.clickButtonNewTag()
+        })
+
+        cy.when('I show the title of new tag form', () => {
+            tags.getTagTitle().should("contain.text", "New tag")
+        })
+
+        cy.ands('I fill and submit the form', () => {
+            tagName = faker.string.alphanumeric(192)
+            tags.fillTagNameInput(tagName)
+            tags.fillTagDescription(faker.string.alphanumeric(501))
+            tags.clickButtonSaveTag()
+        })
+
+        cy.then2('I should be see the tag error message', () => {
+            tags.getTagDescriptionError().should('contain', "Description cannot be longer than 500 characters.")
+            tags.getTagNameError().should('contain', "Tag names cannot be longer than 191 characters.")
+        })
+    });
+
+})
+
+describe('Fill google metadata tag - ALEATORIO', () => {
+    let cookieValue
+    before(() => {
+        login.insertLogin()
+        cy.getCookie('ghost-admin-api-session').then((cookie) => {
+            cookieValue = cookie.value;
+        });
+    })
+
+    beforeEach(() => {
+        cy.setCookie('ghost-admin-api-session', cookieValue)
+        tags.visit()
+    })
+
+    it('should create a tag with google metadata with max characters -1', () => {
+        let tagName;
+
+        cy.given('I click on create tag button', () => {
+            tags.clickButtonNewTag()
+        })
+
+        cy.when('I show the title of new tag form', () => {
+            tags.getTagTitle().should("contain.text", "New tag")
+        })
+
+        cy.ands('I fill a tag name', () => {
+            tagName = faker.string.alphanumeric(6)
+            tags.fillTagNameInput(tagName)
+        })
+
+        cy.ands('I fill a google metadata', () => {
+            tags.clickButtonGoogleMetadata()
+            tags.fillTagMetadataTitle(faker.string.alphanumeric(299))
+            tags.fillTagMetadataDescription(faker.string.alphanumeric(499))
+            tags.fillTagMetadataUrl(faker.internet.url())
+            tags.clickButtonSaveTag()
+            tags.reload()
+        })
+
+        cy.then2('I should be see the tag created', () => {
+            tags.visit()
+            tags.getTagListTitle().contains(tagName).should('exist');
+        })
+    })
+
+    it('should create a tag with google metadata with max characters', () => {
+        let tagName;
+
+        cy.given('I click on create tag button', () => {
+            tags.clickButtonNewTag()
+        })
+
+        cy.when('I show the title of new tag form', () => {
+            tags.getTagTitle().should("contain.text", "New tag")
+        })
+
+        cy.ands('I fill a tag name', () => {
+            tagName = faker.string.alphanumeric(6)
+            tags.fillTagNameInput(tagName)
+        })
+
+        cy.ands('I fill a google metadata', () => {
+            tags.clickButtonGoogleMetadata()
+            tags.fillTagMetadataTitle(faker.string.alphanumeric(300))
+            tags.fillTagMetadataDescription(faker.string.alphanumeric(500))
+            tags.fillTagMetadataUrl(faker.image.url())
+            tags.clickButtonSaveTag()
+            tags.reload()
+        })
+
+        cy.then2('I should be see the tag created', () => {
+            tags.visit()
+            tags.getTagListTitle().contains(tagName).should('exist');
+        })
+
+    })
+
+    /*por reportar el input url no valida la maxima cantidad de 2000 caracteres */
+    it('should create a tag with google metadata with max characters + 1', () => {
+        let tagName;
+
+        cy.given('I click on create tag button', () => {
+            tags.clickButtonNewTag()
+        })
+
+        cy.when('I show the title of new tag form', () => {
+            tags.getTagTitle().should("contain.text", "New tag")
+        })
+
+        cy.ands('I fill a tag name', () => {
+            tagName = faker.string.alphanumeric(6)
+            tags.fillTagNameInput(tagName)
+        })
+
+        cy.ands('I fill a google metadata', () => {
+            tags.clickButtonGoogleMetadata()
+            tags.fillTagMetadataTitle(faker.string.alphanumeric(301))
+            tags.fillTagMetadataDescription(faker.string.alphanumeric(501))
+            tags.fillTagMetadataUrl(faker.image.url({ appendSlash: true }) + faker.string.alphanumeric(1999))
+            tags.clickButtonSaveTag()
+        })
+
+        cy.then2('I should be see the metadata error', () => {
+            tags.getTagMetadataTitleError().should('contain', "Meta Title cannot be longer than 300 characters.")
+            tags.getTagMetadataDescriptionError().should('contain', "Meta Description cannot be longer than 500 characters.")
+        })
+
+    })
+})
+
+describe('Fill X card tag - ALEATORIO', () => {
+    let cookieValue
+    before(() => {
+        login.insertLogin()
+        cy.getCookie('ghost-admin-api-session').then((cookie) => {
+            cookieValue = cookie.value;
+        });
+    })
+
+    beforeEach(() => {
+        cy.setCookie('ghost-admin-api-session', cookieValue)
+        tags.visit()
+    })
+
+    it('should create a tag with google metadata with max characters -1', () => {
+        let tagName;
+
+        cy.given('I click on create tag button', () => {
+            tags.clickButtonNewTag()
+        })
+
+        cy.when('I show the title of new tag form', () => {
+            tags.getTagTitle().should("contain.text", "New tag")
+        })
+
+        cy.ands('I fill a tag name', () => {
+            tagName = faker.string.alphanumeric(6)
+            tags.fillTagNameInput(tagName)
+        })
+
+        cy.ands('I fill a google metadata', () => {
+            tags.clickButtonXcard()
+            cy.wait(2000)
+            tags.fillTagXcardTitle(faker.string.alphanumeric(299))
+            tags.fillTagXcardDescription(faker.string.alphanumeric(499))
+            tags.clickButtonSaveTag()
+            tags.reload()
+        })
+
+        cy.then2('I should be see the tag created', () => {
+            tags.visit()
+            tags.getTagListTitle().contains(tagName).should('exist');
+        })
+    })
+
+    it('should create a tag with google metadata with max characters', () => {
+        let tagName;
+
+        cy.given('I click on create tag button', () => {
+            tags.clickButtonNewTag()
+        })
+
+        cy.when('I show the title of new tag form', () => {
+            tags.getTagTitle().should("contain.text", "New tag")
+        })
+
+        cy.ands('I fill a tag name', () => {
+            tagName = faker.string.alphanumeric(6)
+            tags.fillTagNameInput(tagName)
+        })
+
+        cy.ands('I fill a google metadata', () => {
+            tags.clickButtonXcard()
+            cy.wait(2000)
+            tags.fillTagXcardTitle(faker.string.alphanumeric(300))
+            tags.fillTagXcardDescription(faker.string.alphanumeric(500))
+            tags.clickButtonSaveTag()
+            tags.reload()
+        })
+
+        cy.then2('I should be see the tag created', () => {
+            tags.visit()
+            tags.getTagListTitle().contains(tagName).should('exist');
+        })
+    })
+
+    it('should create a tag with google metadata with max characters +1', () => {
+        let tagName;
+
+        cy.given('I click on create tag button', () => {
+            tags.clickButtonNewTag()
+        })
+
+        cy.when('I show the title of new tag form', () => {
+            tags.getTagTitle().should("contain.text", "New tag")
+        })
+
+        cy.ands('I fill a tag name', () => {
+            tagName = faker.string.alphanumeric(6)
+            tags.fillTagNameInput(tagName)
+        })
+
+        cy.ands('I fill a google metadata', () => {
+            tags.clickButtonXcard()
+            cy.wait(2000)
+            tags.fillTagXcardTitle(faker.string.alphanumeric(301))
+            tags.fillTagXcardDescription(faker.string.alphanumeric(501))
+            tags.clickButtonSaveTag()
+        })
+
+        cy.then2('I should be see the tag created', () => {
+            tags.getTagXcardError().should('exist')
+            tags.getTagXcardError().should('contain', "Validation error, cannot save tag. Validation failed for")
+        })
+    })
+})
+
+/*
+
 describe('EP010 create tag', () => {
     context('Given I go to tags page', () => {
         let cookieValue;
@@ -305,9 +635,4 @@ describe('EP013 list tags', () => {
     })
 
 })
-
-export function fillDummyDataFormTag(tagName) {
-    tags.fillTagNameInput(tagName)
-    tags.fillTagColorInput(faker.color.rgb({ prefix: '', casing: 'upper' }))
-    tags.fillTagDescription(faker.lorem.sentences())
-}
+*/
