@@ -5,7 +5,7 @@ import { faker } from '@faker-js/faker'
 const login = new Login()
 const userPage = new User()
 
-describe("EP014 create user", () => {
+describe("EP014 create member - ALEATORIO", () => {
     context('Given I go to users page', () => {
         let cookieValue
 
@@ -21,56 +21,86 @@ describe("EP014 create user", () => {
             userPage.visit()
         })
 
-        context("When I click on New member button", () => {
+        context("When I create a new member with a name longer than 191 characters", () => {
+            beforeEach(() => {
+                let memberName = faker.lorem.paragraph(10);
+                let memberEmail = faker.word.adjective(4) + '@algo.com';
+                userPage.clickNewMember()
+                userPage.fillTagById('#member-name',memberName);
+                userPage.fillTagById('#member-email',memberEmail)
+                userPage.clickSaveMember();
+                cy.wait(3000);
+            })
+            it("Then I should see the message 'Name cannot be longer than 191 characters.'", () => {
+                userPage.getRespose().should("contain.text", "Name cannot be longer")
+            })
+        })
+
+        context("When I create a new member without email.", () => {
             beforeEach(() => {
                 userPage.clickNewMember()
-                cy.wait(1000)
+                userPage.clickSaveMember();
+                cy.wait(3000);
             })
-            it("Then I should see a new member page", () => {
-                userPage.getEstatusTittleMember().should("contain.text", "New member")
-                login.tomarPantallazo("F004-EP014", "1")
+            it("Then I should see the message 'Please enter an email'", () => {
+                userPage.getRespose().should("contain.text", "Please enter an email")
             })
         })
 
-        context("When I fill the member name, email, label and note", () => {
-            const memberName =  faker.animal.bear();
-            const memberEmail = faker.word.adjective(4) + '@algo.com';
-            const memberLabel = faker.word.adjective(4);
-            const memberNota = faker.lorem.paragraph(1);
+        context("When I create a new member with incorrect email.", () => {
             beforeEach(() => {
-                fillData(memberName, memberEmail, memberLabel, memberNota)
+                let memberEmail = faker.word.adjective(4);
+                userPage.clickNewMember()
+                userPage.fillTagById('#member-email',memberEmail)
+                userPage.clickSaveMember();
             })
-
-            it("Then I should see the name, email, label and note filled", () => {
-                userPage.getMemberName().should('have.value', memberName)
-                userPage.geMemberEmail().should('have.value', memberEmail);
-                userPage.getMemberLabel().should('have.value', memberLabel);
-                userPage.getMemberNote().should('have.value', memberNota);
-                login.tomarPantallazo("F004-EP014", "2")
+            it("Then I should see the message 'Member already exists.'", () => {
+                userPage.getRespose().should("contain.text", "Invalid Email.")
             })
         })
 
-        context('When I fill the data and click on new member button', () => {
-            let memberName = faker.animal.bear();
-            let memberEmail = faker.word.adjective(4) + '@algo.com';
-            let memberLabel = faker.word.adjective(4);
-            let memberNota = faker.lorem.paragraph(3);
+        context("When I create a new member with existing email.", () => {
             beforeEach(() => {
-                fillData(memberName, memberEmail, memberLabel, memberNota)
-                userPage.clickSaveMember()
+                let memberEmail = faker.word.adjective(5)+ '@algo.com';
+                userPage.clickNewMember()
+                userPage.fillTagById('#member-email',memberEmail)
+                userPage.clickSaveMember();
+                cy.wait(3000);
+                userPage.visit()
+                cy.wait(3000);
+                userPage.clickNewMember()
+                userPage.fillTagById('#member-email',memberEmail)
+                userPage.clickSaveMember();
+                cy.on('uncaught:exception', (err, runnable) => {
+                    return false
+                })
+                cy.wait(2000);
             })
-            it("Then I should see the detail user", () => {
-                userPage.getTitle().should('contain.text', memberName);
-                login.tomarPantallazo("F004-EP014", "3")
+            it("Then I should see the message 'Member already exists.'", () => {
+                userPage.getRespose().should("contain.text", "Member already exists.")
             })
-
         })
 
+        context("When I create a new member with a note longer than 500 characters", () => {
+            beforeEach(() => {
+                const memberName = faker.word.adjective(4);
+                const memberEmail = faker.word.adjective(4) + '@algo.com';
+                const memberNota = faker.lorem.paragraph(20);
+                userPage.clickNewMember()
+                userPage.fillTagById('#member-name',memberName);
+                userPage.fillTagById('#member-email',memberEmail)
+                userPage.fillTagById('#member-note', memberNota)
+                userPage.clickSaveMember();
+                cy.wait(3000);
+            })
+            it("Then I should see the message  'Note is too long'", () => {
+                userPage.getRespose().should("contain.text", "Note is too long.")
+            })
+        })
     })
 })
 
-
-describe("EP015 edit user", () => {
+describe("EP014 edit member ALEATORIO", () => {
     context('Given I go to users page', () => {
         let cookieValue
 
@@ -84,132 +114,85 @@ describe("EP015 edit user", () => {
         beforeEach(() => {
             cy.setCookie('ghost-admin-api-session', cookieValue)
             userPage.visit()
+            userPage.clickSelectUser()
+            cy.wait(1000)
         })
 
-        context("When I select a user", () => {
+        context("When I edit a member with a name longer than 191 characters", () => {
             beforeEach(() => {
-                userPage.clickSelectUser()
-                cy.wait(1000)
+                let memberName = faker.lorem.paragraph(10);
+                let memberEmail = faker.word.adjective(4) + '@algo.com';
+                userPage.clearTagById('#member-name');
+                userPage.clearTagById('#member-email');
+                userPage.fillTagById('#member-name',memberName);
+                userPage.fillTagById('#member-email',memberEmail)
+                userPage.clickSaveMember();
+                cy.wait(3000);
             })
-            it("Then I should see a edit member page", () => {
-                userPage.getEstatusTittleMember().should("contain.text", "Edit member")
-                login.tomarPantallazo("F004-EP015", "1")
+            it("Then I should see the message 'Name cannot be longer than 191 characters.'", () => {
+                userPage.getRespose().should("contain.text", "Name cannot be longer")
             })
         })
 
-
-        context("When I change user name ", () => {
-            let memberName = faker.animal.bear();
+        context("When I edit a member without email.", () => {
             beforeEach(() => {
-                selectUserAndChangeName(memberName)
+                userPage.clearTagById('#member-email');
+                userPage.clickSaveMember();
+                cy.wait(3000);
             })
-            it("Then I should see the new member name", () => {
-                userPage.getMemberName().should('have.value', memberName)
-                login.tomarPantallazo("F004-EP015", "2")
+            it("Then I should see the message 'Please enter an email'", () => {
+                userPage.getRespose().should("contain.text", "Please enter an email")
             })
         })
 
-        context("When I change user name and click on save button", () => {
-            let memberName = faker.animal.bear();
+        context("When I edit a member with incorrect  email.", () => {
             beforeEach(() => {
-                selectUserAndChangeName(memberName)
-                userPage.clickSaveMember()
+                let memberEmail = faker.word.adjective(4);
+                userPage.clearTagById('#member-email');
+                userPage.fillTagById('#member-email',memberEmail)
+                userPage.clickSaveMember();
             })
-            it("Then I should see the save button with teh class gh-btn-green", () => {
-                userPage.getButtonSave().should('have.class', 'gh-btn-green')
-                login.tomarPantallazo("F004-EP015", "3")
+            it("Then I should see the message 'Member already exists.'", () => {
+                userPage.getRespose().should("contain.text", "Invalid Email.")
             })
         })
 
-    })
-})
-
-
-describe("EP016 delete user", () => {
-    context('Given I go to users page', () => {
-        let cookieValue
-
-        before(() => {
-            login.insertLogin()
-            cy.getCookie('ghost-admin-api-session').then((cookie) => {
-                cookieValue = cookie.value;
-            });
-        })
-
-        beforeEach(() => {
-            cy.setCookie('ghost-admin-api-session', cookieValue)
-            userPage.visit()
-        })
-
-        context("When I select a user", () => {
+        context("When I edit a member with existing email.", () => {
             beforeEach(() => {
-                userPage.clickSelectUser()
-                cy.wait(1000)
+                userPage.visit();
+                cy.wait(2000);
+                let memberEmail = faker.word.adjective(4)+ '@algo.com';
+                userPage.clickNewMember()
+                userPage.fillTagById('#member-email',memberEmail)
+                userPage.clickSaveMember();
+                cy.wait(3000);
+                userPage.visit()
+                cy.wait(3000);
+                userPage.clickSelectUserByRow(2);
+                userPage.clearTagById('#member-email');
+                userPage.fillTagById('#member-email',memberEmail)
+                userPage.clickSaveMember();
+                cy.on('uncaught:exception', (err, runnable) => {
+                    return false
+                })
+                cy.wait(2000);
             })
-            it("Then I should see a edit member page", () => {
-                userPage.getEstatusTittleMember().should("contain.text", "Edit member")
-                login.tomarPantallazo("F004-EP016", "1")
-            })
-        })
-
-        context("When I click on setting button ", () => {
-            beforeEach(() => {
-                userPage.clickSelectUser()
-                cy.wait(1000)
-                userPage.clickSettingButton()
-            })
-            it("Then I should see the delete menu", () => {
-                userPage.getDeleteMenu().should('exist');
-                login.tomarPantallazo("F004-EP016", "2")
-            })
-        })
-
-        context("When I click on delete button ", () => {
-            beforeEach(() => {
-                clickOnDeleteButton()
-            })
-            it("Then I should see the confirmation pop-up", () => {
-                userPage.getConfirmationPopUp().should('exist');
-                login.tomarPantallazo("F004-EP016", "3")
+            it("Then I should see the message 'Member already exists.'", () => {
+                userPage.getRespose().should("contain.text", "Member already exists.")
             })
         })
 
-
-        context("When I click on confirm delete user ", () => {
+        context("When I edit member with a note longer than 500 characters", () => {
             beforeEach(() => {
-                clickOnDeleteButton()
-                userPage.clickConfirmationPopUp()
-                cy.wait(3000)
+                const memberNota = faker.lorem.paragraph(20);
+                userPage.clearTagById('#member-note');
+                userPage.fillTagById('#member-note', memberNota)
+                userPage.clickSaveMember();
+                cy.wait(3000);
             })
-            it("Then I should see the Members page", () => {
-                userPage.getTitle().should('contain.text', 'Members');
-                login.tomarPantallazo("F004-EP016", "4")
+            it("Then I should see the message 'Note is too long'", () => {
+                userPage.getRespose().should("contain.text", "Note is too long.")
             })
         })
     })
 })
-
-function clickOnDeleteButton(){
-    userPage.clickSelectUser()
-    cy.wait(1000)
-    userPage.clickSettingButton()
-    cy.wait(1000)
-    userPage.clickDeleteButton()
-}
-function fillData(memberName, memberEmail, memberLabel, memberNota) {
-    userPage.clickNewMember()
-    cy.wait(1000)
-    userPage.fillTagById('#member-name',memberName)
-    userPage.fillTagById('#member-email',memberEmail)
-    userPage.fillTagById('.ember-power-select-trigger-multiple-input', memberLabel)
-    userPage.fillTagById('#member-note', memberNota)
-}
-
-function selectUserAndChangeName(memberName) {
-    userPage.clickSelectUser()
-    cy.wait(1000)
-    userPage.clearTagById('#member-name')
-    userPage.fillTagById('#member-name',memberName)
-    userPage.clickOutOfForm()
-    cy.wait(1000)
-}
