@@ -58,6 +58,18 @@ class Post {
             .should('not.exist');
     }
 
+    verifyPostPublished(namePost) {
+        this.visit();
+        cy.wait(1000)
+        this.clickFilterByTypeAndName('All posts', 'Published posts');
+        return expect(this.getPostByTitle(namePost)).to.exist
+    }
+
+    notificactionUpdateFailed(){
+        return cy.get(`.gh-alert.gh-alert-red>.gh-alert-content`).should('contain.text', 'Title cannot be longer than 255 characters');
+    }
 }
 
-module.exports = Post
+
+
+module.exports = Post;

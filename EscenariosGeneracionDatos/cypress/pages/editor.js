@@ -11,7 +11,7 @@ class Editor {
 
     clearTitle(placeHolder) {
         return cy.get('textarea.gh-editor-title.ember-text-area.gh-input.ember-view')
-        .should('have.attr', 'placeholder', placeHolder).clear()
+            .should('have.attr', 'placeholder', placeHolder).clear()
     }
 
     fillContent(contentPost) {
@@ -48,32 +48,56 @@ class Editor {
         return cy.get('button[data-test-button="publish-save"]').click()
     }
 
-    uploadImage(fileName) {
+    uploadImage(fileName, path) {
         cy.get('input[type="file"]').eq(1).selectFile({
-            contents: 'cypress/fixtures/imagen.JPG',
+            contents: path,
             fileName: fileName + '.jpg',
-        },{ force: true })
+        }, { force: true })
     }
 
-    getImage(fileName){
+    uploadVideo(fileName, path) {
+        cy.get('input[type="file"]').eq(1).selectFile({
+            contents: path,
+            fileName: fileName + '.mp4',
+        }, { force: true })
+    }
+
+    uploadAudio(fileName, path) {
+        cy.get('input[type="file"]').eq(1).selectFile({
+            contents: path,
+            fileName: fileName + '.mp3',
+        }, { force: true })
+    }
+
+    uploadGaleryImages(fileNamesPahts) {
+        let objectsFiles = fileNamesPahts.map((fileNamesPaht) => {
+            return {
+                contents: fileNamesPaht.filePath,
+                fileName: fileNamesPaht.fileName + '.png',
+            }
+        });
+        cy.get('input[type="file"]').eq(1).selectFile(objectsFiles, { force: true })
+    }
+
+    getImage(fileName) {
         return cy.get('img').should(($imgs) => {
             const imagenConNombre = $imgs.filter((index, img) => {
                 const src = img.getAttribute('src');
                 return src.includes(fileName);
             });
-            return imagenConNombre;
+            return imagenConNombre.first();
         })
     }
 
-    getModalHeaderMessage(){
+    getModalHeaderMessage() {
         return cy.get('header.modal-header').first()
     }
 
-    getButtonPageSettings(){
+    getButtonPageSettings() {
         return cy.get('button.settings-menu-toggle[title="Settings"]').first()
     }
 
-    getButtonDeletePage(){
+    getButtonDeletePage() {
         return cy.get('div.settings-menu-delete-button>button').first()
     }
 
@@ -83,7 +107,33 @@ class Editor {
             .first()
     }
 
+    publish() {
+        this.clickPublish()
+        cy.wait(500)
+        this.clickButtonFinalReview()
+        cy.wait(500)
+        this.clickButtonPublishRighNow();
+        cy.wait(1000)
+    }
 
+    uploadFixtureImage(fileName, filePath) {
+        cy.get('[data-test-file-input="feature-image"] > input').selectFile({
+            contents: filePath,
+            fileName: fileName + '.jpg',
+        }, { force: true })
+    }
+
+    getErrorMessageUploadFixture() {
+        return cy.get('[data-test-error="feature-image"]').contains('Unable to manipulate image')
+    }
+
+    getErrorFileUpload() {
+        return cy.get('[data-testid="media-placeholder-errors"]').contains('The file type you uploaded is not supported.')
+    }
+
+    getErrorGalleryUpload(){
+        return cy.get('[data-testid="gallery-error"]').contains('Galleries are limited to 9 images')
+    }
 }
 
 module.exports = Editor
