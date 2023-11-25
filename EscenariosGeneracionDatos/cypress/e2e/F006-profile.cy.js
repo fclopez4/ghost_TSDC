@@ -49,7 +49,7 @@ describe("F006 Profile user", () => {
 
             cy.when('When I fill user input form', () => {
                 profile.fillUserName(datosValidos.full_name)
-                cy.wait(500)
+                cy.wait(1000)
             })
 
             cy.then2('Then I see a valid input class', () => {
@@ -58,7 +58,7 @@ describe("F006 Profile user", () => {
 
             cy.when('When I complete the entry with data with more than the character limit', () => {
                 profile.fillUserName(datosInvalidos.full_name)
-                cy.wait(500)
+                cy.wait(1000)
             })
 
             cy.then2('Then I see a invalid input class', () => {
@@ -67,7 +67,7 @@ describe("F006 Profile user", () => {
 
             cy.when('When I complete the entry with data with a limit of 191 characters', () => {
                 profile.fillUserName(datosLimite.full_name)
-                cy.wait(500)
+                cy.wait(1000)
             })
 
             cy.then2('Then I see a valid input class', () => {
@@ -84,7 +84,7 @@ describe("F006 Profile user", () => {
 
             cy.when('When I fill slug form', () => {
                 profile.fillSlug(datosValidos.slug)
-                cy.wait(500)
+                cy.wait(1000)
             })
 
             cy.then2('I see a valid input class', () => {
@@ -93,6 +93,7 @@ describe("F006 Profile user", () => {
 
             cy.when('I complete the entry with data with more than 191 characters', () => {
                 profile.fillSlug(datosInvalidos.slug)
+                cy.wait(1000)
             })
 
             cy.then2('I see a invalid input class', () => {
@@ -101,7 +102,7 @@ describe("F006 Profile user", () => {
 
             cy.when('When I complete the entry with data with a limit of 191 characters', () => {
                 profile.fillSlug(datosLimite.slug)
-                cy.wait(500)
+                cy.wait(1000)
             })
 
             cy.then2('Then I see a valid input class', () => {
@@ -118,7 +119,7 @@ describe("F006 Profile user", () => {
 
             cy.when('When I fill email form', () => {
                 profile.fillEmail(datosValidos.email)
-                cy.wait(500)
+                cy.wait(1000)
             })
 
             cy.then2('Then I see a valid input class', () => {
@@ -127,7 +128,7 @@ describe("F006 Profile user", () => {
 
             cy.when('When I complete the entry with data with more than the character limit', () => {
                 profile.fillEmail(datosInvalidos.email)
-                cy.wait(500)
+                cy.wait(1000)
             })
 
             cy.then2('Then I see a invalid input class', () => {
@@ -136,7 +137,7 @@ describe("F006 Profile user", () => {
 
             cy.when('When I complete the entry with data with a limit of 191 characters', () => {
                 profile.fillEmail(datosLimite.email)
-                cy.wait(500)
+                cy.wait(1000)
             })
 
             cy.then2('Then I see a valid input class', () => {
@@ -153,7 +154,7 @@ describe("F006 Profile user", () => {
 
             cy.when('When I fill location form', () => {
                 profile.fillLocation(datosValidos.location)
-                cy.wait(500)
+                cy.wait(1000)
             })
 
             cy.then2('Then I see a valid input class', () => {
@@ -162,7 +163,7 @@ describe("F006 Profile user", () => {
 
             cy.when('When I complete the entry with data with more than the character limit', () => {
                 profile.fillLocation(datosInvalidos.location)
-                cy.wait(500)
+                cy.wait(1000)
             })
 
             cy.then2('Then I see a invalid input class', () => {
@@ -187,7 +188,7 @@ describe("F006 Profile user", () => {
 
             cy.when('When I fill website form', () => {
                 profile.fillWebsite(datosValidos.website)
-                cy.wait(500)
+                cy.wait(1000)
             })
 
             cy.then2('Then I see a valid input class', () => {
@@ -196,7 +197,7 @@ describe("F006 Profile user", () => {
 
             cy.when('When I complete the entry with data with more than the character limit', () => {
                 profile.fillWebsite(datosInvalidos.website)
-                cy.wait(500)
+                cy.wait(1000)
             })
 
             cy.then2('Then I see a invalid input class', () => {
@@ -205,7 +206,7 @@ describe("F006 Profile user", () => {
 
             cy.when('When I complete the entry with data with a limit of 191 characters', () => {
                 profile.fillWebsite(datosLimite.website)
-                cy.wait(500)
+                cy.wait(1000)
             })
 
             cy.then2('Then I see a valid input class', () => {
@@ -222,7 +223,7 @@ describe("F006 Profile user", () => {
 
             cy.when('When I fill facebook profile form', () => {
                 profile.fillFacebook(datosValidos.facebook_profile)
-                cy.wait(500)
+                cy.wait(1000)
             })
 
             cy.then2('Then I see a valid input class', () => {
@@ -233,7 +234,7 @@ describe("F006 Profile user", () => {
 
             cy.when('When I complete the entry with data with more than the 2000 character limit', () => {
                 profile.fillFacebook(datosInvalidos.facebook_profile)
-                cy.wait(500)
+                cy.wait(1000)
             })
 
             cy.then2('Then I see a invalid input class', () => {
@@ -242,7 +243,7 @@ describe("F006 Profile user", () => {
 
             cy.when('When I complete the entry with data with a limit of 20000 characters', () => {
                 profile.fillFacebook(datosLimite.facebook_profile)
-                cy.wait(500)
+                cy.wait(1000)
             })
 
             cy.then2('Then I see a valid input class', () => {
@@ -259,7 +260,7 @@ describe("F006 Profile user", () => {
 
             cy.when('When I fill twitter profile form', () => {
                 profile.fillTwitter(datosValidos.twitter_profile)
-                cy.wait(500)
+                cy.wait(1000)
             })
 
             cy.then2('Then I see a valid input class', () => {
@@ -268,7 +269,7 @@ describe("F006 Profile user", () => {
 
             cy.when('When I complete the entry with data with more than the character limit', () => {
                 profile.fillTwitter(datosInvalidos.twitter_profile)
-                cy.wait(500)
+                cy.wait(1000)
             })
 
             cy.then2('Then I see a invalid input class', () => {
@@ -277,7 +278,7 @@ describe("F006 Profile user", () => {
 
             cy.when('When I complete the entry with data with a limit of 20000 characters', () => {
                 profile.fillTwitter(datosLimite.twitter_profile)
-                cy.wait(500)
+                cy.wait(1000)
             })
 
             cy.then2('Then I see a valid input class', () => {
@@ -294,7 +295,7 @@ describe("F006 Profile user", () => {
 
             cy.when('When I fill bio form', () => {
                 profile.fillBio(datosValidos.biography)
-                cy.wait(500)
+                cy.wait(1000)
             })
 
             cy.then2('Then I see a valid input class', () => {
@@ -303,7 +304,7 @@ describe("F006 Profile user", () => {
 
             cy.when('When I complete the entry with data with more than the character limit', () => {
                 profile.fillBio(datosInvalidos.biography)
-                cy.wait(500)
+                cy.wait(1000)
             })
 
             cy.then2('Then I see a invalid input class', () => {
@@ -312,7 +313,7 @@ describe("F006 Profile user", () => {
 
             cy.when('When I complete the entry with data with a limit of 200 characters', () => {
                 profile.fillBio(datosLimite.biography)
-                cy.wait(500)
+                cy.wait(1000)
             })
 
             cy.then2('Then I see a valid input class', () => {
@@ -329,23 +330,23 @@ describe("F006 Profile user", () => {
 
             cy.when('When I fill old password form', () => {
                 profile.fillOldPassword(Cypress.env('password'))
-                cy.wait(500)
+                cy.wait(1000)
             })
 
             cy.ands('I fill new password form', () => {
                 console.log("password used: ",datosValidos.new_password);
                 profile.fillNewPassword(datosValidos.new_password)
-                cy.wait(500)
+                cy.wait(1000)
             })
 
             cy.ands('I verify password form', () => {
                 profile.fillNewPasswordConfirmation(datosValidos.new_password)
-                cy.wait(500)
+                cy.wait(1000)
             })
 
             cy.ands('I click on change password button', () => {
                 profile.clickChangePassword()
-                cy.wait(500)
+                cy.wait(1000)
             })
 
             cy.then2('Then I see a message change password', () => {
@@ -367,22 +368,22 @@ describe("F006 Profile user", () => {
 
             cy.when('When I fill old password form', () => {
                 profile.fillOldPassword(datosValidos.new_password)
-                cy.wait(500)
+                cy.wait(1000)
             })
 
             cy.ands('I fill new password form', () => {
                 profile.fillNewPassword(datosValidos.new_password)
-                cy.wait(500)
+                cy.wait(1000)
             })
 
             cy.ands('I verify password form', () => {
                 profile.fillNewPasswordConfirmation(datosValidos.new_password)
-                cy.wait(500)
+                cy.wait(1000)
             })
 
             cy.ands('I click on change password button', () => {
                 profile.clickChangePassword()
-                cy.wait(500)
+                cy.wait(1000)
             })
 
             cy.then2('Then I see a message your password is incorrect', () => {

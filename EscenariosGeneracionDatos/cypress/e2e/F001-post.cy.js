@@ -651,7 +651,7 @@ describe("F001 post", () => {
         })
     })
 
-    describe("EP019 create facebook card with invalid data", () => {
+    describe("EP019 create facebook card with invalid data - ALEATORIO", () => {
         it('should create a facebook card', () => {
             const namePost = faker.animal.bear()
             const titleFacebook = faker.lorem.words(300).substring(0, 301)
@@ -709,7 +709,7 @@ describe("F001 post", () => {
         })
     })
 
-    describe("EP020 create facebook card with limit data", () => {
+    describe("EP020 create facebook card with limit data - ALEATORIO", () => {
         it('should create a facebook card', () => {
             const namePost = faker.animal.bear()
             const titleFacebook = faker.lorem.words(300).substring(0, 300)
