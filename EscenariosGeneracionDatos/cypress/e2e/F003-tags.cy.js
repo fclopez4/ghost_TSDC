@@ -240,7 +240,7 @@ describe('Fill X card tag - ALEATORIO', () => {
         tags.visit()
     })
 
-    it('should create a tag with google metadata with max characters -1', () => {
+    it('should create a tag and X card with max characters -1', () => {
         let tagName;
 
         cy.given('I click on create tag button', () => {
@@ -256,7 +256,7 @@ describe('Fill X card tag - ALEATORIO', () => {
             tags.fillTagNameInput(tagName)
         })
 
-        cy.ands('I fill a google metadata', () => {
+        cy.ands('I fill a x card data', () => {
             tags.clickButtonXcard()
             cy.wait(2000)
             tags.fillTagXcardTitle(faker.string.alphanumeric(299))
@@ -271,7 +271,7 @@ describe('Fill X card tag - ALEATORIO', () => {
         })
     })
 
-    it('should create a tag with google metadata with max characters', () => {
+    it('should create a tag and X card with max characters', () => {
         let tagName;
 
         cy.given('I click on create tag button', () => {
@@ -287,7 +287,7 @@ describe('Fill X card tag - ALEATORIO', () => {
             tags.fillTagNameInput(tagName)
         })
 
-        cy.ands('I fill a google metadata', () => {
+        cy.ands('I fill a x card data', () => {
             tags.clickButtonXcard()
             cy.wait(2000)
             tags.fillTagXcardTitle(faker.string.alphanumeric(300))
@@ -302,7 +302,8 @@ describe('Fill X card tag - ALEATORIO', () => {
         })
     })
 
-    it('should create a tag with google metadata with max characters +1', () => {
+    /*Por reportar, el input descripcion no valida la maxima cantidad de 500 caracteres */
+    it('should create a tag and X card with max characters +1', () => {
         let tagName;
 
         cy.given('I click on create tag button', () => {
@@ -318,7 +319,7 @@ describe('Fill X card tag - ALEATORIO', () => {
             tags.fillTagNameInput(tagName)
         })
 
-        cy.ands('I fill a google metadata', () => {
+        cy.ands('I fill a x card data', () => {
             tags.clickButtonXcard()
             cy.wait(2000)
             tags.fillTagXcardTitle(faker.string.alphanumeric(301))
@@ -330,6 +331,60 @@ describe('Fill X card tag - ALEATORIO', () => {
             tags.getTagXcardError().should('exist')
             tags.getTagXcardError().should('contain', "Validation error, cannot save tag. Validation failed for")
         })
+    })
+})
+
+describe('Fill facebook card - ALEATORIO', () =>{
+    let cookieValue
+    before(() => {
+        login.insertLogin()
+        cy.getCookie('ghost-admin-api-session').then((cookie) => {
+            cookieValue = cookie.value;
+        });
+    })
+
+    beforeEach(() => {
+        cy.setCookie('ghost-admin-api-session', cookieValue)
+        tags.visit()
+    })
+
+    it('should create a tag and facebook card with max characters -1', () => {
+
+    })
+
+    it('should create a tag and facebook card with max characters', () => {
+        
+    })
+
+    it('should create a tag and facebook card with max characters +1', () => {
+        
+    })
+})
+
+describe('Fill Code injection - ALEATORIO', () =>{
+    let cookieValue
+    before(() => {
+        login.insertLogin()
+        cy.getCookie('ghost-admin-api-session').then((cookie) => {
+            cookieValue = cookie.value;
+        });
+    })
+
+    beforeEach(() => {
+        cy.setCookie('ghost-admin-api-session', cookieValue)
+        tags.visit()
+    })
+
+    it('should create a tag with Code injection and max characters -1', () => {
+
+    })
+
+    it('should create a tag with Code injection and max characters', () => {
+        
+    })
+
+    it('should create a tag with Code injection and max characters +1', () => {
+        
     })
 })
 
