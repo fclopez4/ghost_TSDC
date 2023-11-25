@@ -5,7 +5,7 @@ import { faker } from '@faker-js/faker'
 const login = new Login()
 const userPage = new User()
 
-describe("EP014 create member - ALEATORIO", () => {
+describe("EP031 create member - ALEATORIO", () => {
     context('Given I go to users page', () => {
         let cookieValue
 
@@ -36,6 +36,25 @@ describe("EP014 create member - ALEATORIO", () => {
             })
         })
 
+    })
+})
+
+describe("EP032 Crear miembro sin email - ALEATORIO", () => {
+    context('Given I go to users page', () => {
+        let cookieValue
+
+        before(() => {
+            login.insertLogin()
+            cy.getCookie('ghost-admin-api-session').then((cookie) => {
+                cookieValue = cookie.value;
+            });
+        })
+
+        beforeEach(() => {
+            cy.setCookie('ghost-admin-api-session', cookieValue)
+            userPage.visit()
+        })
+
         context("When I create a new member without email.", () => {
             beforeEach(() => {
                 userPage.clickNewMember()
@@ -45,6 +64,24 @@ describe("EP014 create member - ALEATORIO", () => {
             it("Then I should see the message 'Please enter an email'", () => {
                 userPage.getRespose().should("contain.text", "Please enter an email")
             })
+        })
+    })
+})
+
+describe("EP033 Crear miembro con email incorrecto - ALEATORIO", () => {
+    context('Given I go to users page', () => {
+        let cookieValue
+
+        before(() => {
+            login.insertLogin()
+            cy.getCookie('ghost-admin-api-session').then((cookie) => {
+                cookieValue = cookie.value;
+            });
+        })
+
+        beforeEach(() => {
+            cy.setCookie('ghost-admin-api-session', cookieValue)
+            userPage.visit()
         })
 
         context("When I create a new member with incorrect email.", () => {
@@ -57,6 +94,24 @@ describe("EP014 create member - ALEATORIO", () => {
             it("Then I should see the message 'Member already exists.'", () => {
                 userPage.getRespose().should("contain.text", "Invalid Email.")
             })
+        })
+    })
+})
+
+describe("EP034 Crear miembro con email existente - ALEATORIO", () => {
+    context('Given I go to users page', () => {
+        let cookieValue
+
+        before(() => {
+            login.insertLogin()
+            cy.getCookie('ghost-admin-api-session').then((cookie) => {
+                cookieValue = cookie.value;
+            });
+        })
+
+        beforeEach(() => {
+            cy.setCookie('ghost-admin-api-session', cookieValue)
+            userPage.visit()
         })
 
         context("When I create a new member with existing email.", () => {
@@ -81,6 +136,25 @@ describe("EP014 create member - ALEATORIO", () => {
             })
         })
 
+    })
+})
+
+describe("EP035 Crear miembro con Nota mayor a 500 caracteres - ALEATORIO", () => {
+    context('Given I go to users page', () => {
+        let cookieValue
+
+        before(() => {
+            login.insertLogin()
+            cy.getCookie('ghost-admin-api-session').then((cookie) => {
+                cookieValue = cookie.value;
+            });
+        })
+
+        beforeEach(() => {
+            cy.setCookie('ghost-admin-api-session', cookieValue)
+            userPage.visit()
+        })
+
         context("When I create a new member with a note longer than 500 characters", () => {
             beforeEach(() => {
                 const memberName = faker.word.adjective(4);
@@ -97,10 +171,11 @@ describe("EP014 create member - ALEATORIO", () => {
                 userPage.getRespose().should("contain.text", "Note is too long.")
             })
         })
+
     })
 })
 
-describe("EP014 edit member ALEATORIO", () => {
+describe("EP036 Editar miembro con Nombre mayor a 191 caracteres - ALEATORIO", () => {
     context('Given I go to users page', () => {
         let cookieValue
 
@@ -134,6 +209,27 @@ describe("EP014 edit member ALEATORIO", () => {
             })
         })
 
+    })
+})
+
+describe("EP037 Editar miembro sin email - ALEATORIO", () => {
+    context('Given I go to users page', () => {
+        let cookieValue
+
+        before(() => {
+            login.insertLogin()
+            cy.getCookie('ghost-admin-api-session').then((cookie) => {
+                cookieValue = cookie.value;
+            });
+        })
+
+        beforeEach(() => {
+            cy.setCookie('ghost-admin-api-session', cookieValue)
+            userPage.visit()
+            userPage.clickSelectUser()
+            cy.wait(1000)
+        })
+
         context("When I edit a member without email.", () => {
             beforeEach(() => {
                 userPage.clearTagById('#member-email');
@@ -143,6 +239,27 @@ describe("EP014 edit member ALEATORIO", () => {
             it("Then I should see the message 'Please enter an email'", () => {
                 userPage.getRespose().should("contain.text", "Please enter an email")
             })
+        })
+
+    })
+})
+
+describe("EP038 Editar miembro con email incorrecto - ALEATORIO", () => {
+    context('Given I go to users page', () => {
+        let cookieValue
+
+        before(() => {
+            login.insertLogin()
+            cy.getCookie('ghost-admin-api-session').then((cookie) => {
+                cookieValue = cookie.value;
+            });
+        })
+
+        beforeEach(() => {
+            cy.setCookie('ghost-admin-api-session', cookieValue)
+            userPage.visit()
+            userPage.clickSelectUser()
+            cy.wait(1000)
         })
 
         context("When I edit a member with incorrect  email.", () => {
@@ -155,6 +272,27 @@ describe("EP014 edit member ALEATORIO", () => {
             it("Then I should see the message 'Member already exists.'", () => {
                 userPage.getRespose().should("contain.text", "Invalid Email.")
             })
+        })
+
+    })
+})
+
+describe("EP039 Editar miembro con email existente - ALEATORIO", () => {
+    context('Given I go to users page', () => {
+        let cookieValue
+
+        before(() => {
+            login.insertLogin()
+            cy.getCookie('ghost-admin-api-session').then((cookie) => {
+                cookieValue = cookie.value;
+            });
+        })
+
+        beforeEach(() => {
+            cy.setCookie('ghost-admin-api-session', cookieValue)
+            userPage.visit()
+            userPage.clickSelectUser()
+            cy.wait(1000)
         })
 
         context("When I edit a member with existing email.", () => {
@@ -182,6 +320,27 @@ describe("EP014 edit member ALEATORIO", () => {
             })
         })
 
+    })
+})
+
+describe("EP040 Editar miembro con Nota mayor a 500 caracteres - ALEATORIO", () => {
+    context('Given I go to users page', () => {
+        let cookieValue
+
+        before(() => {
+            login.insertLogin()
+            cy.getCookie('ghost-admin-api-session').then((cookie) => {
+                cookieValue = cookie.value;
+            });
+        })
+
+        beforeEach(() => {
+            cy.setCookie('ghost-admin-api-session', cookieValue)
+            userPage.visit()
+            userPage.clickSelectUser()
+            cy.wait(1000)
+        })
+
         context("When I edit member with a note longer than 500 characters", () => {
             beforeEach(() => {
                 const memberNota = faker.lorem.paragraph(20);
@@ -194,5 +353,6 @@ describe("EP014 edit member ALEATORIO", () => {
                 userPage.getRespose().should("contain.text", "Note is too long.")
             })
         })
+
     })
 })
