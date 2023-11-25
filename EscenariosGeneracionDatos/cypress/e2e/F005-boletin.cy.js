@@ -5,7 +5,7 @@ import { faker } from '@faker-js/faker'
 const login = new Login()
 const boletinPage = new BoletinPage()
 
-describe("EP017 create newsletter - A-PRIORI", () => {
+describe("EP041 Crear newsletter - A-PRIORI", () => {
     let data;
     let name;
     context('Given I go to newsletter page', () => {
@@ -44,6 +44,32 @@ describe("EP017 create newsletter - A-PRIORI", () => {
             })
         })
 
+    })
+})
+
+describe("EP042 Crear newsletter sin nombre - A-PRIORI", () => {
+    let data;
+    let name;
+    context('Given I go to newsletter page', () => {
+        let cookieValue
+        before(() => {
+            login.insertLogin()
+            cy.getCookie('ghost-admin-api-session').then((cookie) => {
+                cookieValue = cookie.value;
+            });
+            cy.fixture('newsletter.json').then((fData) => {
+                data = fData;
+            });
+            name = faker.word.adjective(4);
+        })
+
+        beforeEach(() => {
+            cy.setCookie('ghost-admin-api-session', cookieValue)
+            boletinPage.visit()
+            cy.wait(1000)
+            boletinPage.clickNewLetter();
+        })
+
         context("When I create a empty newsletter", () => {
             beforeEach(() => {
                 boletinPage.clickCreate();
@@ -52,6 +78,32 @@ describe("EP017 create newsletter - A-PRIORI", () => {
             it("Then I should see the message 'Please enter a name.'", () => {
                 boletinPage.getRespose().should("contain.text", "Please enter a name.");
             })
+        })
+
+    })
+})
+
+describe("EP043 Crear newsletter con nombre mayor a 191 caracteres - A-PRIORI", () => {
+    let data;
+    let name;
+    context('Given I go to newsletter page', () => {
+        let cookieValue
+        before(() => {
+            login.insertLogin()
+            cy.getCookie('ghost-admin-api-session').then((cookie) => {
+                cookieValue = cookie.value;
+            });
+            cy.fixture('newsletter.json').then((fData) => {
+                data = fData;
+            });
+            name = faker.word.adjective(4);
+        })
+
+        beforeEach(() => {
+            cy.setCookie('ghost-admin-api-session', cookieValue)
+            boletinPage.visit()
+            cy.wait(1000)
+            boletinPage.clickNewLetter();
         })
 
         context("When I create newsletter with name  longer than 191 characteres", () => {
@@ -65,9 +117,54 @@ describe("EP017 create newsletter - A-PRIORI", () => {
             })
         })
 
+    })
+})
+
+describe("EP044 Crear newsletter con nombre existente - A-PRIORI", () => {
+    let data;
+    let existingName;
+    context('Given I go to newsletter page', () => {
+        let cookieValue
+        before(() => {
+            login.insertLogin()
+            cy.getCookie('ghost-admin-api-session').then((cookie) => {
+                cookieValue = cookie.value;
+            });
+            cy.fixture('newsletter.json').then((fData) => {
+                data = fData;
+            });
+            existingName = faker.word.adjective(4);
+        })
+
+        beforeEach(() => {
+            cy.setCookie('ghost-admin-api-session', cookieValue)
+            boletinPage.visit()
+            cy.wait(1000)
+            boletinPage.clickNewLetter();
+        })
+
+        context("When I create a newsletter", () => {
+            let size = 0;
+            beforeEach(() => {
+                boletinPage.visit()
+                cy.wait(1000)
+                boletinPage.clickNewLetter();
+                cy.get('.sortable-objects').find('div.draggable-object').should(($divs) => {
+                    size = $divs.length;
+                });
+                boletinPage.fillTagById('#newsletter-title', existingName)
+                boletinPage.fillTagById('#newsletter-description', data[0].description)
+                boletinPage.clickCreate();
+                cy.wait(3000)
+            })
+            it("Then I should add a new element  to the card'", () => {
+                cy.get('.sortable-objects').find('div.draggable-object').should('have.length', (size+1));
+            })
+        })
+
         context("When I create newsletter with a existing name", () => {
             beforeEach(() => {
-                boletinPage.fillTagById('#newsletter-title', name)
+                boletinPage.fillTagById('#newsletter-title', existingName)
                 boletinPage.clickCreate();
                 cy.on('uncaught:exception', (err, runnable) => {
                     return false
@@ -79,6 +176,31 @@ describe("EP017 create newsletter - A-PRIORI", () => {
             })
         })
 
+    })
+})
+
+describe("EP045 Crear newsletter con descripción mayor a 2001 caracteres - A-PRIORI", () => {
+    let data;
+    let name;
+    context('Given I go to newsletter page', () => {
+        let cookieValue
+        before(() => {
+            login.insertLogin()
+            cy.getCookie('ghost-admin-api-session').then((cookie) => {
+                cookieValue = cookie.value;
+            });
+            cy.fixture('newsletter.json').then((fData) => {
+                data = fData;
+            });
+            name = faker.word.adjective(4);
+        })
+
+        beforeEach(() => {
+            cy.setCookie('ghost-admin-api-session', cookieValue)
+            boletinPage.visit()
+            cy.wait(1000)
+            boletinPage.clickNewLetter();
+        })
 
         context("When I create newsletter with description longer than 2001 characters", () => {
             beforeEach(() => {
@@ -95,8 +217,33 @@ describe("EP017 create newsletter - A-PRIORI", () => {
             })
         })
 
+    })
+})
 
-        context("When I create newsletter with name description longer than 191 characteres", () => {
+describe("EP046 Crear newsletter con nombre y descripcion mayor a 191 y 2001 caracteres respectivamente - A-PRIORI", () => {
+    let data;
+    let name;
+    context('Given I go to newsletter page', () => {
+        let cookieValue
+        before(() => {
+            login.insertLogin()
+            cy.getCookie('ghost-admin-api-session').then((cookie) => {
+                cookieValue = cookie.value;
+            });
+            cy.fixture('newsletter.json').then((fData) => {
+                data = fData;
+            });
+            name = faker.word.adjective(4);
+        })
+
+        beforeEach(() => {
+            cy.setCookie('ghost-admin-api-session', cookieValue)
+            boletinPage.visit()
+            cy.wait(1000)
+            boletinPage.clickNewLetter();
+        })
+
+        context("When I create newsletter with name and description longer than 191 characteres", () => {
             beforeEach(() => {
                 boletinPage.fillTagById('#newsletter-title', data[2].description);
                 boletinPage.fillTagById('#newsletter-description', data[0].paragraph);
@@ -112,12 +259,10 @@ describe("EP017 create newsletter - A-PRIORI", () => {
             })
         })
 
-
-
     })
 })
 
-describe("EP018 edit  newsletter - A-PRIORI", () => {
+describe("EP047 Editar newsletter sin nombre - A-PRIORI", () => {
     let data;
     let name;
     context('Given I go to newsletter page', () => {
@@ -154,6 +299,31 @@ describe("EP018 edit  newsletter - A-PRIORI", () => {
             })
         })
 
+    })
+})
+
+describe("EP048 Editar newsletter con nombre existente - A-PRIORI", () => {
+    let data;
+    let name;
+    context('Given I go to newsletter page', () => {
+        let cookieValue
+        before(() => {
+            login.insertLogin()
+            cy.getCookie('ghost-admin-api-session').then((cookie) => {
+                cookieValue = cookie.value;
+            });
+            cy.fixture('newsletter.json').then((fData) => {
+                data = fData;
+            });
+            name = faker.word.adjective(4);
+        })
+
+        beforeEach(() => {
+            cy.setCookie('ghost-admin-api-session', cookieValue)
+            boletinPage.visit()
+            cy.wait(1000)
+            boletinPage.selectNewsLetter()
+        })
 
         context("When I edit a newsletter with existing name", () => {
             beforeEach(() => {
@@ -179,6 +349,32 @@ describe("EP018 edit  newsletter - A-PRIORI", () => {
             })
         })
 
+    })
+})
+
+describe("EP049 Editar newsletter con nombre mayor a 191 - A-PRIORI", () => {
+    let data;
+    let name;
+    context('Given I go to newsletter page', () => {
+        let cookieValue
+        before(() => {
+            login.insertLogin()
+            cy.getCookie('ghost-admin-api-session').then((cookie) => {
+                cookieValue = cookie.value;
+            });
+            cy.fixture('newsletter.json').then((fData) => {
+                data = fData;
+            });
+            name = faker.word.adjective(4);
+        })
+
+        beforeEach(() => {
+            cy.setCookie('ghost-admin-api-session', cookieValue)
+            boletinPage.visit()
+            cy.wait(1000)
+            boletinPage.selectNewsLetter()
+        })
+
         context("When I edit a newsletter with name longer than 191 characteres ", () => {
             beforeEach(() => {
                 boletinPage.clearTagById('#newsletter-title');
@@ -192,6 +388,32 @@ describe("EP018 edit  newsletter - A-PRIORI", () => {
             it("Then I should see the message 'Cannot be longer than 191 characters'", () => {
                 boletinPage.getRespose().should("contain.text", "Cannot be longer than 191 characters");
             })
+        })
+
+    })
+})
+
+describe("EP050 Editar newsletter con descripción mayor a 2001 - A-PRIORI", () => {
+    let data;
+    let name;
+    context('Given I go to newsletter page', () => {
+        let cookieValue
+        before(() => {
+            login.insertLogin()
+            cy.getCookie('ghost-admin-api-session').then((cookie) => {
+                cookieValue = cookie.value;
+            });
+            cy.fixture('newsletter.json').then((fData) => {
+                data = fData;
+            });
+            name = faker.word.adjective(4);
+        })
+
+        beforeEach(() => {
+            cy.setCookie('ghost-admin-api-session', cookieValue)
+            boletinPage.visit()
+            cy.wait(1000)
+            boletinPage.selectNewsLetter()
         })
 
         context("When I edit a newsletter with description longer than 2001 characteres ", () => {
@@ -209,6 +431,32 @@ describe("EP018 edit  newsletter - A-PRIORI", () => {
             })
         })
 
+    })
+})
+
+describe("EP051 Editar newsletter con email incorrecto - A-PRIORI", () => {
+    let data;
+    let name;
+    context('Given I go to newsletter page', () => {
+        let cookieValue
+        before(() => {
+            login.insertLogin()
+            cy.getCookie('ghost-admin-api-session').then((cookie) => {
+                cookieValue = cookie.value;
+            });
+            cy.fixture('newsletter.json').then((fData) => {
+                data = fData;
+            });
+            name = faker.word.adjective(4);
+        })
+
+        beforeEach(() => {
+            cy.setCookie('ghost-admin-api-session', cookieValue)
+            boletinPage.visit()
+            cy.wait(1000)
+            boletinPage.selectNewsLetter()
+        })
+
         context("When I edit a newsletter incorrect format email ", () => {
             beforeEach(() => {
                 boletinPage.expandEmailSection();
@@ -219,20 +467,23 @@ describe("EP018 edit  newsletter - A-PRIORI", () => {
                 boletinPage.getRespose().should("contain.text", "Invalid email.");
             })
         })
+
     })
 })
 
-describe("EP019 create newsletter - A-PRIORI ", () => {
+/**
+ * Pruebas Con el API (pseudo) aleatorio dinámico
+ */
+describe("EP052 Crear newsletter - (pseudo) aleatorio dinámico", () => {
     let data;
     let name;
-    context('Given I go to newsletter page ', () => {
+    context('Given I go to newsletter page', () => {
         let cookieValue
         before(() => {
             login.insertLogin()
             cy.getCookie('ghost-admin-api-session').then((cookie) => {
                 cookieValue = cookie.value;
             });
-
             cy.request({
                 method: 'GET',
                 url: 'https://my.api.mockaroo.com/newsletter.json?key=fde37d00',
@@ -266,6 +517,36 @@ describe("EP019 create newsletter - A-PRIORI ", () => {
             })
         })
 
+    })
+})
+
+describe("EP053 Crear newsletter sin nombre - (pseudo) aleatorio dinámico", () => {
+    let data;
+    let name;
+    context('Given I go to newsletter page', () => {
+        let cookieValue
+        before(() => {
+            login.insertLogin()
+            cy.getCookie('ghost-admin-api-session').then((cookie) => {
+                cookieValue = cookie.value;
+            });
+            cy.request({
+                method: 'GET',
+                url: 'https://my.api.mockaroo.com/newsletter.json?key=fde37d00',
+            }).then((response) => {
+                expect(response.status).to.equal(200);
+                data = response.body;
+            });
+            name = faker.word.adjective(4);
+        })
+
+        beforeEach(() => {
+            cy.setCookie('ghost-admin-api-session', cookieValue)
+            boletinPage.visit()
+            cy.wait(1000)
+            boletinPage.clickNewLetter();
+        })
+
         context("When I create a empty newsletter", () => {
             beforeEach(() => {
                 boletinPage.clickCreate();
@@ -274,6 +555,36 @@ describe("EP019 create newsletter - A-PRIORI ", () => {
             it("Then I should see the message 'Please enter a name.'", () => {
                 boletinPage.getRespose().should("contain.text", "Please enter a name.");
             })
+        })
+
+    })
+})
+
+describe("EP054 Crear newsletter con nombre mayor a 191 caracteres - (pseudo) aleatorio dinámico", () => {
+    let data;
+    let name;
+    context('Given I go to newsletter page', () => {
+        let cookieValue
+        before(() => {
+            login.insertLogin()
+            cy.getCookie('ghost-admin-api-session').then((cookie) => {
+                cookieValue = cookie.value;
+            });
+            cy.request({
+                method: 'GET',
+                url: 'https://my.api.mockaroo.com/newsletter.json?key=fde37d00',
+            }).then((response) => {
+                expect(response.status).to.equal(200);
+                data = response.body;
+            });
+            name = faker.word.adjective(4);
+        })
+
+        beforeEach(() => {
+            cy.setCookie('ghost-admin-api-session', cookieValue)
+            boletinPage.visit()
+            cy.wait(1000)
+            boletinPage.clickNewLetter();
         })
 
         context("When I create newsletter with name  longer than 191 characteres", () => {
@@ -287,9 +598,58 @@ describe("EP019 create newsletter - A-PRIORI ", () => {
             })
         })
 
+    })
+})
+
+describe("EP055 Crear newsletter con nombre existente - (pseudo) aleatorio dinámico", () => {
+    let data;
+    let existingName;
+    context('Given I go to newsletter page', () => {
+        let cookieValue
+        before(() => {
+            login.insertLogin()
+            cy.getCookie('ghost-admin-api-session').then((cookie) => {
+                cookieValue = cookie.value;
+            });
+            cy.request({
+                method: 'GET',
+                url: 'https://my.api.mockaroo.com/newsletter.json?key=fde37d00',
+            }).then((response) => {
+                expect(response.status).to.equal(200);
+                data = response.body;
+            });
+            existingName = faker.word.adjective(4);
+        })
+
+        beforeEach(() => {
+            cy.setCookie('ghost-admin-api-session', cookieValue)
+            boletinPage.visit()
+            cy.wait(1000)
+            boletinPage.clickNewLetter();
+        })
+
+        context("When I create a newsletter", () => {
+            let size = 0;
+            beforeEach(() => {
+                boletinPage.visit()
+                cy.wait(1000)
+                boletinPage.clickNewLetter();
+                cy.get('.sortable-objects').find('div.draggable-object').should(($divs) => {
+                    size = $divs.length;
+                });
+                boletinPage.fillTagById('#newsletter-title', existingName)
+                boletinPage.fillTagById('#newsletter-description', data[0].description)
+                boletinPage.clickCreate();
+                cy.wait(3000)
+            })
+            it("Then I should add a new element  to the card'", () => {
+                cy.get('.sortable-objects').find('div.draggable-object').should('have.length', (size+1));
+            })
+        })
+
         context("When I create newsletter with a existing name", () => {
             beforeEach(() => {
-                boletinPage.fillTagById('#newsletter-title', name)
+                boletinPage.fillTagById('#newsletter-title', existingName)
                 boletinPage.clickCreate();
                 cy.on('uncaught:exception', (err, runnable) => {
                     return false
@@ -301,6 +661,35 @@ describe("EP019 create newsletter - A-PRIORI ", () => {
             })
         })
 
+    })
+})
+
+describe("EP056 Crear newsletter con descripción mayor a 2001 caracteres - (pseudo) aleatorio dinámico", () => {
+    let data;
+    let name;
+    context('Given I go to newsletter page', () => {
+        let cookieValue
+        before(() => {
+            login.insertLogin()
+            cy.getCookie('ghost-admin-api-session').then((cookie) => {
+                cookieValue = cookie.value;
+            });
+            cy.request({
+                method: 'GET',
+                url: 'https://my.api.mockaroo.com/newsletter.json?key=fde37d00',
+            }).then((response) => {
+                expect(response.status).to.equal(200);
+                data = response.body;
+            });
+            name = faker.word.adjective(4);
+        })
+
+        beforeEach(() => {
+            cy.setCookie('ghost-admin-api-session', cookieValue)
+            boletinPage.visit()
+            cy.wait(1000)
+            boletinPage.clickNewLetter();
+        })
 
         context("When I create newsletter with description longer than 2001 characters", () => {
             beforeEach(() => {
@@ -317,8 +706,37 @@ describe("EP019 create newsletter - A-PRIORI ", () => {
             })
         })
 
+    })
+})
 
-        context("When I create newsletter with name description longer than 191 characteres", () => {
+describe("EP057 Crear newsletter con nombre y descripcion mayor a 191 y 2001 caracteres respectivamente - (pseudo) aleatorio dinámico", () => {
+    let data;
+    let name;
+    context('Given I go to newsletter page', () => {
+        let cookieValue
+        before(() => {
+            login.insertLogin()
+            cy.getCookie('ghost-admin-api-session').then((cookie) => {
+                cookieValue = cookie.value;
+            });
+            cy.request({
+                method: 'GET',
+                url: 'https://my.api.mockaroo.com/newsletter.json?key=fde37d00',
+            }).then((response) => {
+                expect(response.status).to.equal(200);
+                data = response.body;
+            });
+            name = faker.word.adjective(4);
+        })
+
+        beforeEach(() => {
+            cy.setCookie('ghost-admin-api-session', cookieValue)
+            boletinPage.visit()
+            cy.wait(1000)
+            boletinPage.clickNewLetter();
+        })
+
+        context("When I create newsletter with name and description longer than 191 characteres", () => {
             beforeEach(() => {
                 boletinPage.fillTagById('#newsletter-title', data[2].description);
                 boletinPage.fillTagById('#newsletter-description', data[0].paragraph);
@@ -337,7 +755,7 @@ describe("EP019 create newsletter - A-PRIORI ", () => {
     })
 })
 
-describe("EP0120 edit  newsletter - API", () => {
+describe("EP058 Editar newsletter sin nombre - (pseudo) aleatorio dinámico", () => {
     let data;
     let name;
     context('Given I go to newsletter page', () => {
@@ -347,7 +765,6 @@ describe("EP0120 edit  newsletter - API", () => {
             cy.getCookie('ghost-admin-api-session').then((cookie) => {
                 cookieValue = cookie.value;
             });
-
             cy.request({
                 method: 'GET',
                 url: 'https://my.api.mockaroo.com/newsletter.json?key=fde37d00',
@@ -379,6 +796,35 @@ describe("EP0120 edit  newsletter - API", () => {
             })
         })
 
+    })
+})
+
+describe("EP059 Editar newsletter con nombre existente - (pseudo) aleatorio dinámico", () => {
+    let data;
+    let name;
+    context('Given I go to newsletter page', () => {
+        let cookieValue
+        before(() => {
+            login.insertLogin()
+            cy.getCookie('ghost-admin-api-session').then((cookie) => {
+                cookieValue = cookie.value;
+            });
+            cy.request({
+                method: 'GET',
+                url: 'https://my.api.mockaroo.com/newsletter.json?key=fde37d00',
+            }).then((response) => {
+                expect(response.status).to.equal(200);
+                data = response.body;
+            });
+            name = faker.word.adjective(4);
+        })
+
+        beforeEach(() => {
+            cy.setCookie('ghost-admin-api-session', cookieValue)
+            boletinPage.visit()
+            cy.wait(1000)
+            boletinPage.selectNewsLetter()
+        })
 
         context("When I edit a newsletter with existing name", () => {
             beforeEach(() => {
@@ -404,6 +850,36 @@ describe("EP0120 edit  newsletter - API", () => {
             })
         })
 
+    })
+})
+
+describe("EP060 Editar newsletter con nombre mayor a 191 - (pseudo) aleatorio dinámico", () => {
+    let data;
+    let name;
+    context('Given I go to newsletter page', () => {
+        let cookieValue
+        before(() => {
+            login.insertLogin()
+            cy.getCookie('ghost-admin-api-session').then((cookie) => {
+                cookieValue = cookie.value;
+            });
+            cy.request({
+                method: 'GET',
+                url: 'https://my.api.mockaroo.com/newsletter.json?key=fde37d00',
+            }).then((response) => {
+                expect(response.status).to.equal(200);
+                data = response.body;
+            });
+            name = faker.word.adjective(4);
+        })
+
+        beforeEach(() => {
+            cy.setCookie('ghost-admin-api-session', cookieValue)
+            boletinPage.visit()
+            cy.wait(1000)
+            boletinPage.selectNewsLetter()
+        })
+
         context("When I edit a newsletter with name longer than 191 characteres ", () => {
             beforeEach(() => {
                 boletinPage.clearTagById('#newsletter-title');
@@ -417,6 +893,36 @@ describe("EP0120 edit  newsletter - API", () => {
             it("Then I should see the message 'Cannot be longer than 191 characters'", () => {
                 boletinPage.getRespose().should("contain.text", "Cannot be longer than 191 characters");
             })
+        })
+
+    })
+})
+
+describe("EP061 Editar newsletter con descripción mayor a 2001 - (pseudo) aleatorio dinámico", () => {
+    let data;
+    let name;
+    context('Given I go to newsletter page', () => {
+        let cookieValue
+        before(() => {
+            login.insertLogin()
+            cy.getCookie('ghost-admin-api-session').then((cookie) => {
+                cookieValue = cookie.value;
+            });
+            cy.request({
+                method: 'GET',
+                url: 'https://my.api.mockaroo.com/newsletter.json?key=fde37d00',
+            }).then((response) => {
+                expect(response.status).to.equal(200);
+                data = response.body;
+            });
+            name = faker.word.adjective(4);
+        })
+
+        beforeEach(() => {
+            cy.setCookie('ghost-admin-api-session', cookieValue)
+            boletinPage.visit()
+            cy.wait(1000)
+            boletinPage.selectNewsLetter()
         })
 
         context("When I edit a newsletter with description longer than 2001 characteres ", () => {
@@ -434,6 +940,36 @@ describe("EP0120 edit  newsletter - API", () => {
             })
         })
 
+    })
+})
+
+describe("EP062 Editar newsletter con email incorrecto - (pseudo) aleatorio dinámico", () => {
+    let data;
+    let name;
+    context('Given I go to newsletter page', () => {
+        let cookieValue
+        before(() => {
+            login.insertLogin()
+            cy.getCookie('ghost-admin-api-session').then((cookie) => {
+                cookieValue = cookie.value;
+            });
+            cy.request({
+                method: 'GET',
+                url: 'https://my.api.mockaroo.com/newsletter.json?key=fde37d00',
+            }).then((response) => {
+                expect(response.status).to.equal(200);
+                data = response.body;
+            });
+            name = faker.word.adjective(4);
+        })
+
+        beforeEach(() => {
+            cy.setCookie('ghost-admin-api-session', cookieValue)
+            boletinPage.visit()
+            cy.wait(1000)
+            boletinPage.selectNewsLetter()
+        })
+
         context("When I edit a newsletter incorrect format email ", () => {
             beforeEach(() => {
                 boletinPage.expandEmailSection();
@@ -444,5 +980,6 @@ describe("EP0120 edit  newsletter - API", () => {
                 boletinPage.getRespose().should("contain.text", "Invalid email.");
             })
         })
+
     })
 })
