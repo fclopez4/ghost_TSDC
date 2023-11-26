@@ -29,7 +29,7 @@ Cypress.Commands.add('then2', (description, callback) => {
 })
 
 /* ALEATORIO */
-describe('EP001 create page - ALEATORIO', () => {
+describe('EP063 create page - ALEATORIO', () => {
     let cookieValue
     before(() => {
         login.insertLogin()
@@ -70,7 +70,7 @@ describe('EP001 create page - ALEATORIO', () => {
     })
 })
 
-describe('EP007 edit page - ALEATORIO', () => {
+describe('EP064 edit page - ALEATORIO', () => {
     let cookieValue
 
     before(() => {
@@ -123,7 +123,7 @@ describe('EP007 edit page - ALEATORIO', () => {
     })
 })
 
-describe('EP003 create a page with a title longer than 256 characters - ALEATORIO', () => {
+describe('EP065 create a page with a title longer than 256 characters - ALEATORIO', () => {
     let cookieValue
 
     before(() => {
@@ -141,7 +141,7 @@ describe('EP003 create a page with a title longer than 256 characters - ALEATORI
     it('should create a page with a title longer than 256 characters', () => {
         const pageName = faker.lorem.words(256).substring(0, 256)
 
-        cy.given('I click on new post page', () => {
+        cy.given('I click on new page button', () => {
             page.clickNewPage()
         })
 
@@ -163,7 +163,7 @@ describe('EP003 create a page with a title longer than 256 characters - ALEATORI
     })
 })
 
-describe("EP015 update publish date in page with data valid - ALEATORIO", () => {
+describe("EP066 update publish date in page with data valid - ALEATORIO", () => {
     let cookieValue
 
     before(() => {
@@ -215,7 +215,7 @@ describe("EP015 update publish date in page with data valid - ALEATORIO", () => 
     })
 })
 
-describe("EP016 update publish date in page with future date - ALEATORIO", () => {
+describe("EP067 update publish date in page with future date - ALEATORIO", () => {
     let cookieValue
 
     before(() => {
@@ -268,7 +268,7 @@ describe("EP016 update publish date in page with future date - ALEATORIO", () =>
 
 })
 
-describe("EP017 update publish date in page with today date - ALEATORIO", () => {
+describe("EP068 update publish date in page with today date - ALEATORIO", () => {
     let cookieValue
 
     before(() => {
@@ -290,7 +290,7 @@ describe("EP017 update publish date in page with today date - ALEATORIO", () => 
         const dateInput = editor.generateDate(date)
         const timeInput = editor.gerateTime(date)
 
-        cy.given('I click on new page post', () => {
+        cy.given('I click on new page button', () => {
             page.clickNewPage()
         })
 
@@ -320,7 +320,7 @@ describe("EP017 update publish date in page with today date - ALEATORIO", () => 
     })
 })
 
-describe("EP020 create facebook card with limit data - ALEATORIO", () => {
+describe("EP069 create facebook card with limit data - ALEATORIO", () => {
     let cookieValue
     let datosBase
 
@@ -392,8 +392,9 @@ describe("EP020 create facebook card with limit data - ALEATORIO", () => {
     })
 })
 
+
 /* APRIORI */
-describe('EP004 add a valid feature image - APRIORI', () => {
+describe('EP070 add a valid feature image - APRIORI', () => {
     let cookieValue
     let datosBase
 
@@ -431,7 +432,7 @@ describe('EP004 add a valid feature image - APRIORI', () => {
     })
 })
 
-describe('EP005 add a invalid feature image format - APRIORI', () => {
+describe('EP071 add a invalid feature image format - APRIORI', () => {
     let cookieValue
     let datosBase
 
@@ -470,7 +471,7 @@ describe('EP005 add a invalid feature image format - APRIORI', () => {
     })
 })
 
-describe("EP006 add an image to a page - APRIORI", () => {
+describe("EP072 add an image to a page - APRIORI", () => {
     let cookieValue
     let datosBase
 
@@ -513,7 +514,7 @@ describe("EP006 add an image to a page - APRIORI", () => {
     })
 })
 
-describe("EP008 add a video valid to a page - APRIORI", () => {
+describe("EP073 add a video valid to a page - APRIORI", () => {
     let cookieValue
     let datosBase
 
@@ -556,7 +557,7 @@ describe("EP008 add a video valid to a page - APRIORI", () => {
     })
 })
 
-describe("EP009 add a video invalid to a page - APRIORI", () => {
+describe("EP074 add a video invalid to a page - APRIORI", () => {
     let cookieValue
     let datosBase
 
@@ -603,7 +604,7 @@ describe("EP009 add a video invalid to a page - APRIORI", () => {
     })
 });
 
-describe("EP012 add a gallery valid to a page - APRIORI", () => {
+describe("EP075 add a gallery valid to a page - APRIORI", () => {
     let cookieValue
     let datosBase
 
@@ -649,7 +650,7 @@ describe("EP012 add a gallery valid to a page - APRIORI", () => {
             cy.wait(1000)
         })
 
-        cy.then2('I see the imagves into gallery post', () => {
+        cy.then2('I see the images into page gallery', () => {
             fileNamesPahts.forEach((fileName) => {
                 expect(editor.getImage(fileName.fileName)).exist
             })
@@ -657,7 +658,7 @@ describe("EP012 add a gallery valid to a page - APRIORI", () => {
     })
 })
 
-describe("EP013 add limit images to a gallery post - APRIORI", () => {
+describe("EP076 add limit images to a gallery page - APRIORI", () => {
     let cookieValue
     let datosBase
 
@@ -703,7 +704,7 @@ describe("EP013 add limit images to a gallery post - APRIORI", () => {
             cy.wait(1000)
         })
 
-        cy.then2('I see the imagves into gallery post', () => {
+        cy.then2('I see the images into page gallery', () => {
             fileNamesPahts.forEach((fileName) => {
                 expect(editor.getImage(fileName.fileName)).exist
             })
@@ -711,7 +712,7 @@ describe("EP013 add limit images to a gallery post - APRIORI", () => {
     })
 })
 
-describe("EP014 add more to limit images to a gallery post - APRIORI", () => {
+describe("EP077 add more to limit images to a gallery page - APRIORI", () => {
     let cookieValue
     let datosBase
 

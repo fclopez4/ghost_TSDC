@@ -26,7 +26,7 @@ Cypress.Commands.add('then2', (description, callback) => {
 })
 
 /* ALEATORIO */
-describe('Fill tag title and description - ALEATORIO', () => {
+describe('EP078 Fill tag title and description - ALEATORIO', () => {
     let cookieValue
     before(() => {
         login.insertLogin()
@@ -116,7 +116,7 @@ describe('Fill tag title and description - ALEATORIO', () => {
 
 })
 
-describe('Fill google metadata tag - ALEATORIO', () => {
+describe('EP079 Fill google metadata tag - ALEATORIO', () => {
     let cookieValue
     before(() => {
         login.insertLogin()
@@ -226,7 +226,7 @@ describe('Fill google metadata tag - ALEATORIO', () => {
     })
 })
 
-describe('Fill X card tag - ALEATORIO', () => {
+describe('EP080 Fill X card tag - ALEATORIO', () => {
     let cookieValue
     before(() => {
         login.insertLogin()
@@ -334,7 +334,7 @@ describe('Fill X card tag - ALEATORIO', () => {
     })
 })
 
-describe('Fill facebook card - ALEATORIO', () =>{
+describe('EP081 Fill facebook card - ALEATORIO', () =>{
     let cookieValue
     before(() => {
         login.insertLogin()
@@ -442,7 +442,7 @@ describe('Fill facebook card - ALEATORIO', () =>{
     })
 })
 
-describe('Fill Code injection - ALEATORIO', () =>{
+describe('EP082 Fill Code injection - ALEATORIO', () =>{
     let cookieValue
     before(() => {
         login.insertLogin()
@@ -584,7 +584,7 @@ describe('Fill Code injection - ALEATORIO', () =>{
 
 
 /* APRIORI */
-describe('Fill tag title and description - APRIORI', () => {
+describe('EP083 Fill tag title and description - APRIORI', () => {
     let cookieValue
     let dataMockaroo
     before(() => {
@@ -680,7 +680,7 @@ describe('Fill tag title and description - APRIORI', () => {
 
 })
 
-describe('Fill google metadata tag - APRIORI', () => {
+describe('EP084 Fill google metadata tag - APRIORI', () => {
     let cookieValue
     let dataMockaroo
 
@@ -795,8 +795,7 @@ describe('Fill google metadata tag - APRIORI', () => {
     })
 })
 
-
-describe('Fill X card tag - APRIORI', () => {
+describe('EP085 Fill X card tag - APRIORI', () => {
     let cookieValue
     let dataMockaroo
 
@@ -909,8 +908,7 @@ describe('Fill X card tag - APRIORI', () => {
     })
 })
 
-
-describe('Fill facebook card - APRIORI', () =>{
+describe('EP086 Fill facebook card - APRIORI', () =>{
     let cookieValue
     let dataMockaroo
 
@@ -1023,8 +1021,7 @@ describe('Fill facebook card - APRIORI', () =>{
     })
 })
 
-
-describe('Fill Code injection - APRIORI', () =>{
+describe('EP087 Fill Code injection - APRIORI', () =>{
     let cookieValue
     let dataMockaroo
 
@@ -1110,7 +1107,7 @@ describe('Fill Code injection - APRIORI', () =>{
 
 
 /* DINAMICO */
-describe('Fill tag title and description - DINAMICO', () => {
+describe('EP088 Fill tag title and description - DINAMICO', () => {
     let cookieValue
     let dataMockaroo
     before(() => {
@@ -1210,7 +1207,7 @@ describe('Fill tag title and description - DINAMICO', () => {
 
 })
 
-describe('Fill google metadata tag - DINAMICO', () => {
+describe('EP089 Fill google metadata tag - DINAMICO', () => {
     let cookieValue
     let dataMockaroo
 
@@ -1329,7 +1326,7 @@ describe('Fill google metadata tag - DINAMICO', () => {
     })
 })
 
-describe('Fill X card tag - DINAMICO', () => {
+describe('EP090 Fill X card tag - DINAMICO', () => {
     let cookieValue
     let dataMockaroo
 
@@ -1446,7 +1443,7 @@ describe('Fill X card tag - DINAMICO', () => {
     })
 })
 
-describe('Fill facebook card - DINAMICO', () =>{
+describe('EP091 Fill facebook card - DINAMICO', () =>{
     let cookieValue
     let dataMockaroo
 
@@ -1563,7 +1560,7 @@ describe('Fill facebook card - DINAMICO', () =>{
     })
 })
 
-describe('Fill Code injection - DINAMICO', () =>{
+describe('EP092 Fill Code injection - DINAMICO', () =>{
     let cookieValue
     let dataMockaroo
 
