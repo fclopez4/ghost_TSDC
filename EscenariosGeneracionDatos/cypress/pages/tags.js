@@ -16,6 +16,14 @@ class Tags {
         return cy.get('section.view-actions>a.ember-view.gh-btn.gh-btn-primary').first()
     }
 
+    getTagTitleInput(){
+        return cy.get('input#tag-name.gh-input')
+    }
+
+    getTagDescriptionInput(){
+        return cy.get('textarea#tag-description.gh-input').first()
+    }
+
     getTagMessageError() {
         return cy.get('span.error>p.response').first()
     }
@@ -72,6 +80,27 @@ class Tags {
         return cy.get('.gh-alert')
     }
 
+    getTagFacebookTitle(){
+        return cy.get('#og-title')
+    }
+
+    getTagFacebookDescription(){
+        return cy.get('#og-description')
+    }
+
+    getTagFacebookError(){
+        return cy.get('.gh-alert')
+    }
+
+    getTagCodeInjectionHeader(){
+        return cy.get('#tag-setting-codeinjection-head > .CodeMirror > .CodeMirror-scroll')
+    }
+
+    getTagCodeInjectionFooter(){
+        return cy.get('#tag-setting-codeinjection-foot > .CodeMirror > .CodeMirror-scroll')
+    }
+
+
     clickButtonGoogleMetadata(){
         return cy.get(':nth-child(1) > .gh-expandable-header > .gh-btn > span').click()
     }
@@ -80,8 +109,12 @@ class Tags {
         return cy.get(':nth-child(2) > .gh-expandable-header > .gh-btn > span').click()
     }
 
-    clickButtonFacebookMetadata(){
-        return cy.get(':nth-child(2) > .gh-expandable-header > .gh-btn > span').click()
+    clickButtonFacebookCard(){
+        return cy.get(':nth-child(3) > .gh-expandable-header > .gh-btn > span').click()
+    }
+
+    clickButtonCodeInjection(){
+        return cy.get(':nth-child(4) > .gh-expandable-header > .gh-btn > span').click()
     }
 
     clickButtonSaveTag() {
@@ -121,13 +154,11 @@ class Tags {
 
 
     fillTagNameInput(contentInput) {
-        return cy.get('input#tag-name.gh-input').first()
-            .type(contentInput)
+        return this.getTagTitleInput().type(contentInput, { parseSpecialCharSequences: false })
     }
 
     cleanFillTagNameInput(contentInput) {
-        return cy.get('input#tag-name.gh-input').first()
-            .clear().type(contentInput)
+        return this.getTagTitleInput().clear().type(contentInput)
     }
 
     fillTagColorInput(contentInput) {
@@ -136,8 +167,7 @@ class Tags {
     }
 
     fillTagDescription(contentInput) {
-        return cy.get('textarea.gh-input.gh-tag-details-textarea').first()
-            .type(contentInput)
+        return this.getTagDescriptionInput().type(contentInput, { parseSpecialCharSequences: false })
     }
 
     fillTagMetadataTitle(contentInput){
@@ -158,6 +188,22 @@ class Tags {
 
     fillTagXcardDescription(contentInput){
         return this.getTagXcardDescription().type(contentInput)
+    }
+
+    fillTagFacebookTitle(contentInput){
+        return this.getTagFacebookTitle().type(contentInput)
+    }
+
+    fillTagFacebookDescription(contentInput){
+        return this.getTagFacebookDescription().type(contentInput)
+    }
+
+    fillTagCodeInjectionHeader(contentInput) {
+        return this.getTagCodeInjectionHeader().click().type(contentInput, { parseSpecialCharSequences: false })
+    }
+
+    fillTagCodeInjectionFooter(contentInput) {
+        return this.getTagCodeInjectionFooter().click().wait(3000).type(contentInput, { parseSpecialCharSequences: false })
     }
 
 }

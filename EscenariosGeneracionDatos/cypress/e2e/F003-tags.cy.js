@@ -25,7 +25,7 @@ Cypress.Commands.add('then2', (description, callback) => {
     callback()
 })
 
-
+/* ALEATORIO */
 describe('Fill tag title and description - ALEATORIO', () => {
     let cookieValue
     before(() => {
@@ -302,7 +302,7 @@ describe('Fill X card tag - ALEATORIO', () => {
         })
     })
 
-    /*Por reportar, el input descripcion no valida la maxima cantidad de 500 caracteres */
+    /*Por reportar, el diseño de alerta de errores no es consistente con  tag y google metadata*/
     it('should create a tag and X card with max characters +1', () => {
         let tagName;
 
@@ -349,15 +349,96 @@ describe('Fill facebook card - ALEATORIO', () =>{
     })
 
     it('should create a tag and facebook card with max characters -1', () => {
+        let tagName;
 
+        cy.given('I click on create tag button', () => {
+            tags.clickButtonNewTag()
+        })
+
+        cy.when('I show the title of new tag form', () => {
+            tags.getTagTitle().should("contain.text", "New tag")
+        })
+
+        cy.ands('I fill a tag name', () => {
+            tagName = faker.string.alphanumeric(6)
+            tags.fillTagNameInput(tagName)
+        })
+
+        cy.ands('I fill a facebook card data', () => {
+            tags.clickButtonFacebookCard()
+            cy.wait(2000)
+            tags.fillTagFacebookTitle(faker.string.alphanumeric(299))
+            tags.fillTagFacebookDescription(faker.string.alphanumeric(499))
+            tags.clickButtonSaveTag()
+            tags.reload()
+        })
+
+        cy.then2('I should be see the tag created', () => {
+            tags.visit()
+            tags.getTagListTitle().contains(tagName).should('exist');
+        })
     })
 
     it('should create a tag and facebook card with max characters', () => {
-        
+        let tagName;
+
+        cy.given('I click on create tag button', () => {
+            tags.clickButtonNewTag()
+        })
+
+        cy.when('I show the title of new tag form', () => {
+            tags.getTagTitle().should("contain.text", "New tag")
+        })
+
+        cy.ands('I fill a tag name', () => {
+            tagName = faker.string.alphanumeric(6)
+            tags.fillTagNameInput(tagName)
+        })
+
+        cy.ands('I fill a facebook card data', () => {
+            tags.clickButtonFacebookCard()
+            cy.wait(2000)
+            tags.fillTagFacebookTitle(faker.string.alphanumeric(300))
+            tags.fillTagFacebookDescription(faker.string.alphanumeric(500))
+            tags.clickButtonSaveTag()
+            tags.reload()
+        })
+
+        cy.then2('I should be see the tag created', () => {
+            tags.visit()
+            tags.getTagListTitle().contains(tagName).should('exist');
+        })
     })
 
+    /*Por reportar, el diseño de alerta de errores no es consistente con  tag y google metadata*/
     it('should create a tag and facebook card with max characters +1', () => {
-        
+        let tagName;
+
+        cy.given('I click on create tag button', () => {
+            tags.clickButtonNewTag()
+        })
+
+        cy.when('I show the title of new tag form', () => {
+            tags.getTagTitle().should("contain.text", "New tag")
+        })
+
+        cy.ands('I fill a tag name', () => {
+            tagName = faker.string.alphanumeric(6)
+            tags.fillTagNameInput(tagName)
+        })
+
+        cy.ands('I fill a facebook card data', () => {
+            tags.clickButtonFacebookCard()
+            cy.wait(2000)
+            tags.fillTagFacebookTitle(faker.string.alphanumeric(301))
+            tags.fillTagFacebookDescription(faker.string.alphanumeric(501))
+            tags.clickButtonSaveTag()
+        })
+
+        cy.then2('I should be see the tag created', () => {
+            tags.getTagFacebookError().should('exist')
+            tags.getTagFacebookError().should('contain', "Validation error, cannot save tag. Validation failed for")
+        })
     })
 })
 
@@ -375,319 +456,1197 @@ describe('Fill Code injection - ALEATORIO', () =>{
         tags.visit()
     })
 
-    it('should create a tag with Code injection and max characters -1', () => {
+    it('should create a tag with Code injection and just special characters', () => {
+        let tagName;
 
+        cy.given('I click on create tag button', () => {
+            tags.clickButtonNewTag()
+        })
+
+        cy.when('I show the title of new tag form', () => {
+            tags.getTagTitle().should("contain.text", "New tag")
+        })
+
+        cy.ands('I fill a tag name', () => {
+            tagName = faker.string.alphanumeric(6)
+            tags.fillTagNameInput(tagName)
+        })
+
+        cy.ands('I fill a code injection header', () => {
+            tags.clickButtonCodeInjection()
+            cy.wait(1000)
+            tags.fillTagCodeInjectionHeader(faker.helpers.fromRegExp('[!@#$%^&*()_+{}|:<>?;"",./`~]{100}'))
+            tags.fillTagCodeInjectionFooter(faker.helpers.fromRegExp('[!@#$%^&*()_+{}|:<>?;"",./`~]{100}'))
+            tags.clickButtonSaveTag()
+            cy.wait(1000)
+            tags.reload()
+        })
+
+        cy.then2('I should be see the tag created', () => {
+            tags.visit()
+            tags.getTagListTitle().contains(tagName).should('exist');
+        })
     })
 
-    it('should create a tag with Code injection and max characters', () => {
-        
+    it('should create a tag with Code injection and IT phrases', () => {
+        let tagName;
+
+        cy.given('I click on create tag button', () => {
+            tags.clickButtonNewTag()
+        })
+
+        cy.when('I show the title of new tag form', () => {
+            tags.getTagTitle().should("contain.text", "New tag")
+        })
+
+        cy.ands('I fill a tag name', () => {
+            tagName = faker.string.alphanumeric(6)
+            tags.fillTagNameInput(tagName)
+        })
+
+        cy.ands('I fill a code injection header', () => {
+            tags.clickButtonCodeInjection()
+            cy.wait(1000)
+            tags.fillTagCodeInjectionHeader(faker.hacker.phrase())
+            tags.fillTagCodeInjectionFooter(faker.hacker.verb())
+            tags.clickButtonSaveTag()
+            tags.reload()
+        })
+
+        cy.then2('I should be see the tag created', () => {
+            tags.visit()
+            tags.getTagListTitle().contains(tagName).should('exist');
+        })
     })
 
-    it('should create a tag with Code injection and max characters +1', () => {
-        
+    it('should create a tag with Code injection and IT adjectives', () => {
+        let tagName;
+
+        cy.given('I click on create tag button', () => {
+            tags.clickButtonNewTag()
+        })
+
+        cy.when('I show the title of new tag form', () => {
+            tags.getTagTitle().should("contain.text", "New tag")
+        })
+
+        cy.ands('I fill a tag name', () => {
+            tagName = faker.string.alphanumeric(6)
+            tags.fillTagNameInput(tagName)
+        })
+
+        cy.ands('I fill a code injection header', () => {
+            tags.clickButtonCodeInjection()
+            cy.wait(1000)
+            tags.fillTagCodeInjectionHeader(faker.hacker.adjective())
+            tags.fillTagCodeInjectionFooter(faker.hacker.verb())
+            tags.clickButtonSaveTag()
+            tags.reload()
+        })
+
+        cy.then2('I should be see the tag created', () => {
+            tags.visit()
+            tags.getTagListTitle().contains(tagName).should('exist');
+        }) 
+    })
+
+    it('should create a tag with Code injection and IT verbs', () => {
+        let tagName;
+
+        cy.given('I click on create tag button', () => {
+            tags.clickButtonNewTag()
+        })
+
+        cy.when('I show the title of new tag form', () => {
+            tags.getTagTitle().should("contain.text", "New tag")
+        })
+
+        cy.ands('I fill a tag name', () => {
+            tagName = faker.string.alphanumeric(6)
+            tags.fillTagNameInput(tagName)
+        })
+
+        cy.ands('I fill a code injection header', () => {
+            tags.clickButtonCodeInjection()
+            cy.wait(1000)
+            tags.fillTagCodeInjectionHeader(faker.hacker.noun())
+            tags.fillTagCodeInjectionFooter(faker.hacker.ingverb())
+            tags.clickButtonSaveTag()
+            tags.reload()
+        })
+
+        cy.then2('I should be see the tag created', () => {
+            tags.visit()
+            tags.getTagListTitle().contains(tagName).should('exist');
+        })
     })
 })
 
-/*
 
-describe('EP010 create tag', () => {
-    context('Given I go to tags page', () => {
-        let cookieValue;
-        let indicator = 'F003-EP010';
+/* APRIORI */
+describe('Fill tag title and description - APRIORI', () => {
+    let cookieValue
+    let dataMockaroo
+    before(() => {
+        login.insertLogin()
+        cy.getCookie('ghost-admin-api-session').then((cookie) => {
+            cookieValue = cookie.value;
+        });
 
-        before(() => {
-            login.insertLogin()            
-            cy.wait(3000)
-            login.tomarPantallazo(indicator,'01')
-            cy.getCookie('ghost-admin-api-session').then((cookie) => {
-                cookieValue = cookie.value;
-            });
-        })
+        cy.fixture('Tags/tags_title_and_description.json').then(data =>{
+            dataMockaroo = data
+        })        
+    })
 
-        beforeEach(() => {
-            cy.setCookie('ghost-admin-api-session', cookieValue)
-            tags.visit()
-            login.tomarPantallazo(indicator,'02')
+    beforeEach(() => {
+        cy.setCookie('ghost-admin-api-session', cookieValue)
+        tags.visit()
+    })
+
+    it('should create a tag with max characters -1', () => {
+        let tagName;
+
+        cy.given('I click on create tag button', () => {
             tags.clickButtonNewTag()
-            cy.wait(1000)
-            login.tomarPantallazo(indicator,'03')
         })
 
-        context('When I click on save button without fill tag form fields', () => {
-            beforeEach(() => {
-                tags.clickButtonSaveTag()
-                cy.wait(1000)
-                login.tomarPantallazo(indicator,'04')
-            })
-
-            it('Then I should be see a message about empty name', () => {
-                tags.getTagMessageError().should("contain.text", "You must specify a name for the tag.")
-            })
+        cy.when('I show the title of new tag form', () => {
+            tags.getTagTitle().should("contain.text", "New tag")
         })
 
-        context('When I click on tag breadcrum', () => {
-            beforeEach(() => {
-                tags.clickBreadcrumbTag()
-                cy.wait(1000)
-                login.tomarPantallazo(indicator,'05')
-            })
-
-            it('Then I should be see a modal message', () => {
-                tags.getTagModalHeader().should("contain.text", "Are you sure you want to leave this page?")
-            })
+        cy.ands('I fill and submit the form', () => {
+            tagName = dataMockaroo[0].title_almost
+            tags.fillTagNameInput(tagName.substring(0,190))
+            tags.fillTagDescription(dataMockaroo[0].description_almost.substring(0,499))
+            tags.clickButtonSaveTag()
+            tags.visit()
         })
 
-        context('When I fill tag form fields and click on save button', () => {
-            let tagName = faker.lorem.slug()
-            beforeEach(() => {
-                fillDummyDataFormTag(tagName)
-                login.tomarPantallazo(indicator,'06')
-                tags.clickButtonSaveTag()
-                cy.wait(1000)
-                login.tomarPantallazo(indicator,'07')
-            })
-
-            it('Then I should be see the tag name like a title', () => {
-                tags.getTagTitle().should("contain.text", tagName)
-            })
+        cy.then2('I should be see the tag created', () => {
+            tags.getTagListTitle().contains(tagName).should('exist');
         })
 
-        context('When I fill tag form fields and click on leave button from breadcrum', () => {
-            let tagName = faker.lorem.slug()
-            beforeEach(() => {
-                fillDummyDataFormTag(tagName)
-                login.tomarPantallazo(indicator,'08')
-                tags.clickBreadcrumbTag()
-                login.tomarPantallazo(indicator,'09')
-                tags.clickButtonFooterModalLeaveTagForm()
-                cy.wait(1000)
-                login.tomarPantallazo(indicator,'10')
-            })
+    });
 
-            it('Then I should be return to tag list', () => {
-                tags.getTagTitle().should("contain.text", "Tags")
-            })
+    it('should create a tag with max characters', () => {
+        let tagName;
 
-            it('And not see the tag name in tag list', () => {
-                tags.getTagListTitle().contains(tagName).should('not.exist');
-            })
+        cy.given('I click on create tag button', () => {
+            tags.clickButtonNewTag()
+        })
+
+        cy.when('I show the title of new tag form', () => {
+            tags.getTagTitle().should("contain.text", "New tag")
+        })
+
+        cy.ands('I fill and submit the form', () => {
+            tagName = dataMockaroo[0].title_full
+            tags.fillTagNameInput(tagName.substring(0,191))
+            tags.fillTagDescription(dataMockaroo[0].description_full.substring(0,500))
+            tags.clickButtonSaveTag()
+            tags.reload()
+        })
+
+        cy.then2('I should be see the tag created', () => {
+            tags.visit()
+            tags.getTagListTitle().contains(tagName).should('exist');
+        })
+
+    });
+
+    it('should create a tag with max characters +1', () => {
+        let tagName;
+
+        cy.given('I click on create tag button', () => {
+            tags.clickButtonNewTag()
+        })
+
+        cy.when('I show the title of new tag form', () => {
+            tags.getTagTitle().should("contain.text", "New tag")
+        })
+
+        cy.ands('I fill and submit the form', () => {
+            tagName = dataMockaroo[0].title_overflow
+            tags.fillTagNameInput(tagName)
+            tags.fillTagDescription(dataMockaroo[0].description_overflow)
+            tags.clickButtonSaveTag()
+        })
+
+        cy.then2('I should be see the tag error message', () => {
+            tags.getTagDescriptionError().should('contain', "Description cannot be longer than 500 characters.")
+            tags.getTagNameError().should('contain', "Tag names cannot be longer than 191 characters.")
+        })
+    });
+
+})
+
+describe('Fill google metadata tag - APRIORI', () => {
+    let cookieValue
+    let dataMockaroo
+
+    before(() => {
+        login.insertLogin()
+        cy.getCookie('ghost-admin-api-session').then((cookie) => {
+            cookieValue = cookie.value;
+        });
+
+        cy.fixture('Tags/tags_metadata.json').then(data =>{
+            dataMockaroo = data
+        })   
+    })
+
+    beforeEach(() => {
+        cy.setCookie('ghost-admin-api-session', cookieValue)
+        tags.visit()
+    })
+
+    it('should create a tag with google metadata with max characters -1', () => {
+        let tagName;
+
+        cy.given('I click on create tag button', () => {
+            tags.clickButtonNewTag()
+        })
+
+        cy.when('I show the title of new tag form', () => {
+            tags.getTagTitle().should("contain.text", "New tag")
+        })
+
+        cy.ands('I fill a tag name', () => {
+            tagName = dataMockaroo[0].title_tag
+            tags.fillTagNameInput(tagName)
+        })
+
+        cy.ands('I fill a google metadata', () => {
+            tags.clickButtonGoogleMetadata()
+            tags.fillTagMetadataTitle(dataMockaroo[0].metadata_title_almost)
+            tags.fillTagMetadataDescription(dataMockaroo[0].metadata_description_almost)
+            tags.fillTagMetadataUrl(dataMockaroo[0].metadata_url_almost)
+            tags.clickButtonSaveTag()
+            tags.reload()
+        })
+
+        cy.then2('I should be see the tag created', () => {
+            tags.visit()
+            tags.getTagListTitle().contains(tagName).should('exist');
         })
     })
 
-});
+    it('should create a tag with google metadata with max characters', () => {
+        let tagName;
 
-describe('EP011 edit tag', () => {
-    context('Given I go to tags page', () => {
-        let cookieValue;
-        let indicator = 'F003-EP011';
-
-        before(() => {
-            login.insertLogin()
-            cy.wait(3000)
-            login.tomarPantallazo(indicator,'01')
-            cy.getCookie('ghost-admin-api-session').then((cookie) => {
-                cookieValue = cookie.value;
-            });
-        })
-
-        beforeEach(() => {
-            cy.setCookie('ghost-admin-api-session', cookieValue)
-            tags.visit()
-            login.tomarPantallazo(indicator,'02')
+        cy.given('I click on create tag button', () => {
             tags.clickButtonNewTag()
-            cy.wait(1000)
-            login.tomarPantallazo(indicator,'03')
         })
 
-        context('When I click on save button after change tag name and return to tag list', () => {
-            let tagName = faker.lorem.slug()
-            beforeEach(() => {
-                fillDummyDataFormTag(faker.lorem.slug())
-                login.tomarPantallazo(indicator,'04')
-                tags.clickButtonSaveTag()
-                login.tomarPantallazo(indicator,'05')
-                tags.cleanFillTagNameInput(tagName)
-                login.tomarPantallazo(indicator,'06')
-                tags.clickButtonSaveTag()
-                login.tomarPantallazo(indicator,'07')
-                tags.clickBreadcrumbTag()
-                cy.wait(1000)
-                login.tomarPantallazo(indicator,'08')
-            })
-
-            it('Then I should be see the new tag name on the tag list', () => {
-                tags.getTagListTitle().contains(tagName).should('exist');
-            })
+        cy.when('I show the title of new tag form', () => {
+            tags.getTagTitle().should("contain.text", "New tag")
         })
 
-        context('When I click on leave button after change tag name without save and return to tag list', () => {
-            let tagName = faker.lorem.slug()
-            beforeEach(() => {
-                fillDummyDataFormTag(faker.lorem.slug())
-                login.tomarPantallazo(indicator,'09')
-                tags.clickButtonSaveTag()
-                login.tomarPantallazo(indicator,'10')
-                tags.cleanFillTagNameInput(tagName)
-                login.tomarPantallazo(indicator,'11')
-                tags.clickBreadcrumbTag()
-                cy.wait(1000)
-                login.tomarPantallazo(indicator,'12')
-                tags.clickButtonFooterModalLeaveTagForm()
-                cy.wait(1000)
-                login.tomarPantallazo(indicator,'13')
-            })
-
-            it('Then I should not be see that new tag name on the tag list', () => {
-                tags.getTagListTitle().contains(tagName).should('not.exist');
-            })
-        })
-    })
-
-});
-
-describe('EP012 delete tag', () => {
-    context('Given I go to tags page', () => {
-        let cookieValue;
-        let indicator = 'F003-EP012';
-
-        before(() => {
-            login.insertLogin()
-            cy.wait(3000)
-            login.tomarPantallazo(indicator,'01')
-            cy.getCookie('ghost-admin-api-session').then((cookie) => {
-                cookieValue = cookie.value;
-            });
+        cy.ands('I fill a tag name', () => {
+            tagName = dataMockaroo[1].title_tag
+            tags.fillTagNameInput(tagName)
         })
 
-        beforeEach(() => {
-            cy.setCookie('ghost-admin-api-session', cookieValue)
+        cy.ands('I fill a google metadata', () => {
+            tags.clickButtonGoogleMetadata()
+            tags.fillTagMetadataTitle(dataMockaroo[1].metadata_title_full)
+            tags.fillTagMetadataDescription(dataMockaroo[1].metadata_description_full)
+            tags.fillTagMetadataUrl(dataMockaroo[1].metadata_url_full)
+            tags.clickButtonSaveTag()
+            tags.reload()
+        })
+
+        cy.then2('I should be see the tag created', () => {
             tags.visit()
-            login.tomarPantallazo(indicator,'02')
-            tags.clickButtonNewTag()
-            cy.wait(1000)
-            login.tomarPantallazo(indicator,'03')
-        })
-
-        context('When I click on delete button and I click on modal cancel button and return to tag list', () => {
-            const tagName = faker.lorem.slug()
-            beforeEach(() => {
-                fillDummyDataFormTag(tagName)
-                login.tomarPantallazo(indicator,'04')
-                tags.clickButtonSaveTag()
-                cy.wait(1000)
-                login.tomarPantallazo(indicator,'05')
-                tags.clickButtonDeleteTag()
-                login.tomarPantallazo(indicator,'06')
-                tags.clickButtonModalCancelTag()
-                login.tomarPantallazo(indicator,'07')
-                tags.clickBreadcrumbTag()
-                login.tomarPantallazo(indicator,'08')
-            })
-
-            it('Then I should be see that tag name on the tag list', () => {
-                tags.getTagListTitle().contains(tagName).should('exist');
-            })
-
-        })
-
-        context('When I click on delete button and I click on modal delete button', () => {
-            const tagName = faker.lorem.slug()
-            Cypress.on('uncaught:exception', (err, runnable) => {
-                return false
-            })
-            beforeEach(() => {
-                fillDummyDataFormTag(tagName)
-                login.tomarPantallazo(indicator,'09')
-                tags.clickButtonSaveTag()
-                cy.wait(1000)
-                login.tomarPantallazo(indicator,'10')
-                tags.clickButtonDeleteTag()
-                login.tomarPantallazo(indicator,'11')
-                tags.clickTagModalDeleteButton()
-                login.tomarPantallazo(indicator,'12')
-            })
-
-            it('Then I should not be see that tag name on the tag list', () => {
-                tags.getTagListTitle().contains(tagName).should('not.exist');
-            })
-
+            tags.getTagListTitle().contains(tagName).should('exist');
         })
 
     })
-});
 
-describe('EP013 list tags', () => {
-    context('Given I go to tags page', () => {
-        let cookieValue;
-        let indicator = 'F003-EP013';
+    it('should create a tag with google metadata with max characters + 1', () => {
+        let tagName;
 
-        before(() => {
-            login.insertLogin()
-            cy.wait(3000)
-            login.tomarPantallazo(indicator,'01')
-            cy.getCookie('ghost-admin-api-session').then((cookie) => {
-                cookieValue = cookie.value;
-            });
+        cy.given('I click on create tag button', () => {
+            tags.clickButtonNewTag()
         })
 
-        beforeEach(() => {
-            cy.setCookie('ghost-admin-api-session', cookieValue)
+        cy.when('I show the title of new tag form', () => {
+            tags.getTagTitle().should("contain.text", "New tag")
         })
 
-        context('When I go to the tag path and I click on new tag button and I leave form new tag', () => {
-            beforeEach(() => {
-                tags.visit()
-                login.tomarPantallazo(indicator,'02')
-                tags.clickButtonNewTag()
-                login.tomarPantallazo(indicator,'03')
-                tags.clickBreadcrumbTag()
-                cy.wait(1000)
-                login.tomarPantallazo(indicator,'04')
-                tags.clickButtonFooterModalLeaveTagForm()
-                cy.wait(1000)
-                login.tomarPantallazo(indicator,'05')
-            })
-
-            it('Then I should be see the tag title list', () => {
-                tags.getTagTitle().should("contain.text", "Tags")
-            })
-
-            it('And I should be see the button new tag', () => {
-                tags.getButtonNewTag().should("exist")
-            })
-
+        cy.ands('I fill a tag name', () => {
+            tagName = dataMockaroo[2].title_tag
+            tags.fillTagNameInput(tagName)
         })
 
-        context('When I go to the tag path and create some tags and return to tag list', () => {
-            beforeEach(() => {
-                tags.visit()               
-                login.tomarPantallazo(indicator,'06')
-                tags.clickButtonNewTag()
-                login.tomarPantallazo(indicator,'07')
-                fillDummyDataFormTag(faker.lorem.slug())
-                login.tomarPantallazo(indicator,'08')
-                tags.clickButtonSaveTag()
-                login.tomarPantallazo(indicator,'09')
-                tags.clickBreadcrumbTag()
-                cy.wait(1000)
-                login.tomarPantallazo(indicator,'10')
-                tags.clickButtonNewTag()
-                login.tomarPantallazo(indicator,'11')
-                fillDummyDataFormTag(faker.lorem.slug())
-                login.tomarPantallazo(indicator,'12')
-                tags.clickButtonSaveTag()
-                login.tomarPantallazo(indicator,'13')
-                tags.clickBreadcrumbTag()
-                cy.wait(1000)
-                login.tomarPantallazo(indicator,'14')
-            })
-
-            it('Then I should be see a tag list', () => {
-                tags.getTagListTitle().should("exist")
-            })
+        cy.ands('I fill a google metadata', () => {
+            tags.clickButtonGoogleMetadata()
+            tags.fillTagMetadataTitle(dataMockaroo[2].metadata_title_overflow)
+            tags.fillTagMetadataDescription(dataMockaroo[2].metadata_description_overflow)
+            tags.fillTagMetadataUrl(dataMockaroo[2].metadata_url_overflow)
+            tags.clickButtonSaveTag()
         })
 
+        cy.then2('I should be see the metadata error', () => {
+            tags.getTagMetadataTitleError().should('contain', "Meta Title cannot be longer than 300 characters.")
+            tags.getTagMetadataDescriptionError().should('contain', "Meta Description cannot be longer than 500 characters.")
+        })
+
+    })
+})
+
+
+describe('Fill X card tag - APRIORI', () => {
+    let cookieValue
+    let dataMockaroo
+
+    before(() => {
+        login.insertLogin()
+        cy.getCookie('ghost-admin-api-session').then((cookie) => {
+            cookieValue = cookie.value;
+        });
+
+        cy.fixture('Tags/tags_metadata.json').then(data =>{
+            dataMockaroo = data
+        })   
+    })
+
+    beforeEach(() => {
+        cy.setCookie('ghost-admin-api-session', cookieValue)
+        tags.visit()
+    })
+
+    it('should create a tag and X card with max characters -1', () => {
+        let tagName;
+
+        cy.given('I click on create tag button', () => {
+            tags.clickButtonNewTag()
+        })
+
+        cy.when('I show the title of new tag form', () => {
+            tags.getTagTitle().should("contain.text", "New tag")
+        })
+
+        cy.ands('I fill a tag name', () => {
+            tagName = dataMockaroo[3].title_tag
+            tags.fillTagNameInput(tagName)
+        })
+
+        cy.ands('I fill a x card data', () => {
+            tags.clickButtonXcard()
+            cy.wait(2000)
+            tags.fillTagXcardTitle(dataMockaroo[3].metadata_title_almost)
+            tags.fillTagXcardDescription(dataMockaroo[3].metadata_description_almost)
+            tags.clickButtonSaveTag()
+            tags.reload()
+        })
+
+        cy.then2('I should be see the tag created', () => {
+            tags.visit()
+            tags.getTagListTitle().contains(tagName).should('exist');
+        })
+    })
+
+    it('should create a tag and X card with max characters', () => {
+        let tagName;
+
+        cy.given('I click on create tag button', () => {
+            tags.clickButtonNewTag()
+        })
+
+        cy.when('I show the title of new tag form', () => {
+            tags.getTagTitle().should("contain.text", "New tag")
+        })
+
+        cy.ands('I fill a tag name', () => {
+            tagName = dataMockaroo[4].title_tag
+            tags.fillTagNameInput(tagName)
+        })
+
+        cy.ands('I fill a x card data', () => {
+            tags.clickButtonXcard()
+            cy.wait(2000)
+            tags.fillTagXcardTitle(dataMockaroo[4].metadata_title_full)
+            tags.fillTagXcardDescription(dataMockaroo[4].metadata_description_full)
+            tags.clickButtonSaveTag()
+            tags.reload()
+        })
+
+        cy.then2('I should be see the tag created', () => {
+            tags.visit()
+            tags.getTagListTitle().contains(tagName).should('exist');
+        })
+    })
+
+    it('should create a tag and X card with max characters +1', () => {
+        let tagName;
+
+        cy.given('I click on create tag button', () => {
+            tags.clickButtonNewTag()
+        })
+
+        cy.when('I show the title of new tag form', () => {
+            tags.getTagTitle().should("contain.text", "New tag")
+        })
+
+        cy.ands('I fill a tag name', () => {
+            tagName = dataMockaroo[5].title_tag
+            tags.fillTagNameInput(tagName)
+        })
+
+        cy.ands('I fill a x card data', () => {
+            tags.clickButtonXcard()
+            cy.wait(2000)
+            tags.fillTagXcardTitle(dataMockaroo[5].metadata_title_overflow)
+            tags.fillTagXcardDescription(dataMockaroo[5].metadata_description_overflow)
+            tags.clickButtonSaveTag()
+        })
+
+        cy.then2('I should be see the tag created', () => {
+            tags.getTagXcardError().should('exist')
+            tags.getTagXcardError().should('contain', "Validation error, cannot save tag. Validation failed for")
+        })
+    })
+})
+
+
+describe('Fill facebook card - APRIORI', () =>{
+    let cookieValue
+    let dataMockaroo
+
+    before(() => {
+        login.insertLogin()
+        cy.getCookie('ghost-admin-api-session').then((cookie) => {
+            cookieValue = cookie.value;
+        });
+
+        cy.fixture('Tags/tags_metadata.json').then(data =>{
+            dataMockaroo = data
+        })  
+    })
+
+    beforeEach(() => {
+        cy.setCookie('ghost-admin-api-session', cookieValue)
+        tags.visit()
+    })
+
+    it('should create a tag and facebook card with max characters -1', () => {
+        let tagName;
+
+        cy.given('I click on create tag button', () => {
+            tags.clickButtonNewTag()
+        })
+
+        cy.when('I show the title of new tag form', () => {
+            tags.getTagTitle().should("contain.text", "New tag")
+        })
+
+        cy.ands('I fill a tag name', () => {
+            tagName = dataMockaroo[6].title_tag
+            tags.fillTagNameInput(tagName)
+        })
+
+        cy.ands('I fill a facebook card data', () => {
+            tags.clickButtonFacebookCard()
+            cy.wait(2000)
+            tags.fillTagFacebookTitle(dataMockaroo[6].metadata_title_almost)
+            tags.fillTagFacebookDescription(dataMockaroo[6].metadata_description_almost)
+            tags.clickButtonSaveTag()
+            tags.reload()
+        })
+
+        cy.then2('I should be see the tag created', () => {
+            tags.visit()
+            tags.getTagListTitle().contains(tagName).should('exist');
+        })
+    })
+
+    it('should create a tag and facebook card with max characters', () => {
+        let tagName;
+
+        cy.given('I click on create tag button', () => {
+            tags.clickButtonNewTag()
+        })
+
+        cy.when('I show the title of new tag form', () => {
+            tags.getTagTitle().should("contain.text", "New tag")
+        })
+
+        cy.ands('I fill a tag name', () => {
+            tagName = dataMockaroo[7].title_tag
+            tags.fillTagNameInput(tagName)
+        })
+
+        cy.ands('I fill a facebook card data', () => {
+            tags.clickButtonFacebookCard()
+            cy.wait(2000)
+            tags.fillTagFacebookTitle(dataMockaroo[7].metadata_title_full)
+            tags.fillTagFacebookDescription(dataMockaroo[7].metadata_description_full)
+            tags.clickButtonSaveTag()
+            tags.reload()
+        })
+
+        cy.then2('I should be see the tag created', () => {
+            tags.visit()
+            tags.getTagListTitle().contains(tagName).should('exist');
+        })
+    })
+
+    it('should create a tag and facebook card with max characters +1', () => {
+        let tagName;
+
+        cy.given('I click on create tag button', () => {
+            tags.clickButtonNewTag()
+        })
+
+        cy.when('I show the title of new tag form', () => {
+            tags.getTagTitle().should("contain.text", "New tag")
+        })
+
+        cy.ands('I fill a tag name', () => {
+            tagName = dataMockaroo[8].title_tag
+            tags.fillTagNameInput(tagName)
+        })
+
+        cy.ands('I fill a facebook card data', () => {
+            tags.clickButtonFacebookCard()
+            cy.wait(2000)
+            tags.fillTagFacebookTitle(dataMockaroo[8].metadata_title_overflow)
+            tags.fillTagFacebookDescription(dataMockaroo[8].metadata_description_overflow)
+            tags.clickButtonSaveTag()
+        })
+
+        cy.then2('I should be see the tag created', () => {
+            tags.getTagFacebookError().should('exist')
+            tags.getTagFacebookError().should('contain', "Validation error, cannot save tag. Validation failed for")
+        })
+    })
+})
+
+
+describe('Fill Code injection - APRIORI', () =>{
+    let cookieValue
+    let dataMockaroo
+
+    before(() => {
+        login.insertLogin()
+        cy.getCookie('ghost-admin-api-session').then((cookie) => {
+            cookieValue = cookie.value;
+        });
+
+        cy.fixture('Tags/tags_code_injection.json').then(data =>{
+            dataMockaroo = data
+        })  
+    })
+
+    beforeEach(() => {
+        cy.setCookie('ghost-admin-api-session', cookieValue)
+        tags.visit()
+    })
+
+    it('should create a tag with Code injection and just special characters', () => {
+        let tagName;
+
+        cy.given('I click on create tag button', () => {
+            tags.clickButtonNewTag()
+        })
+
+        cy.when('I show the title of new tag form', () => {
+            tags.getTagTitle().should("contain.text", "New tag")
+        })
+
+        cy.ands('I fill a tag name', () => {
+            tagName = dataMockaroo[0].title_tag
+            tags.fillTagNameInput(tagName)
+        })
+
+        cy.ands('I fill a code injection header', () => {
+            tags.clickButtonCodeInjection()
+            tags.fillTagCodeInjectionHeader(dataMockaroo[0].ci_header_special)
+            tags.fillTagCodeInjectionFooter(dataMockaroo[0].ci_footer_special)
+            tags.clickButtonSaveTag()
+            cy.wait(1000)
+            tags.reload()
+        })
+
+        cy.then2('I should be see the tag created', () => {
+            tags.visit()
+            tags.getTagListTitle().contains(tagName).should('exist');
+        })
+    })
+
+    it('should create a tag with Code injection and suspect strings', () => {
+        let tagName;
+
+        cy.given('I click on create tag button', () => {
+            tags.clickButtonNewTag()
+        })
+
+        cy.when('I show the title of new tag form', () => {
+            tags.getTagTitle().should("contain.text", "New tag")
+        })
+
+        cy.ands('I fill a tag name', () => {
+            tagName = dataMockaroo[1].title_tag
+            tags.fillTagNameInput(tagName)
+        })
+
+        cy.ands('I fill a code injection header', () => {
+            tags.clickButtonCodeInjection()
+            cy.wait(1000)
+            tags.fillTagCodeInjectionHeader(dataMockaroo[1].ci_header_hack)
+            tags.fillTagCodeInjectionFooter(dataMockaroo[1].ci_footer_hack)
+            tags.clickButtonSaveTag()
+            tags.reload()
+        })
+
+        cy.then2('I should be see the tag created', () => {
+            tags.visit()
+            tags.getTagListTitle().contains(tagName).should('exist');
+        })
     })
 
 })
-*/
+
+
+/* DINAMICO */
+describe('Fill tag title and description - DINAMICO', () => {
+    let cookieValue
+    let dataMockaroo
+    before(() => {
+        login.insertLogin()
+        cy.getCookie('ghost-admin-api-session').then((cookie) => {
+            cookieValue = cookie.value;
+        });
+
+        cy.request({
+            method: 'GET',
+            url: 'https://my.api.mockaroo.com/tags_01.json?key=81c442d0',
+        }).then((response) => {
+            expect(response.status).to.equal(200);
+            dataMockaroo = response.body;
+        });     
+    })
+
+    beforeEach(() => {
+        cy.setCookie('ghost-admin-api-session', cookieValue)
+        tags.visit()
+    })
+
+    it('should create a tag with max characters -1', () => {
+        let tagName;
+
+        cy.given('I click on create tag button', () => {
+            tags.clickButtonNewTag()
+        })
+
+        cy.when('I show the title of new tag form', () => {
+            tags.getTagTitle().should("contain.text", "New tag")
+        })
+
+        cy.ands('I fill and submit the form', () => {
+            tagName = dataMockaroo[0].title_almost
+            tags.fillTagNameInput(tagName.substring(0,190))
+            tags.fillTagDescription(dataMockaroo[0].description_almost.substring(0,499))
+            tags.clickButtonSaveTag()
+            tags.visit()
+        })
+
+        cy.then2('I should be see the tag created', () => {
+            tags.getTagListTitle().contains(tagName).should('exist');
+        })
+
+    });
+
+    it('should create a tag with max characters', () => {
+        let tagName;
+
+        cy.given('I click on create tag button', () => {
+            tags.clickButtonNewTag()
+        })
+
+        cy.when('I show the title of new tag form', () => {
+            tags.getTagTitle().should("contain.text", "New tag")
+        })
+
+        cy.ands('I fill and submit the form', () => {
+            tagName = dataMockaroo[0].title_full
+            tags.fillTagNameInput(tagName.substring(0,191))
+            tags.fillTagDescription(dataMockaroo[0].description_full.substring(0,500))
+            tags.clickButtonSaveTag()
+            tags.reload()            
+        })
+
+        cy.then2('I should be see the tag created', () => {
+            tags.visit()
+            tags.getTagListTitle().contains(tagName).should('exist');
+        })
+
+    });
+
+    it('should create a tag with max characters +1', () => {
+        let tagName;
+
+        cy.given('I click on create tag button', () => {
+            tags.clickButtonNewTag()
+        })
+
+        cy.when('I show the title of new tag form', () => {
+            tags.getTagTitle().should("contain.text", "New tag")
+        })
+
+        cy.ands('I fill and submit the form', () => {
+            tagName = dataMockaroo[0].title_overflow
+            tags.fillTagNameInput(tagName)
+            tags.fillTagDescription(dataMockaroo[0].description_overflow)
+            tags.clickButtonSaveTag()
+        })
+
+        cy.then2('I should be see the tag error message', () => {
+            tags.getTagDescriptionError().should('contain', "Description cannot be longer than 500 characters.")
+            tags.getTagNameError().should('contain', "Tag names cannot be longer than 191 characters.")
+        })
+    });
+
+})
+
+describe('Fill google metadata tag - DINAMICO', () => {
+    let cookieValue
+    let dataMockaroo
+
+    before(() => {
+        login.insertLogin()
+        cy.getCookie('ghost-admin-api-session').then((cookie) => {
+            cookieValue = cookie.value;
+        });
+
+        cy.request({
+            method: 'GET',
+            url: 'https://my.api.mockaroo.com/tags_02.json?key=81c442d0',
+        }).then((response) => {
+            expect(response.status).to.equal(200);
+            dataMockaroo = response.body;
+        });  
+    })
+
+    beforeEach(() => {
+        cy.setCookie('ghost-admin-api-session', cookieValue)
+        tags.visit()
+    })
+
+    it('should create a tag with google metadata with max characters -1', () => {
+        let tagName;
+
+        cy.given('I click on create tag button', () => {
+            tags.clickButtonNewTag()
+        })
+
+        cy.when('I show the title of new tag form', () => {
+            tags.getTagTitle().should("contain.text", "New tag")
+        })
+
+        cy.ands('I fill a tag name', () => {
+            tagName = dataMockaroo[0].title_tag
+            tags.fillTagNameInput(tagName)
+        })
+
+        cy.ands('I fill a google metadata', () => {
+            tags.clickButtonGoogleMetadata()
+            tags.fillTagMetadataTitle(dataMockaroo[0].metadata_title_almost)
+            tags.fillTagMetadataDescription(dataMockaroo[0].metadata_description_almost)
+            tags.fillTagMetadataUrl(dataMockaroo[0].metadata_url_almost)
+            tags.clickButtonSaveTag()
+            tags.reload()
+        })
+
+        cy.then2('I should be see the tag created', () => {
+            tags.visit()
+            tags.getTagListTitle().contains(tagName).should('exist');
+        })
+    })
+
+    it('should create a tag with google metadata with max characters', () => {
+        let tagName;
+
+        cy.given('I click on create tag button', () => {
+            tags.clickButtonNewTag()
+        })
+
+        cy.when('I show the title of new tag form', () => {
+            tags.getTagTitle().should("contain.text", "New tag")
+        })
+
+        cy.ands('I fill a tag name', () => {
+            tagName = dataMockaroo[1].title_tag
+            tags.fillTagNameInput(tagName)
+        })
+
+        cy.ands('I fill a google metadata', () => {
+            tags.clickButtonGoogleMetadata()
+            tags.fillTagMetadataTitle(dataMockaroo[1].metadata_title_full)
+            tags.fillTagMetadataDescription(dataMockaroo[1].metadata_description_full)
+            tags.fillTagMetadataUrl(dataMockaroo[1].metadata_url_full)
+            tags.clickButtonSaveTag()
+            tags.reload()
+        })
+
+        cy.then2('I should be see the tag created', () => {
+            tags.visit()
+            tags.getTagListTitle().contains(tagName).should('exist');
+        })
+
+    })
+
+    it('should create a tag with google metadata with max characters + 1', () => {
+        let tagName;
+
+        cy.given('I click on create tag button', () => {
+            tags.clickButtonNewTag()
+        })
+
+        cy.when('I show the title of new tag form', () => {
+            tags.getTagTitle().should("contain.text", "New tag")
+        })
+
+        cy.ands('I fill a tag name', () => {
+            tagName = dataMockaroo[2].title_tag
+            tags.fillTagNameInput(tagName)
+        })
+
+        cy.ands('I fill a google metadata', () => {
+            tags.clickButtonGoogleMetadata()
+            tags.fillTagMetadataTitle(dataMockaroo[2].metadata_title_overflow)
+            tags.fillTagMetadataDescription(dataMockaroo[2].metadata_description_overflow)
+            tags.fillTagMetadataUrl(dataMockaroo[2].metadata_url_overflow)
+            tags.clickButtonSaveTag()
+        })
+
+        cy.then2('I should be see the metadata error', () => {
+            tags.getTagMetadataTitleError().should('contain', "Meta Title cannot be longer than 300 characters.")
+            tags.getTagMetadataDescriptionError().should('contain', "Meta Description cannot be longer than 500 characters.")
+        })
+
+    })
+})
+
+describe('Fill X card tag - DINAMICO', () => {
+    let cookieValue
+    let dataMockaroo
+
+    before(() => {
+        login.insertLogin()
+        cy.getCookie('ghost-admin-api-session').then((cookie) => {
+            cookieValue = cookie.value;
+        });
+
+        cy.request({
+            method: 'GET',
+            url: 'https://my.api.mockaroo.com/tags_02.json?key=81c442d0',
+        }).then((response) => {
+            expect(response.status).to.equal(200);
+            dataMockaroo = response.body;
+        });  
+    })
+
+    beforeEach(() => {
+        cy.setCookie('ghost-admin-api-session', cookieValue)
+        tags.visit()
+    })
+
+    it('should create a tag and X card with max characters -1', () => {
+        let tagName;
+
+        cy.given('I click on create tag button', () => {
+            tags.clickButtonNewTag()
+        })
+
+        cy.when('I show the title of new tag form', () => {
+            tags.getTagTitle().should("contain.text", "New tag")
+        })
+
+        cy.ands('I fill a tag name', () => {
+            tagName = dataMockaroo[3].title_tag
+            tags.fillTagNameInput(tagName)
+        })
+
+        cy.ands('I fill a x card data', () => {
+            tags.clickButtonXcard()
+            cy.wait(2000)
+            tags.fillTagXcardTitle(dataMockaroo[3].metadata_title_almost)
+            tags.fillTagXcardDescription(dataMockaroo[3].metadata_description_almost)
+            tags.clickButtonSaveTag()
+            tags.reload()
+        })
+
+        cy.then2('I should be see the tag created', () => {
+            tags.visit()
+            tags.getTagListTitle().contains(tagName).should('exist');
+        })
+    })
+
+    it('should create a tag and X card with max characters', () => {
+        let tagName;
+
+        cy.given('I click on create tag button', () => {
+            tags.clickButtonNewTag()
+        })
+
+        cy.when('I show the title of new tag form', () => {
+            tags.getTagTitle().should("contain.text", "New tag")
+        })
+
+        cy.ands('I fill a tag name', () => {
+            tagName = dataMockaroo[4].title_tag
+            tags.fillTagNameInput(tagName)
+        })
+
+        cy.ands('I fill a x card data', () => {
+            tags.clickButtonXcard()
+            cy.wait(2000)
+            tags.fillTagXcardTitle(dataMockaroo[4].metadata_title_full)
+            tags.fillTagXcardDescription(dataMockaroo[4].metadata_description_full)
+            tags.clickButtonSaveTag()
+            tags.reload()
+        })
+
+        cy.then2('I should be see the tag created', () => {
+            tags.visit()
+            tags.getTagListTitle().contains(tagName).should('exist');
+        })
+    })
+
+    it('should create a tag and X card with max characters +1', () => {
+        let tagName;
+
+        cy.given('I click on create tag button', () => {
+            tags.clickButtonNewTag()
+        })
+
+        cy.when('I show the title of new tag form', () => {
+            tags.getTagTitle().should("contain.text", "New tag")
+        })
+
+        cy.ands('I fill a tag name', () => {
+            tagName = dataMockaroo[5].title_tag
+            tags.fillTagNameInput(tagName)
+        })
+
+        cy.ands('I fill a x card data', () => {
+            tags.clickButtonXcard()
+            cy.wait(2000)
+            tags.fillTagXcardTitle(dataMockaroo[5].metadata_title_overflow)
+            tags.fillTagXcardDescription(dataMockaroo[5].metadata_description_overflow)
+            tags.clickButtonSaveTag()
+        })
+
+        cy.then2('I should be see the tag created', () => {
+            tags.getTagXcardError().should('exist')
+            tags.getTagXcardError().should('contain', "Validation error, cannot save tag. Validation failed for")
+        })
+    })
+})
+
+describe('Fill facebook card - DINAMICO', () =>{
+    let cookieValue
+    let dataMockaroo
+
+    before(() => {
+        login.insertLogin()
+        cy.getCookie('ghost-admin-api-session').then((cookie) => {
+            cookieValue = cookie.value;
+        });
+
+        cy.request({
+            method: 'GET',
+            url: 'https://my.api.mockaroo.com/tags_02.json?key=81c442d0',
+        }).then((response) => {
+            expect(response.status).to.equal(200);
+            dataMockaroo = response.body;
+        });  
+    })
+
+    beforeEach(() => {
+        cy.setCookie('ghost-admin-api-session', cookieValue)
+        tags.visit()
+    })
+
+    it('should create a tag and facebook card with max characters -1', () => {
+        let tagName;
+
+        cy.given('I click on create tag button', () => {
+            tags.clickButtonNewTag()
+        })
+
+        cy.when('I show the title of new tag form', () => {
+            tags.getTagTitle().should("contain.text", "New tag")
+        })
+
+        cy.ands('I fill a tag name', () => {
+            tagName = dataMockaroo[6].title_tag
+            tags.fillTagNameInput(tagName)
+        })
+
+        cy.ands('I fill a facebook card data', () => {
+            tags.clickButtonFacebookCard()
+            cy.wait(2000)
+            tags.fillTagFacebookTitle(dataMockaroo[6].metadata_title_almost)
+            tags.fillTagFacebookDescription(dataMockaroo[6].metadata_description_almost)
+            tags.clickButtonSaveTag()
+            tags.reload()
+        })
+
+        cy.then2('I should be see the tag created', () => {
+            tags.visit()
+            tags.getTagListTitle().contains(tagName).should('exist');
+        })
+    })
+
+    it('should create a tag and facebook card with max characters', () => {
+        let tagName;
+
+        cy.given('I click on create tag button', () => {
+            tags.clickButtonNewTag()
+        })
+
+        cy.when('I show the title of new tag form', () => {
+            tags.getTagTitle().should("contain.text", "New tag")
+        })
+
+        cy.ands('I fill a tag name', () => {
+            tagName = dataMockaroo[7].title_tag
+            tags.fillTagNameInput(tagName)
+        })
+
+        cy.ands('I fill a facebook card data', () => {
+            tags.clickButtonFacebookCard()
+            cy.wait(2000)
+            tags.fillTagFacebookTitle(dataMockaroo[7].metadata_title_full)
+            tags.fillTagFacebookDescription(dataMockaroo[7].metadata_description_full)
+            tags.clickButtonSaveTag()
+            tags.reload()
+        })
+
+        cy.then2('I should be see the tag created', () => {
+            tags.visit()
+            tags.getTagListTitle().contains(tagName).should('exist');
+        })
+    })
+
+    it('should create a tag and facebook card with max characters +1', () => {
+        let tagName;
+
+        cy.given('I click on create tag button', () => {
+            tags.clickButtonNewTag()
+        })
+
+        cy.when('I show the title of new tag form', () => {
+            tags.getTagTitle().should("contain.text", "New tag")
+        })
+
+        cy.ands('I fill a tag name', () => {
+            tagName = dataMockaroo[8].title_tag
+            tags.fillTagNameInput(tagName)
+        })
+
+        cy.ands('I fill a facebook card data', () => {
+            tags.clickButtonFacebookCard()
+            cy.wait(2000)
+            tags.fillTagFacebookTitle(dataMockaroo[8].metadata_title_overflow)
+            tags.fillTagFacebookDescription(dataMockaroo[8].metadata_description_overflow)
+            tags.clickButtonSaveTag()
+        })
+
+        cy.then2('I should be see the tag created', () => {
+            tags.getTagFacebookError().should('exist')
+            tags.getTagFacebookError().should('contain', "Validation error, cannot save tag. Validation failed for")
+        })
+    })
+})
+
+describe('Fill Code injection - DINAMICO', () =>{
+    let cookieValue
+    let dataMockaroo
+
+    before(() => {
+        login.insertLogin()
+        cy.getCookie('ghost-admin-api-session').then((cookie) => {
+            cookieValue = cookie.value;
+        });
+
+        cy.request({
+            method: 'GET',
+            url: 'https://my.api.mockaroo.com/tags_03.json?key=81c442d0',
+        }).then((response) => {
+            expect(response.status).to.equal(200);
+            dataMockaroo = response.body;
+        });  
+    })
+
+    beforeEach(() => {
+        cy.setCookie('ghost-admin-api-session', cookieValue)
+        tags.visit()
+    })
+
+    it('should create a tag with Code injection and just special characters', () => {
+        let tagName;
+
+        cy.given('I click on create tag button', () => {
+            tags.clickButtonNewTag()
+        })
+
+        cy.when('I show the title of new tag form', () => {
+            tags.getTagTitle().should("contain.text", "New tag")
+        })
+
+        cy.ands('I fill a tag name', () => {
+            tagName = dataMockaroo[0].title_tag
+            tags.fillTagNameInput(tagName)
+        })
+
+        cy.ands('I fill a code injection header', () => {
+            tags.clickButtonCodeInjection()
+            tags.fillTagCodeInjectionHeader(dataMockaroo[0].ci_header_special)
+            tags.fillTagCodeInjectionFooter(dataMockaroo[0].ci_footer_special)
+            tags.clickButtonSaveTag()
+            cy.wait(1000)
+            tags.reload()
+        })
+
+        cy.then2('I should be see the tag created', () => {
+            tags.visit()
+            tags.getTagListTitle().contains(tagName).should('exist');
+        })
+    })
+
+    it('should create a tag with Code injection and suspect strings', () => {
+        let tagName;
+
+        cy.given('I click on create tag button', () => {
+            tags.clickButtonNewTag()
+        })
+
+        cy.when('I show the title of new tag form', () => {
+            tags.getTagTitle().should("contain.text", "New tag")
+        })
+
+        cy.ands('I fill a tag name', () => {
+            tagName = dataMockaroo[1].title_tag
+            tags.fillTagNameInput(tagName)
+        })
+
+        cy.ands('I fill a code injection header', () => {
+            tags.clickButtonCodeInjection()
+            cy.wait(1000)
+            tags.fillTagCodeInjectionHeader(dataMockaroo[1].ci_header_hack)
+            tags.fillTagCodeInjectionFooter(dataMockaroo[1].ci_footer_hack)
+            tags.clickButtonSaveTag()
+            tags.reload()
+        })
+
+        cy.then2('I should be see the tag created', () => {
+            tags.visit()
+            tags.getTagListTitle().contains(tagName).should('exist');
+        })
+    })
+
+})
