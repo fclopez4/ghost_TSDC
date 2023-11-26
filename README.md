@@ -9,6 +9,24 @@ Para el uso de los escenarios de pruebas se utilizo la version de Ghost 5.68.0 e
 |Wilson Andres Alarcon Cuchigay|w.alarconc@uniandes.edu.co|
 |Fabio Camilo López Castellanos|fc.lopez@uniandes.edu.co|
 
+# Pruebas Generación de datos
+### Requisitos previos Cypress
+1. Instalar **Ghost CMS v5.68.0**, esta acción puede realizarse utilizando un contenedor docker
+    ``````
+    docker pull ghost:5.68.0
+    docker run -d --name current-ghost -e NODE_ENV=development -e url=http://localhost:3001 -p 3001:2368 ghost:5.68.0
+    ``````
+2. Descargar o clonar este repositorio
+3. Con una terminal o una ventana de comandos diríjase a la ruta  **GHOST_TSDC/EscenariosGeneracionDatos**
+4. Inserte el comando `npm install`
+5. En el archivo *cypress.config.js* cambie la url que dirige a la pagina de Ghost como se ve en el ejemplo
+6. En el archivo *cypress.config.js* cambie el usuario y la contraseña por un usuario valido en su ambiente Ghost
+7. para esta version de cypress se uso la version de node 18.18.0 puede usar una version mas actual si desea
+
+### Ejecución Cypress
+1. Para la ejecución de todos los test inserte el comando `npm run all`
+2. Para abrir el proyecto en una ventana de Cypress inserte el comando `npm run cypress:open` y seleccione el archivo de prueba que desea ejecutar.
+
 # Pruebas VRT
 
 ## Ejecución 30 Escenarios de prueba
