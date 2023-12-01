@@ -75,12 +75,13 @@ describe("EP002 create post", () => {
         context('When I add', () => {
             const namePost = faker.animal.bear();
             const nameImage = faker.animal.bear();
+            const filePath = 'cypress/fixtures/Post/files/image-valid-post.jpg';
             beforeEach(() => {
                 post.clickNewPost()
                 cy.wait(1000)
                 editor.fillTitle(namePost, 'Post title')
                 editor.clickOptionMore('Image');
-                editor.uploadImage(nameImage)
+                editor.uploadImage(nameImage, filePath)
                 cy.wait(2000)
             })
             it("Then I should see the post published", () => {
