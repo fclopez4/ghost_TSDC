@@ -1,0 +1,19 @@
+{
+  "name": "escenarioscypress",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "cypress:run": "cypress run",
+    "cypress:open": "cypress open",
+    "all":"cypress run --spec cypress\\e2e\\F001-post.cy.js || cypress run --spec cypress\\e2e\\F006-profile.cy.js || cypress run --spec cypress\\e2e\\F004-usuario.cy.js || cypress run --spec cypress\\e2e\\F005-boletin.cy.js || cypress run --spec cypress\\e2e\\F002-pages.cy.js || cypress run --spec cypress\\e2e\\F003-tags.cy.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@faker-js/faker": "^8.2.0",
+    "cypress": "^13.5.0",
+    "cypress-plugin-tab": "^1.0.5"
+  }
+}
