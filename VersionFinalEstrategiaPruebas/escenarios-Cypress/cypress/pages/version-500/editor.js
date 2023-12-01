@@ -11,7 +11,7 @@ class Editor {
 
     clearTitle(placeHolder) {
         return cy.get('textarea.gh-editor-title.ember-text-area.gh-input.ember-view')
-        .should('have.attr', 'placeholder', placeHolder).clear()
+            .should('have.attr', 'placeholder', placeHolder).clear()
     }
 
     fillContent(contentPost) {
@@ -52,10 +52,10 @@ class Editor {
         cy.get('input[type="file"]').eq(1).selectFile({
             contents: 'cypress/fixtures/imagen.JPG',
             fileName: fileName + '.jpg',
-        },{ force: true })
+        }, { force: true })
     }
 
-    getImage(fileName){
+    getImage(fileName) {
         return cy.get('img').should(($imgs) => {
             const imagenConNombre = $imgs.filter((index, img) => {
                 const src = img.getAttribute('src');
@@ -65,15 +65,15 @@ class Editor {
         })
     }
 
-    getModalHeaderMessage(){
+    getModalHeaderMessage() {
         return cy.get('header.modal-header').first()
     }
 
-    getButtonPageSettings(){
+    getButtonPageSettings() {
         return cy.get('button.settings-menu-toggle[title="Settings"]').first()
     }
 
-    getButtonDeletePage(){
+    getButtonDeletePage() {
         return cy.get('div.settings-menu-delete-button>button').first()
     }
 
@@ -83,12 +83,28 @@ class Editor {
             .first()
     }
 
-    clickUpdatePublished(){
+    clickUpdatePublished() {
         return cy.get('.gh-publish-header > .flex > .gh-btn > span').click()
     }
 
-    clickSave(){
+    clickSave() {
         return cy.get('button.gh-btn.gh-btn-editor.gh-publish-trigger.green.ember-view').click()
+    }
+
+    clickButtonSettings() {
+        return cy.get('button.settings-menu-toggle[title="Settings"]').click()
+    }
+
+    clickButtonDeleteSettings() {
+        return cy.get('.settings-menu-delete-button').click()
+    }
+
+    clickConfirmDeleteSettings() {
+        return cy.get('.modal-content>.modal-footer>.gh-btn-red').click()
+    }
+    
+    clickCancelDeleteSettings() {
+        return cy.get('.modal-content>.modal-footer>.gh-btn').contains('Cancel').click()
     }
 }
 

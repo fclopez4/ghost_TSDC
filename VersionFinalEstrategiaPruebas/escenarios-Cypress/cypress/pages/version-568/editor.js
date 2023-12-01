@@ -83,6 +83,22 @@ class Editor {
             .first()
     }
 
+    
+    clickButtonSettings() {
+        return cy.get('button.settings-menu-toggle[title="Settings"]').click()
+    }
+
+    clickButtonDeleteSettings() {
+        return cy.get('.settings-menu-delete-button').click()
+    }
+
+    clickConfirmDeleteSettings() {
+        return cy.get('.modal-content>.modal-footer>.gh-btn-red').click()
+    }
+    
+    clickCancelDeleteSettings() {
+        return cy.get('.modal-content>.modal-footer>.gh-btn').contains('Cancel').click()
+    }
 
 }
 

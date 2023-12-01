@@ -112,7 +112,7 @@ describe("EP002 create post", () => {
 
 })
 
-describe.skip("EP003 edit Post", () => {
+describe("EP003 edit Post", () => {
     context('Given I go to post page', () => {
         let cockieValue
 
@@ -217,7 +217,7 @@ describe.skip("EP003 edit Post", () => {
 
 })
 
-describe.skip("EP004 delete Post", () => {
+describe("EP004 delete Post", () => {
     context('Given I go to post page', () => {
         let cockieValue
 
@@ -237,9 +237,10 @@ describe.skip("EP004 delete Post", () => {
             const namePost = faker.animal.cow();
             beforeEach(() => {
                 post.createPost(namePost);
-                post.getPostByTitle(namePost).scrollIntoView().rightclick();
-                post.clickButtonDelete();
-                post.clickConfirmDelete();
+                post.getPostByTitle(namePost).scrollIntoView().click();
+                editor.clickButtonSettings();
+                editor.clickButtonDeleteSettings();
+                editor.clickConfirmDeleteSettings();
                 cy.wait(1000)
             })
 
@@ -258,13 +259,15 @@ describe.skip("EP004 delete Post", () => {
             const namePost = faker.animal.crocodilia();
             beforeEach(() => {
                 post.createPost(namePost);
-                post.getPostByTitle(namePost).scrollIntoView().rightclick();
-                post.clickButtonDelete();
-                post.clickcancelDelete();
+                post.getPostByTitle(namePost).scrollIntoView().click();
+                editor.clickButtonSettings();
+                editor.clickButtonDeleteSettings();
+                editor.clickCancelDeleteSettings();
                 cy.wait(1000)
             })
 
             it("Then I see the post", () => {
+                post.visit()
                 expect(post.getPostByTitle(namePost)).to.exist;
                 login.tomarPantallazo("F001-EP004", "3")
             })
@@ -272,7 +275,7 @@ describe.skip("EP004 delete Post", () => {
     })
 });
 
-describe.skip("EP005 list post", () => {
+describe("EP005 list post", () => {
     context('Given I go to post page', () => {
         let cockieValue
 
@@ -324,7 +327,7 @@ describe.skip("EP005 list post", () => {
 
         context("When I visit the page post and y order by olders first", () => {
             beforeEach(() => {
-                post.clickFilterByTypeAndName('Newest first', 'Oldest first');
+                post.clickFilterByTypeAndName('Newest', 'Oldest' );
             })
             it("Then I should see a page with visibility members", () => {
                 cy.url().should('include', 'order=published_at%20asc');

@@ -215,6 +215,10 @@ describe("EP003 edit Post", () => {
 })
 
 describe("EP004 delete Post", () => {
+    cy.on('uncaught exception', (err) => {
+        cy.task('genericLog', { 'message': `An exception occurred: ${err}` });
+        cy.task('genericReport', { 'html': `<p><strong>Uncaught exception: </strong>${err}</p>` });
+    });
     context('Given I go to post page', () => {
         let cockieValue
 
@@ -234,20 +238,21 @@ describe("EP004 delete Post", () => {
             const namePost = faker.animal.cow();
             beforeEach(() => {
                 post.createPost(namePost);
-                post.getPostByTitle(namePost).scrollIntoView().rightclick();
-                post.clickButtonDelete();
-                post.clickConfirmDelete();
+                post.getPostByTitle(namePost).scrollIntoView().click();
+                editor.clickButtonSettings();
+                editor.clickButtonDeleteSettings();
+                editor.clickConfirmDeleteSettings();
                 cy.wait(1000)
             })
 
             it("Then I see the alert Post deleted successfully", () => {
                 post.getTitle().should("contain.text", "Posts")
-                login.tomarPantallazo("F001-EP004", "01")
+                login.tomarPantallazo("F001-EP004", "1")
             })
 
             it("And it does not have to exist", () => {
                 post.searhNotExistPostByTittle(namePost).should('not.exist')
-                login.tomarPantallazo("F001-EP004", "02")
+                login.tomarPantallazo("F001-EP004", "2")
             })
         })
 
@@ -255,15 +260,17 @@ describe("EP004 delete Post", () => {
             const namePost = faker.animal.crocodilia();
             beforeEach(() => {
                 post.createPost(namePost);
-                post.getPostByTitle(namePost).scrollIntoView().rightclick();
-                post.clickButtonDelete();
-                post.clickcancelDelete();
+                post.getPostByTitle(namePost).scrollIntoView().click();
+                editor.clickButtonSettings();
+                editor.clickButtonDeleteSettings();
+                editor.clickCancelDeleteSettings();
                 cy.wait(1000)
             })
 
             it("Then I see the post", () => {
+                post.visit()
                 expect(post.getPostByTitle(namePost)).to.exist;
-                login.tomarPantallazo("F001-EP004", "03")
+                login.tomarPantallazo("F001-EP004", "3")
             })
         })
     })
