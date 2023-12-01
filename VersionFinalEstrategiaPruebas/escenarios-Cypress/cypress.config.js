@@ -9,6 +9,8 @@ module.exports = defineConfig({
     env: {
       usuario: "a.clavijo1@uniandes.edu.co",
       password: "PIKA235chu",
+      urlGhost500: "http://localhost:3002",
+      urlGhost568: "http://localhost:3001",
     },
   },
   video: true,
