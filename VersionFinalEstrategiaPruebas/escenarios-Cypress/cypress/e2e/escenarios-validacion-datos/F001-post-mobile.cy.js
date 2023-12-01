@@ -13,10 +13,6 @@ describe("F001 post", () => {
     let datosValidos;
 
     before(() => {
-        cy.viewport('iphone-x')
-    })
-
-    before(() => {
         login.insertLogin()
         cy.getCookie('ghost-admin-api-session').then((cookie) => {
             cockieValue = cookie.value;
@@ -36,103 +32,7 @@ describe("F001 post", () => {
         cy.setCookie('ghost-admin-api-session', cockieValue)
     })
 
-    describe('EP001 create post - ALEATORIO', () => {
-        it('should create post', () => {
-            const namePost = faker.animal.bear()
-
-            cy.ands('I visit post page', () => {
-                post.visit()
-            })
-
-            cy.ands('I click on new post page', () => {
-                post.clickNewPost()
-            })
-
-            cy.when('I insert title', () => {
-                editor.fillTitle(namePost, 'Post title')
-            })
-
-            cy.ands('I insert content', () => {
-                editor.fillContent(faker.lorem.paragraphs())
-            })
-
-            cy.ands('I publish post', () => {
-                editor.publish()
-            })
-
-            cy.then2('I see post published in list', () => {
-                post.verifyPostPublished(namePost)
-            })
-        })
-    })
-
-    describe('EP002 edit post - ALEATORIO', () => {
-        it('should edit post', () => {
-            const namePost = faker.animal.bear()
-            const newNamePost = faker.animal.cat()
-
-            cy.ands('I visit post page', () => {
-                post.visit()
-            })
-
-            cy.ands('I create post', () => {
-                post.createPost(namePost)
-            })
-
-            cy.ands('I click on post', () => {
-                post.getPostByTitle(namePost).click()
-            })
-
-            cy.when('I insert title', () => {
-                editor.fillTitle(newNamePost, 'Post title')
-            })
-
-            cy.ands('I insert content', () => {
-                editor.fillContent(faker.lorem.paragraphs())
-            })
-
-            cy.ands('I publish post', () => {
-                editor.publish()
-            })
-
-            cy.then2('I see post published in list', () => {
-                post.verifyPostPublished(newNamePost)
-            })
-        })
-    });
-
-    describe('EP003 create a post with a title longer than 256 characters - ALEATORIO', () => {
-        it('should create a post with a title longer than 256 characters', () => {
-            const namePost = faker.lorem.words(256).substring(0, 256)
-
-            cy.ands('I visit post page', () => {
-                post.visit()
-            })
-
-            cy.ands('I click on new post page', () => {
-                post.clickNewPost()
-            })
-
-            cy.when('I insert title', () => {
-                console.log(namePost);
-                editor.fillTitle(namePost, 'Post title')
-            })
-
-            cy.ands('I insert content', () => {
-                editor.fillContent(faker.lorem.paragraphs())
-            })
-
-            cy.ands('I publish post', () => {
-                editor.publish()
-            })
-
-            cy.then2('I see alert Update failed', () => {
-                then(post.notificactionUpdateFailed().to.exist)
-            })
-        })
-    })
-
-    describe('EP004 add a valid feature image - APRIORI', () => {
+    describe('EP001 add a valid feature image - APRIORI', () => {
         it('should add a valid feature image', () => {
             const fileName = datosValidos[0].name_image;
             const filePath = 'cypress/fixtures/Post/files/image-valid-post.jpg';
@@ -155,7 +55,7 @@ describe("F001 post", () => {
         })
     })
 
-    describe('EP005 add a invalid feature image format - APRIORI', () => {
+    describe('EP002 add a invalid feature image format - APRIORI', () => {
         it('should add a valid feature image', () => {
             const fileName = datosValidos[2].name_image;
             const filePath = 'cypress/fixtures/Post/files/invalid-file.json';
@@ -179,7 +79,7 @@ describe("F001 post", () => {
         })
     })
 
-    describe("EP006 add an image to a post - APRIORI", () => {
+    describe("EP003 add an image to a post - APRIORI", () => {
         it("should add an image to a post", () => {
             const fileName = datosValidos[1].name_image;
             const filePath = 'cypress/fixtures/Post/files/image-valid-post.jpg';
@@ -207,7 +107,7 @@ describe("F001 post", () => {
         })
     })
 
-    describe("EP007 add an image invalid to a post - APRIORI", () => {
+    describe("EP004 add an image invalid to a post - APRIORI", () => {
         it('should add a invalid feature image', () => {
             const fileName = datosValidos[3].name_image;
             const filePath = 'cypress/fixtures/Post/files/invalid-file.json';
@@ -239,7 +139,7 @@ describe("F001 post", () => {
         })
     });
 
-    describe("EP008 add a video valid to a post - APRIORI", () => {
+    describe("EP005 add a video valid to a post - APRIORI", () => {
         it('should add a valid video', () => {
             const fileName = datosValidos[4].name_video;
             const filePath = 'cypress/fixtures/Post/files/video-valid-post.mp4';
@@ -267,7 +167,7 @@ describe("F001 post", () => {
         })
     })
 
-    describe("EP009 add a video invalid to a post - APRIORI", () => {
+    describe("EP006 add a video invalid to a post - APRIORI", () => {
         it('should add a invalid video', () => {
             const fileName = datosValidos[5].name_image;
             const filePath = 'cypress/fixtures/Post/files/invalid-file.json';
@@ -299,7 +199,7 @@ describe("F001 post", () => {
         })
     });
 
-    describe("EP010 add a audio valid to a post - APRIORI", () => {
+    describe("EP007 add a audio valid to a post - APRIORI", () => {
         it('should add a valid audio', () => {
             const fileName = datosValidos[6].name_image;
             const filePath = 'cypress/fixtures/Post/files/audio-valid-post.mp3';
@@ -327,7 +227,7 @@ describe("F001 post", () => {
         })
     });
 
-    describe("EP011 add a audio invalid to a post - APRIORI", () => {
+    describe("EP008 add a audio invalid to a post - APRIORI", () => {
         it('should add a invalid audio', () => {
             const fileName = datosValidos[7].name_image;
             const filePath = 'cypress/fixtures/Post/files/invalid-file.json';
@@ -356,7 +256,7 @@ describe("F001 post", () => {
         })
     });
 
-    describe("EP012 add a gallery valid to a post - APRIORI", () => {
+    describe("EP009 add a gallery valid to a post - APRIORI", () => {
         it('should add a valid gallery', () => {
             const fileNamesPahts = [];
             const numberImages = 5;
@@ -394,7 +294,7 @@ describe("F001 post", () => {
         })
     })
 
-    describe("EP013 add limit images to a gallery post - APRIORI", () => {
+    describe("EP010 add limit images to a gallery post - APRIORI", () => {
         it('should add a valid gallery', () => {
             const fileNamesPahts = [];
             const numberImages = 9;
@@ -433,7 +333,7 @@ describe("F001 post", () => {
         })
     })
 
-    describe("EP014 add more to limit images to a gallery post - APRIORI", () => {
+    describe("EP011 add more to limit images to a gallery post - APRIORI", () => {
         it('should add a valid gallery', () => {
             const fileNamesPahts = [];
             const numberImages = 10;
@@ -470,7 +370,7 @@ describe("F001 post", () => {
         })
     })
 
-    describe("EP015 update publish date in post with data valid - ALEATORIO", () => {
+    describe("EP012 update publish date in post with data valid - ALEATORIO", () => {
         it('should add a valid date in post', () => {
             const namePost = faker.animal.bear()
             const contentPost = faker.lorem.words(15)
@@ -512,7 +412,7 @@ describe("F001 post", () => {
         })
     })
 
-    describe("EP016 update publish date in post with future date - ALEATORIO", () => {
+    describe("EP013 update publish date in post with future date - ALEATORIO", () => {
         it('should add a valid date in post', () => {
             const namePost = faker.animal.bear()
             const contentPost = faker.lorem.words(15)
@@ -555,7 +455,7 @@ describe("F001 post", () => {
 
     })
 
-    describe("EP017 update publish date in post with today date - ALEATORIO", () => {
+    describe("EP014 update publish date in post with today date - ALEATORIO", () => {
         it('should add a valid date in post', () => {
             const namePost = faker.animal.bear()
             const contentPost = faker.lorem.words(15)
@@ -597,7 +497,7 @@ describe("F001 post", () => {
         })
     })
 
-    describe("EP018 create facebook card with valid data  - ALEATORIO", () => {
+    describe("EP015 create facebook card with valid data  - ALEATORIO", () => {
         it('should create a facebook card', () => {
             const namePost = faker.animal.bear()
             const titleFacebook = faker.animal.cat()
@@ -655,7 +555,7 @@ describe("F001 post", () => {
         })
     })
 
-    describe("EP019 create facebook card with invalid data - ALEATORIO", () => {
+    describe("EP016 create facebook card with invalid data - ALEATORIO", () => {
         it('should create a facebook card', () => {
             const namePost = faker.animal.bear()
             const titleFacebook = faker.lorem.words(300).substring(0, 301)
@@ -713,7 +613,7 @@ describe("F001 post", () => {
         })
     })
 
-    describe("EP020 create facebook card with limit data - ALEATORIO", () => {
+    describe("EP017 create facebook card with limit data - ALEATORIO", () => {
         it('should create a facebook card', () => {
             const namePost = faker.animal.bear()
             const titleFacebook = faker.lorem.words(300).substring(0, 300)
@@ -768,6 +668,102 @@ describe("F001 post", () => {
                 expect(editor.facebookInputDescIsValid(), true);
             })
 
+        })
+    })
+
+    describe('EP018 create post - ALEATORIO', () => {
+        it('should create post', () => {
+            const namePost = faker.animal.bear()
+
+            cy.ands('I visit post page', () => {
+                post.visit()
+            })
+
+            cy.ands('I click on new post page', () => {
+                post.clickNewPost()
+            })
+
+            cy.when('I insert title', () => {
+                editor.fillTitle(namePost, 'Post title')
+            })
+
+            cy.ands('I insert content', () => {
+                editor.fillContent(faker.lorem.paragraphs())
+            })
+
+            cy.ands('I publish post', () => {
+                editor.publish()
+            })
+
+            cy.then2('I see post published in list', () => {
+                post.verifyPostPublished(namePost)
+            })
+        })
+    })
+
+    describe('EP019 edit post - ALEATORIO', () => {
+        it('should edit post', () => {
+            const namePost = faker.animal.bear()
+            const newNamePost = faker.animal.cat()
+
+            cy.ands('I visit post page', () => {
+                post.visit()
+            })
+
+            cy.ands('I create post', () => {
+                post.createPost(namePost)
+            })
+
+            cy.ands('I click on post', () => {
+                post.getPostByTitle(namePost).click()
+            })
+
+            cy.when('I insert title', () => {
+                editor.fillTitle(newNamePost, 'Post title')
+            })
+
+            cy.ands('I insert content', () => {
+                editor.fillContent(faker.lorem.paragraphs())
+            })
+
+            cy.ands('I publish post', () => {
+                editor.publish()
+            })
+
+            cy.then2('I see post published in list', () => {
+                post.verifyPostPublished(newNamePost)
+            })
+        })
+    });
+
+    describe('EP020 create a post with a title longer than 256 characters - ALEATORIO', () => {
+        it('should create a post with a title longer than 256 characters', () => {
+            const namePost = faker.lorem.words(256).substring(0, 256)
+
+            cy.ands('I visit post page', () => {
+                post.visit()
+            })
+
+            cy.ands('I click on new post page', () => {
+                post.clickNewPost()
+            })
+
+            cy.when('I insert title', () => {
+                console.log(namePost);
+                editor.fillTitle(namePost, 'Post title')
+            })
+
+            cy.ands('I insert content', () => {
+                editor.fillContent(faker.lorem.paragraphs())
+            })
+
+            cy.ands('I publish post', () => {
+                editor.publish()
+            })
+
+            cy.then2('I see alert Update failed', () => {
+                then(post.notificactionUpdateFailed().to.exist)
+            })
         })
     })
 })
