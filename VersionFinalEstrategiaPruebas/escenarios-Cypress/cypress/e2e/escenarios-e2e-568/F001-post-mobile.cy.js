@@ -8,766 +8,325 @@ const post = new Post()
 const login = new Login()
 const editor = new Editor()
 
-describe("F001 post", () => {
-    let cockieValue;
-    let datosValidos;
+describe("EP002 create post", () => {
+    context('Given I go to post page', () => {
+        let cockieValue
 
-    before(() => {
-        cy.viewport('iphone-x')
-    })
+        before(() => {
+            login.insertLogin()
+            cy.getCookie('ghost-admin-api-session').then((cookie) => {
+                cockieValue = cookie.value;
+            });
+        })
 
-    before(() => {
-        login.insertLogin()
-        cy.getCookie('ghost-admin-api-session').then((cookie) => {
-            cockieValue = cookie.value;
-        });
-    })
+        beforeEach(() => {
+            cy.setCookie('ghost-admin-api-session', cockieValue)
+            post.visit()
+        })
 
-    beforeEach(() => {
-        cy.log(`AND: I get priori data`);
-
-        cy.fixture('post/post-valid.json').then((datos) => {
-            datosValidos = datos;
-        });
-    })
-
-    beforeEach(() => {
-        cy.log(`GIVEN: I login in ghost admin`)
-        cy.setCookie('ghost-admin-api-session', cockieValue)
-    })
-
-    describe('EP001 create post - ALEATORIO', () => {
-        it('should create post', () => {
-            const namePost = faker.animal.bear()
-
-            cy.ands('I visit post page', () => {
-                post.visit()
-            })
-
-            cy.ands('I click on new post page', () => {
+        context("When I click on new post button", () => {
+            beforeEach(() => {
                 post.clickNewPost()
+                cy.wait(1000)
             })
-
-            cy.when('I insert title', () => {
-                editor.fillTitle(namePost, 'Post title')
-            })
-
-            cy.ands('I insert content', () => {
-                editor.fillContent(faker.lorem.paragraphs())
-            })
-
-            cy.ands('I publish post', () => {
-                editor.publish()
-            })
-
-            cy.then2('I see post published in list', () => {
-                post.verifyPostPublished(namePost)
+            it("Then I should see a new post page", () => {
+                editor.getEstatusTittle().should("contain.text", "New")
+                login.tomarPantallazo("F001-EP002", "01")
             })
         })
-    })
 
-    describe('EP002 edit post - ALEATORIO', () => {
-        it('should edit post', () => {
+        context("When I fill the title and content", () => {
             const namePost = faker.animal.bear()
-            const newNamePost = faker.animal.cat()
+            beforeEach(() => {
+                post.clickNewPost()
+                cy.wait(1000)
+                editor.fillTitle(namePost, 'Post title')
+                editor.fillContent('Content post 1')
+            })
+            it("Then I should see the title and content filled", () => {
+                editor.getTitle().should('have.value', namePost);
+                login.tomarPantallazo("F001-EP002", "02")
+            })
+        })
 
-            cy.ands('I visit post page', () => {
+        context('When I fill the blog and publish', () => {
+            const namePost = faker.animal.bear()
+            beforeEach(() => {
+                post.clickNewPost()
+                cy.wait(1000)
+                editor.fillTitle(namePost, 'Post title')
+                editor.fillContent('Content post 1')
+                editor.clickPublish()
+                cy.wait(1000)
+                editor.clickButtonFinalReview()
+                cy.wait(1000)
+                editor.clickButtonPublishRighNow();
+                cy.wait(1000)
+                post.visit()
+                post.clickFilterByTypeAndName('All posts', 'Published posts');
+                cy.wait(1000)
+            })
+            it("Then I should see the post published", () => {
+                expect(post.getPostByTitle(namePost)).to.exist
+                login.tomarPantallazo("F001-EP002", "03")
+            })
+        })
+
+        context('When I add', () => {
+            const namePost = faker.animal.bear();
+            const nameImage = faker.animal.bear();
+            beforeEach(() => {
+                post.clickNewPost()
+                cy.wait(1000)
+                editor.fillTitle(namePost, 'Post title')
+                editor.clickOptionMore('Image');
+                editor.uploadImage(nameImage)
+                cy.wait(2000)
+            })
+            it("Then I should see the post published", () => {
+                expect(editor.getImage(nameImage)).to.exist;
+                login.tomarPantallazo("F001-EP002", "04")
+            })
+        })
+
+
+        context('When I fill the blog and dont publish to be create post', () => {
+            const namePost = faker.animal.bird()
+            beforeEach(() => {
+                post.clickNewPost()
+                cy.wait(1000)
+                editor.fillTitle(namePost, 'Post title')
+                editor.fillContent(faker.animal.bird())
+                cy.wait(1000)
                 post.visit()
             })
-
-            cy.ands('I create post', () => {
-                post.createPost(namePost)
+            it("Then I should see the post published", () => {
+                post.getPostByTitle(namePost).should("contain.text", namePost)
+                login.tomarPantallazo("F001-EP002", "05")
             })
+        })
 
-            cy.ands('I click on post', () => {
+    })
+
+})
+
+describe("EP003 edit Post", () => {
+    context('Given I go to post page', () => {
+        let cockieValue
+
+        before(() => {
+            login.insertLogin()
+            cy.getCookie('ghost-admin-api-session').then((cookie) => {
+                cockieValue = cookie.value;
+            });
+        })
+
+        beforeEach(() => {
+            cy.setCookie('ghost-admin-api-session', cockieValue)
+            post.visit()
+        })
+
+        context("When I click on post to edit", () => {
+            const namePost = faker.animal.dog()
+
+            beforeEach(() => {
+                post.createPost(namePost);
                 post.getPostByTitle(namePost).click()
+                cy.wait(1000)
             })
-
-            cy.when('I insert title', () => {
-                editor.fillTitle(newNamePost, 'Post title')
-            })
-
-            cy.ands('I insert content', () => {
-                editor.fillContent(faker.lorem.paragraphs())
-            })
-
-            cy.ands('I publish post', () => {
-                editor.publish()
-            })
-
-            cy.then2('I see post published in list', () => {
-                post.verifyPostPublished(newNamePost)
+            it("Then I should see a edit post page", () => {
+                editor.getEstatusTittle().should("contain.text", "- Saved")
+                login.tomarPantallazo("F001-EP003", "01")
             })
         })
-    });
 
-    describe('EP003 create a post with a title longer than 256 characters - ALEATORIO', () => {
-        it('should create a post with a title longer than 256 characters', () => {
-            const namePost = faker.lorem.words(256).substring(0, 256)
+        context("When I click on post published to edit", () => {
+            const namePost = faker.animal.dog()
 
-            cy.ands('I visit post page', () => {
-                post.visit()
-            })
-
-            cy.ands('I click on new post page', () => {
+            beforeEach(() => {
                 post.clickNewPost()
-            })
-
-            cy.when('I insert title', () => {
-                console.log(namePost);
+                cy.wait(1000)
                 editor.fillTitle(namePost, 'Post title')
-            })
-
-            cy.ands('I insert content', () => {
-                editor.fillContent(faker.lorem.paragraphs())
-            })
-
-            cy.ands('I publish post', () => {
-                editor.publish()
-            })
-
-            cy.then2('I see alert Update failed', () => {
-                then(post.notificactionUpdateFailed().to.exist)
-            })
-        })
-    })
-
-    describe('EP004 add a valid feature image - APRIORI', () => {
-        it('should add a valid feature image', () => {
-            const fileName = datosValidos[0].name_image;
-            const filePath = 'cypress/fixtures/Post/files/image-valid-post.jpg';
-
-            cy.ands('I visit post page', () => {
+                editor.fillContent('Content post 1')
+                editor.clickPublish()
+                cy.wait(1000)
+                editor.clickButtonFinalReview()
+                cy.wait(1000)
+                editor.clickButtonPublishRighNow();
+                cy.wait(1000)
                 post.visit()
-            })
-
-            cy.ands('I click on new post page', () => {
-                post.clickNewPost()
-            })
-
-            cy.when('I upload image', () => {
-                editor.uploadFixtureImage(fileName, filePath)
-            })
-
-            cy.then2('I see the image feature', () => {
-                expect(editor.getImage(fileName)).exist
-            })
-        })
-    })
-
-    describe('EP005 add a invalid feature image format - APRIORI', () => {
-        it('should add a valid feature image', () => {
-            const fileName = datosValidos[2].name_image;
-            const filePath = 'cypress/fixtures/Post/files/invalid-file.json';
-
-            cy.ands('I visit post page', () => {
-                post.visit()
-            })
-
-            cy.ands('I click on new post page', () => {
-                post.clickNewPost()
-            })
-
-            cy.when('I upload image', () => {
-                editor.uploadFixtureImage(fileName, filePath)
+                post.clickFilterByTypeAndName('All posts', 'Published posts');
+                cy.wait(1000)
+                post.getPostByTitle(namePost).click()
                 cy.wait(1000)
             })
-
-            cy.then2('I see the image feature error message', () => {
-                editor.getErrorMessageUploadFixture();
+            it("Then I should see a edit post page", () => {
+                editor.getEstatusTittle().get("[data-test-editor-post-status]>a").should("contain.text", "Published")
+                login.tomarPantallazo("F001-EP003", "02")
             })
         })
-    })
 
-    describe("EP006 add an image to a post - APRIORI", () => {
-        it("should add an image to a post", () => {
-            const fileName = datosValidos[1].name_image;
-            const filePath = 'cypress/fixtures/Post/files/image-valid-post.jpg';
-
-            cy.ands('I visit post page', () => {
+        context("when I update a post and I want to update de name", () => {
+            const namePost = faker.animal.cat()
+            const namePostUpdate = faker.animal.cat()
+            beforeEach(() => {
+                post.createPost(namePost);
+                post.getPostByTitle(namePost).click()
+                cy.wait(1000)
+                editor.clearTitle('Post title')
+                editor.fillTitle(namePostUpdate, 'Post title')
+                editor.fillContent(faker.animal.cetacean())
+                editor.clickPublish()
+                cy.wait(1000)
+                editor.clickButtonFinalReview()
+                cy.wait(1000)
+                editor.clickButtonPublishRighNow();
+                cy.wait(1000)
                 post.visit()
-            })
-
-            cy.ands('I click on new post page', () => {
-                post.clickNewPost()
-            })
-
-            cy.ands('I click in more option', () => {
-                editor.clickOptionMore('Image');
-            })
-
-            cy.when('I upload image', () => {
-                editor.uploadImage(fileName, filePath)
+                post.clickFilterByTypeAndName('All posts', 'Published posts');
                 cy.wait(1000)
             })
-
-            cy.then2('I see the image into post', () => {
-                expect(editor.getImage(fileName)).exist
+            it("Then I should see the post published wiht de new name", () => {
+                post.getPostByTitle(namePostUpdate).should("contain.text", namePostUpdate)
+                login.tomarPantallazo("F001-EP003", "03")
             })
-        })
-    })
+        });
 
-    describe("EP007 add an image invalid to a post - APRIORI", () => {
-        it('should add a invalid feature image', () => {
-            const fileName = datosValidos[3].name_image;
-            const filePath = 'cypress/fixtures/Post/files/invalid-file.json';
-
-            cy.ands('I visit post page', () => {
+        context("when I update a post and I want to update de name in state draft", () => {
+            const namePost = faker.animal.cetacean()
+            const namePostUpdate = faker.animal.cetacean()
+            beforeEach(() => {
+                post.createPost(namePost);
+                post.getPostByTitle(namePost).click()
+                cy.wait(1000)
+                editor.clearTitle('Post title')
+                editor.fillTitle(namePostUpdate, 'Post title')
+                editor.fillContent(faker.animal.cetacean())
+                editor.clickPublish()
                 post.visit()
             })
-
-            cy.ands('I click on new post page', () => {
-                post.clickNewPost()
-            })
-
-            cy.ands('I click in more option', () => {
-                editor.clickOptionMore('Image');
-            })
-
-            cy.when('I upload image', () => {
-                editor.uploadImage(fileName, filePath)
-                cy.wait(1000)
-            })
-
-            cy.then2('I see error message', () => {
-                editor.getErrorFileUpload();
-            })
-
-            Cypress.on('uncaught:exception', () => {
-                return false
-            })
-        })
-    });
-
-    describe("EP008 add a video valid to a post - APRIORI", () => {
-        it('should add a valid video', () => {
-            const fileName = datosValidos[4].name_video;
-            const filePath = 'cypress/fixtures/Post/files/video-valid-post.mp4';
-
-            cy.ands('I visit post page', () => {
-                post.visit()
-            })
-
-            cy.ands('I click on new post page', () => {
-                post.clickNewPost()
-            })
-
-            cy.ands('I click in more option', () => {
-                editor.clickOptionMore('Video');
-            })
-
-            cy.when('I upload video', () => {
-                editor.uploadVideo(fileName, filePath)
-                cy.wait(1000)
-            })
-
-            cy.then2('I see the video into post', () => {
-                expect(editor.getImage(fileName)).exist
-            })
-        })
-    })
-
-    describe("EP009 add a video invalid to a post - APRIORI", () => {
-        it('should add a invalid video', () => {
-            const fileName = datosValidos[5].name_image;
-            const filePath = 'cypress/fixtures/Post/files/invalid-file.json';
-
-            cy.ands('I visit post page', () => {
-                post.visit()
-            })
-
-            cy.ands('I click on new post page', () => {
-                post.clickNewPost()
-            })
-
-            cy.ands('I click in more option', () => {
-                editor.clickOptionMore('Video');
-            })
-
-            cy.when('I upload image', () => {
-                editor.uploadVideo(fileName, filePath)
-                cy.wait(1000)
-            })
-
-            cy.then2('I see error message', () => {
-                expect(editor.getErrorFileUpload()).to.exist;
-            })
-
-            Cypress.on('uncaught:exception', () => {
-                return false
-            })
-        })
-    });
-
-    describe("EP010 add a audio valid to a post - APRIORI", () => {
-        it('should add a valid audio', () => {
-            const fileName = datosValidos[6].name_image;
-            const filePath = 'cypress/fixtures/Post/files/audio-valid-post.mp3';
-
-            cy.ands('I visit post page', () => {
-                post.visit()
-            })
-
-            cy.ands('I click on new post page', () => {
-                post.clickNewPost()
-            })
-
-            cy.ands('I click in more option', () => {
-                editor.clickOptionMore('Audio');
-            })
-
-            cy.when('I upload audio', () => {
-                editor.uploadAudio(fileName, filePath)
-                cy.wait(1000)
-            })
-
-            cy.then2('I see the audio into post', () => {
-                expect(editor.getImage(fileName)).exist
-            })
-        })
-    });
-
-    describe("EP011 add a audio invalid to a post - APRIORI", () => {
-        it('should add a invalid audio', () => {
-            const fileName = datosValidos[7].name_image;
-            const filePath = 'cypress/fixtures/Post/files/invalid-file.json';
-
-            cy.ands('I visit post page', () => {
-                post.visit()
-            })
-
-            cy.ands('I click on new post page', () => {
-                post.clickNewPost()
-            })
-
-            cy.ands('I click in more option', () => {
-                editor.clickOptionMore('Audio');
-            })
-
-            cy.when('I upload audio', () => {
-                editor.uploadAudio(fileName, filePath)
-                cy.wait(1000)
-            })
-
-            Cypress.on('uncaught:exception', () => {
-                cy.log('I see error message')
-                return false
-            })
-        })
-    });
-
-    describe("EP012 add a gallery valid to a post - APRIORI", () => {
-        it('should add a valid gallery', () => {
-            const fileNamesPahts = [];
-            const numberImages = 5;
-            cy.ands('I visit post page', () => {
-                post.visit()
-            })
-
-            cy.ands('I click on new post page', () => {
-                post.clickNewPost()
-            })
-
-            cy.ands('I click in more option', () => {
-                editor.clickOptionMore('Gallery');
-            })
-
-            cy.ands('I create files path', () => {
-                for (let i = 0; i < numberImages; i++) {
-                    fileNamesPahts.push({
-                        fileName: datosValidos[7].name_image,
-                        filePath: `cypress/fixtures/Post/files/image-valid-post-0${i + 1}.png`
-                    })
-                }
-            })
-
-            cy.when('I upload gallery', () => {
-                editor.uploadGaleryImages(fileNamesPahts)
-                cy.wait(1000)
-            })
-
-            cy.then2('I see the imagves into gallery post', () => {
-                fileNamesPahts.forEach((fileName) => {
-                    expect(editor.getImage(fileName.fileName)).exist
-                })
-            })
-        })
-    })
-
-    describe("EP013 add limit images to a gallery post - APRIORI", () => {
-        it('should add a valid gallery', () => {
-            const fileNamesPahts = [];
-            const numberImages = 9;
-
-            cy.ands('I visit post page', () => {
-                post.visit()
-            })
-
-            cy.ands('I click on new post page', () => {
-                post.clickNewPost()
-            })
-
-            cy.ands('I click in more option', () => {
-                editor.clickOptionMore('Gallery');
-            })
-
-            cy.ands('I create files path', () => {
-                for (let i = 0; i < numberImages; i++) {
-                    fileNamesPahts.push({
-                        fileName: datosValidos[7].name_image,
-                        filePath: `cypress/fixtures/Post/files/image-valid-post-0${i + 1}.png`
-                    })
-                }
-            })
-
-            cy.when('I upload gallery', () => {
-                editor.uploadGaleryImages(fileNamesPahts)
-                cy.wait(1000)
-            })
-
-            cy.then2('I see the imagves into gallery post', () => {
-                fileNamesPahts.forEach((fileName) => {
-                    expect(editor.getImage(fileName.fileName)).exist
-                })
-            })
-        })
-    })
-
-    describe("EP014 add more to limit images to a gallery post - APRIORI", () => {
-        it('should add a valid gallery', () => {
-            const fileNamesPahts = [];
-            const numberImages = 10;
-
-            cy.ands('I visit post page', () => {
-                post.visit()
-            })
-
-            cy.ands('I click on new post page', () => {
-                post.clickNewPost()
-            })
-
-            cy.ands('I click in more option', () => {
-                editor.clickOptionMore('Gallery');
-            })
-
-            cy.ands('I create files path', () => {
-                for (let i = 0; i < numberImages; i++) {
-                    fileNamesPahts.push({
-                        fileName: datosValidos[7].name_image,
-                        filePath: `cypress/fixtures/Post/files/image-valid-post-${i + 1 > 9 ? '' : '0'}${i + 1}.png`
-                    })
-                }
-            })
-
-            cy.when('I upload gallery', () => {
-                editor.uploadGaleryImages(fileNamesPahts)
-                cy.wait(1000)
-            })
-
-            cy.then2('I see an alert with maximum images', () => {
-                expect(editor.getErrorGalleryUpload()).to.exist;
-            })
-        })
-    })
-
-    describe("EP015 update publish date in post with data valid - ALEATORIO", () => {
-        it('should add a valid date in post', () => {
-            const namePost = faker.animal.bear()
-            const contentPost = faker.lorem.words(15)
-            const date = faker.date.past()
-            const dateInput = editor.generateDate(date)
-            const timeInput = editor.gerateTime(date)
-
-            cy.ands('I visit post page', () => {
-                post.visit()
-            })
-
-            cy.ands('I click on new post page', () => {
-                post.clickNewPost()
-            })
-
-            cy.ands('I insert title', () => {
-                editor.fillTitle(namePost, 'Post title')
-            })
-
-            cy.ands('I insert content', () => {
-                editor.fillContent(contentPost);
-            })
-
-            cy.when('I click in post option settings', () => {
-                editor.clickSettingsOption();
-            })
-
-            cy.ands('I insert publish date', () => {
-                editor.fillPublishDate(dateInput);
-            });
-
-            cy.ands('I insert a time', () => {
-                editor.fillPublishTime(timeInput)
-            })
-
-            cy.ands('I validate error date time', () => {
-                expect(editor.getErrorDateTime().should('not.exist'));
-            })
-        })
-    })
-
-    describe("EP016 update publish date in post with future date - ALEATORIO", () => {
-        it('should add a valid date in post', () => {
-            const namePost = faker.animal.bear()
-            const contentPost = faker.lorem.words(15)
-            const date = faker.date.future()
-            const dateInput = editor.generateDate(date)
-            const timeInput = editor.gerateTime(date)
-
-            cy.ands('I visit post page', () => {
-                post.visit()
-            })
-
-            cy.ands('I click on new post page', () => {
-                post.clickNewPost()
-            })
-
-            cy.ands('I insert title', () => {
-                editor.fillTitle(namePost, 'Post title')
-            })
-
-            cy.ands('I insert content', () => {
-                editor.fillContent(contentPost);
-            })
-
-            cy.when('I click in post option settings', () => {
-                editor.clickSettingsOption();
-            })
-
-            cy.ands('I insert publish date', () => {
-                editor.fillPublishDate(dateInput);
-            });
-
-            cy.ands('I insert a time', () => {
-                editor.fillPublishTime(timeInput)
-            })
-
-            cy.ands('I validate error date time', () => {
-                expect(editor.getErrorDateTime().should('exist'));
-            })
-        })
-
-    })
-
-    describe("EP017 update publish date in post with today date - ALEATORIO", () => {
-        it('should add a valid date in post', () => {
-            const namePost = faker.animal.bear()
-            const contentPost = faker.lorem.words(15)
-            const date = new Date()
-            const dateInput = editor.generateDate(date)
-            const timeInput = editor.gerateTime(date)
-
-            cy.ands('I visit post page', () => {
-                post.visit()
-            })
-
-            cy.ands('I click on new post page', () => {
-                post.clickNewPost()
-            })
-
-            cy.ands('I insert title', () => {
-                editor.fillTitle(namePost, 'Post title')
-            })
-
-            cy.ands('I insert content', () => {
-                editor.fillContent(contentPost);
-            })
-
-            cy.when('I click in post option settings', () => {
-                editor.clickSettingsOption();
-            })
-
-            cy.ands('I insert publish date', () => {
-                editor.fillPublishDate(dateInput);
-            });
-
-            cy.ands('I insert a time', () => {
-                editor.fillPublishTime(timeInput)
-            })
-
-            cy.ands('I validate error date time', () => {
-                expect(editor.getErrorDateTime().should('not.exist'));
-            })
-        })
-    })
-
-    describe("EP018 create facebook card with valid data  - ALEATORIO", () => {
-        it('should create a facebook card', () => {
-            const namePost = faker.animal.bear()
-            const titleFacebook = faker.animal.cat()
-            const descriptionFacebook = faker.lorem.words(15)
-            const fileName = datosValidos[2].name_image;
-            const filePath = 'cypress/fixtures/Post/files/image-valid-post.jpg';
-
-
-            cy.ands('I visit post page', () => {
-                post.visit()
-            })
-
-            cy.ands('I click on new post page', () => {
-                post.clickNewPost()
-            })
-
-            cy.ands('I insert title', () => {
-                editor.fillTitle(namePost, 'Post title')
-            })
-
-            cy.ands('I click in post option settings', () => {
-                editor.clickSettingsOption();
-            })
-
-            cy.ands('I click in facebook card', () => {
-                editor.clickFacebookCard();
-            })
-
-            cy.when('I insert facebook image', () => {
-                editor.fillFacebookImage(fileName, filePath);
-            })
-
-            cy.then2('I see the image feature', () => {
-                expect(editor.getImage(fileName)).exist
-            })
-
-            cy.when('I insert facebook title', () => {
-                editor.fillFacebookTitle(titleFacebook);
-            })
-
-            cy.then2('I see the title facebook form valid', () => {
-                cy.wait(1000)
-                expect(editor.facebookInputTitleIsValid(), true);
-            })
-
-            cy.when('I insert facebook description', () => {
-                editor.fillFacebookDescription(descriptionFacebook);
-            })
-
-            cy.then2('I see the description facebook form valid', () => {
-                cy.wait(1000)
-                expect(editor.facebookInputDescIsValid(), true);
-            })
-
-        })
-    })
-
-    describe("EP019 create facebook card with invalid data - ALEATORIO", () => {
-        it('should create a facebook card', () => {
-            const namePost = faker.animal.bear()
-            const titleFacebook = faker.lorem.words(300).substring(0, 301)
-            const descriptionFacebook = faker.lorem.words(500).substring(0, 501)
-            const fileName = datosValidos[2].name_image;
-            const filePath = 'cypress/fixtures/Post/files/invalid-file.json';
-
-
-            cy.ands('I visit post page', () => {
-                post.visit()
-            })
-
-            cy.ands('I click on new post page', () => {
-                post.clickNewPost()
-            })
-
-            cy.ands('I insert title', () => {
-                editor.fillTitle(namePost, 'Post title')
-            })
-
-            cy.ands('I click in post option settings', () => {
-                editor.clickSettingsOption();
-            })
-
-            cy.ands('I click in facebook card', () => {
-                editor.clickFacebookCard();
-            })
-
-            cy.when('I insert facebook invalid format image', () => {
-                editor.fillFacebookImage(fileName, filePath);
-            })
-
-            cy.then2('I see the image error', () => {
-                expect(editor.getErrorFacebookImageUpload()).exist;
-            })
-
-            cy.when('I insert facebook title with more than 300 characters', () => {
-                editor.fillFacebookTitle(titleFacebook);
-            })
-
-            cy.then2('I see the title facebook form invalid', () => {
-                cy.wait(1000)
-                expect(editor.facebookInputTitleIsInvalid(), true);
-            })
-
-            cy.when('I insert facebook description more than 300 characters', () => {
-                editor.fillFacebookDescription(descriptionFacebook);
-            })
-
-            cy.then2('I see the description facebook form invalid', () => {
-                cy.wait(1000)
-                expect(editor.facebookInputDescIsInvalid(), true);
-            })
-
-        })
-    })
-
-    describe("EP020 create facebook card with limit data - ALEATORIO", () => {
-        it('should create a facebook card', () => {
-            const namePost = faker.animal.bear()
-            const titleFacebook = faker.lorem.words(300).substring(0, 300)
-            const descriptionFacebook = faker.lorem.words(500).substring(0, 500)
-            const fileName = datosValidos[2].name_image;
-            const filePath = 'cypress/fixtures/Post/files/image-valid-post.jpg';
-
-
-            cy.ands('I visit post page', () => {
-                post.visit()
-            })
-
-            cy.ands('I click on new post page', () => {
-                post.clickNewPost()
-            })
-
-            cy.ands('I insert title', () => {
-                editor.fillTitle(namePost, 'Post title')
-            })
-
-            cy.ands('I click in post option settings', () => {
-                editor.clickSettingsOption();
-            })
-
-            cy.ands('I click in facebook card', () => {
-                editor.clickFacebookCard();
-            })
-
-            cy.when('I insert facebook image', () => {
-                editor.fillFacebookImage(fileName, filePath);
-            })
-
-            cy.then2('I see the image feature', () => {
-                expect(editor.getImage(fileName)).exist
-            })
-
-            cy.when('I insert facebook title with 300 characters', () => {
-                editor.fillFacebookTitle(titleFacebook);
-            })
-
-            cy.then2('I see the title facebook form valid', () => {
-                cy.wait(1000)
-                expect(editor.facebookInputTitleIsValid(), true);
-            })
-
-            cy.when('I insert facebook description with 500 characters', () => {
-                editor.fillFacebookDescription(descriptionFacebook);
-            })
-
-            cy.then2('I see the description facebook form valid', () => {
-                cy.wait(1000)
-                expect(editor.facebookInputDescIsValid(), true);
+            it("Then I should see the post wiht de new name", () => {
+                post.getPostByTitle(namePostUpdate).should("contain.text", namePostUpdate)
+                login.tomarPantallazo("F001-EP003", "04")
             })
+        });
 
-        })
     })
 })
+
+describe("EP004 delete Post", () => {
+    context('Given I go to post page', () => {
+        let cockieValue
+
+        before(() => {
+            login.insertLogin()
+            cy.getCookie('ghost-admin-api-session').then((cookie) => {
+                cockieValue = cookie.value;
+            });
+        })
+
+        beforeEach(() => {
+            cy.setCookie('ghost-admin-api-session', cockieValue)
+            post.visit()
+        })
+
+        context("when I create a post and I want to delete", () => {
+            const namePost = faker.animal.cow();
+            beforeEach(() => {
+                post.createPost(namePost);
+                post.getPostByTitle(namePost).scrollIntoView().rightclick();
+                post.clickButtonDelete();
+                post.clickConfirmDelete();
+                cy.wait(1000)
+            })
+
+            it("Then I see the alert Post deleted successfully", () => {
+                post.getTitle().should("contain.text", "Posts")
+                login.tomarPantallazo("F001-EP004", "01")
+            })
+
+            it("And it does not have to exist", () => {
+                post.searhNotExistPostByTittle(namePost).should('not.exist')
+                login.tomarPantallazo("F001-EP004", "02")
+            })
+        })
+
+        context("when I want to create a post and then delete it, but I cancel it ", () => {
+            const namePost = faker.animal.crocodilia();
+            beforeEach(() => {
+                post.createPost(namePost);
+                post.getPostByTitle(namePost).scrollIntoView().rightclick();
+                post.clickButtonDelete();
+                post.clickcancelDelete();
+                cy.wait(1000)
+            })
+
+            it("Then I see the post", () => {
+                expect(post.getPostByTitle(namePost)).to.exist;
+                login.tomarPantallazo("F001-EP004", "03")
+            })
+        })
+    })
+});
+
+describe("EP005 list post", () => {
+    context('Given I go to post page', () => {
+        let cockieValue
+
+        before(() => {
+            login.insertLogin()
+            cy.getCookie('ghost-admin-api-session').then((cookie) => {
+                cockieValue = cookie.value;
+            });
+        })
+
+        beforeEach(() => {
+            cy.setCookie('ghost-admin-api-session', cockieValue)
+            post.visit()
+        })
+
+        context("when I visit the page post I should see a post title", () => {
+            it("Then I see the title post", () => {
+                post.getTitle().should("contain.text", "Posts")
+                login.tomarPantallazo("F001-EP005", "01")
+            })
+        })
+
+        context("When I visit the page post I should see a list post ", () => {
+            it("Then I should see a list of post", () => {
+                post.getListPosts().should("exist")
+                login.tomarPantallazo("F001-EP005", "02")
+            })
+        })
+
+        context("When I visit the page post and y filter by draft", () => {
+            beforeEach(() => {
+                post.clickFilterByTypeAndName('All posts', 'Draft posts');
+            })
+            it("Then I should see a page with type draft", () => {
+                cy.url().should('include', 'type=draft');
+                login.tomarPantallazo("F001-EP005", "03")
+            })
+        })
+
+        context("When I visit the page post and y filter by Members only", () => {
+            beforeEach(() => {
+                post.clickFilterByTypeAndName('All access', 'Members-only');
+            })
+            it("Then I should see a page with visibility members", () => {
+                cy.url().should('include', 'visibility=members');
+                login.tomarPantallazo("F001-EP005", "04")
+            })
+        })
+
+        context("When I visit the page post and y order by olders first", () => {
+            beforeEach(() => {
+                post.clickFilterByTypeAndName('Newest first', 'Oldest first');
+            })
+            it("Then I should see a page with visibility members", () => {
+                cy.url().should('include', 'order=published_at%20asc');
+                login.tomarPantallazo("F001-EP005", "05")
+            })
+        })
+    })
+});

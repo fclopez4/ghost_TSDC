@@ -14,4 +14,6 @@ module.exports = defineConfig({
     },
   },
   video: true,
+  viewportWidth: 375,
+  viewportHeight: 812,
 });

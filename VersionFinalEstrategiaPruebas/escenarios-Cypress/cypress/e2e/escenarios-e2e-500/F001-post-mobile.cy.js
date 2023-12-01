@@ -112,7 +112,7 @@ describe("EP002 create post", () => {
 
 })
 
-describe("EP003 edit Post", () => {
+describe.skip("EP003 edit Post", () => {
     context('Given I go to post page', () => {
         let cockieValue
 
@@ -216,3 +216,120 @@ describe("EP003 edit Post", () => {
     })
 
 })
+
+describe.skip("EP004 delete Post", () => {
+    context('Given I go to post page', () => {
+        let cockieValue
+
+        before(() => {
+            login.insertLogin()
+            cy.getCookie('ghost-admin-api-session').then((cookie) => {
+                cockieValue = cookie.value;
+            });
+        })
+
+        beforeEach(() => {
+            cy.setCookie('ghost-admin-api-session', cockieValue)
+            post.visit()
+        })
+
+        context("when I create a post and I want to delete", () => {
+            const namePost = faker.animal.cow();
+            beforeEach(() => {
+                post.createPost(namePost);
+                post.getPostByTitle(namePost).scrollIntoView().rightclick();
+                post.clickButtonDelete();
+                post.clickConfirmDelete();
+                cy.wait(1000)
+            })
+
+            it("Then I see the alert Post deleted successfully", () => {
+                post.getTitle().should("contain.text", "Posts")
+                login.tomarPantallazo("F001-EP004", "1")
+            })
+
+            it("And it does not have to exist", () => {
+                post.searhNotExistPostByTittle(namePost).should('not.exist')
+                login.tomarPantallazo("F001-EP004", "2")
+            })
+        })
+
+        context("when I want to create a post and then delete it, but I cancel it ", () => {
+            const namePost = faker.animal.crocodilia();
+            beforeEach(() => {
+                post.createPost(namePost);
+                post.getPostByTitle(namePost).scrollIntoView().rightclick();
+                post.clickButtonDelete();
+                post.clickcancelDelete();
+                cy.wait(1000)
+            })
+
+            it("Then I see the post", () => {
+                expect(post.getPostByTitle(namePost)).to.exist;
+                login.tomarPantallazo("F001-EP004", "3")
+            })
+        })
+    })
+});
+
+describe.skip("EP005 list post", () => {
+    context('Given I go to post page', () => {
+        let cockieValue
+
+        before(() => {
+            login.insertLogin()
+            cy.getCookie('ghost-admin-api-session').then((cookie) => {
+                cockieValue = cookie.value;
+            });
+        })
+
+        beforeEach(() => {
+            cy.setCookie('ghost-admin-api-session', cockieValue)
+            post.visit()
+        })
+
+        context("when I visit the page post I should see a post title", () => {
+            it("Then I see the title post", () => {
+                post.getTitle().should("contain.text", "Posts")
+                login.tomarPantallazo("F001-EP005", "1")
+            })
+        })
+
+        context("When I visit the page post I should see a list post ", () => {
+            it("Then I should see a list of post", () => {
+                post.getListPosts().should("exist")
+                login.tomarPantallazo("F001-EP005", "2")
+            })
+        })
+
+        context("When I visit the page post and y filter by draft", () => {
+            beforeEach(() => {
+                post.clickFilterByTypeAndName('All posts', 'Draft posts');
+            })
+            it("Then I should see a page with type draft", () => {
+                cy.url().should('include', 'type=draft');
+                login.tomarPantallazo("F001-EP005", "3")
+            })
+        })
+
+        context("When I visit the page post and y filter by Members only", () => {
+            beforeEach(() => {
+                post.clickFilterByTypeAndName('All access', 'Members-only');
+            })
+            it("Then I should see a page with visibility members", () => {
+                cy.url().should('include', 'visibility=members');
+                login.tomarPantallazo("F001-EP005", "4")
+            })
+        })
+
+        context("When I visit the page post and y order by olders first", () => {
+            beforeEach(() => {
+                post.clickFilterByTypeAndName('Newest first', 'Oldest first');
+            })
+            it("Then I should see a page with visibility members", () => {
+                cy.url().should('include', 'order=published_at%20asc');
+                login.tomarPantallazo("F001-EP005", "5")
+            })
+        })
+    })
+});

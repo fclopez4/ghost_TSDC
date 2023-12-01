@@ -35,7 +35,7 @@ class Editor {
     }
 
     clickOptionMore(optionName) {
-        cy.get('[data-kg="editor"]').click()
+        cy.get('[data-kg="editor"]').type('{enter}').wait(1000)
         cy.get('[aria-label="Add a card"]').click()
         return cy.get(`[title="${optionName}"]`).click()
     }
