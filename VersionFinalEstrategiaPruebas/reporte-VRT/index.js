@@ -11,12 +11,11 @@ function executeTest() {
         return;
     }
 
+    let archivosGhost = getFiles('../escenarios-Cypress/cypress/screenshots');
 
-
-    let archivosGhost1 = getFiles('../Version_ghost_5.68.0/cypress/screenshots/')
-    let archivosGhost2 = getFiles('../Version_ghost_5.0.0/cypress/screenshots/')
-
-    compararArchivos(archivosGhost1, archivosGhost2)
+    const archivosGhost500 = archivosGhost.filter(archivo => archivo.includes('500'));
+    const archivosGhost568 = archivosGhost.filter(archivo => archivo.includes('568'));
+    compararArchivos(archivosGhost568, archivosGhost500)
 }
 
 function getFiles(dir, files = []) {
@@ -26,7 +25,7 @@ function getFiles(dir, files = []) {
         if (fs.statSync(name).isDirectory()) {
             getFiles(name, files)
         } else {
-            var regex = /^F\d{3}-EP\d{3}-\d{2}\.png$/;
+            var regex = /^(?:\d{3}-)?F\d{3}-EP\d{3}-\d{2}\.png$/;
             let nameFile = name.split('/').pop();
             if (regex.test(nameFile)) {
                 files.push(name)
@@ -41,10 +40,12 @@ async function compararArchivos(archivosGhost1, archivosGhost2) {
     let secondaryList = archivosGhost2;
 
     let ArchivosComparados = [];
+
     for (const nameFile of primaryList) {
         let index = secondaryList.findIndex((element) => {
-            let nameFile2 = element.split('/').pop();
-            return nameFile2 === nameFile.split('/').pop();
+            let nameFile1 = nameFile.split('/').pop().substring(4);
+            let nameFile2 = element.split('/').pop().substring(4);
+            return nameFile2 === nameFile1;
         });
 
         if (secondaryList[index]) {
@@ -59,6 +60,7 @@ async function compararArchivos(archivosGhost1, archivosGhost2) {
             });
         }
     }
+    debugger
     fs.writeFileSync(`./report.html`, createReport(ArchivosComparados));
     console.log(ArchivosComparados);
 }
@@ -150,7 +152,7 @@ function createReport(data) {
                 <h1>Reporte VRT ResembleJs Ghost CMS</h1>
             </div>    
             <div class="accordion " id="accordionPanelsStayOpenExample">
-                ${createRow(data).join(',')}
+                ${createRow(data).join(' ')}
             </div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
