@@ -10,56 +10,28 @@ class Tags {
         cy.wait(1000)
     }
 
-    clickButtonNewTag() {
-        return cy.get('section.view-actions>a.ember-view.gh-btn.gh-btn-primary')
-            .first().click()
+    reload() {
+        cy.reload()
     }
 
     getButtonNewTag() {
         return cy.get('section.view-actions>a.ember-view.gh-btn.gh-btn-primary').first()
     }
 
-    clickButtonSaveTag() {
-        return cy.get('button.gh-btn.gh-btn-primary.gh-btn-icon.ember-view')
-            .first().click()
+    getTagTitleInput() {
+        return cy.get('input#tag-name.gh-input')
+    }
+
+    getTagDescriptionInput() {
+        return cy.get('textarea#tag-description.gh-input').first()
     }
 
     getTagMessageError() {
         return cy.get('span.error>p.response').first()
     }
 
-    clickBreadcrumbTag() {
-        return cy.get('div.gh-canvas-breadcrumb>a')
-            .first().click()
-    }
-
     getTagModalHeader() {
         return cy.get('header.modal-header').first()
-    }
-
-    clickButtonFooterModalLeaveTagForm() {
-        return cy.get('div.modal-footer>button.gh-btn.gh-btn-red')
-            .first().click()
-    }
-
-    fillTagNameInput(contentInput) {
-        return cy.get('input#tag-name.gh-input').first()
-            .type(contentInput)
-    }
-
-    cleanFillTagNameInput(contentInput) {
-        return cy.get('input#tag-name.gh-input').first()
-            .clear().type(contentInput)
-    }
-
-    fillTagColorInput(contentInput) {
-        return cy.get('div.input-color>input').first()
-            .type(contentInput)
-    }
-
-    fillTagDescription(contentInput) {
-        return cy.get('textarea.gh-input.gh-tag-details-textarea').first()
-            .type(contentInput)
     }
 
     getTagTitle() {
@@ -68,6 +40,106 @@ class Tags {
 
     getTagListTitle() {
         return cy.get('section>ol>li').find("h3.gh-tag-list-name")
+    }
+
+    getTagNameError() {
+        return cy.get('.mr2 > .error > :nth-child(1)')
+    }
+
+    getTagDescriptionError() {
+        return cy.get('.no-margin > .response')
+    }
+
+    getTagMetadataTitle() {
+        return cy.get('#meta-title')
+    }
+
+    getTagMetadataDescription() {
+        return cy.get('#meta-description')
+    }
+
+    getTagMetadataUrl() {
+        return cy.get('#canonical-url')
+    }
+
+    getTagMetadataTitleError() {
+        return cy.get(':nth-child(1) > .response')
+    }
+
+    getTagMetadataDescriptionError() {
+        return cy.get('.gh-seo-settings-left > :nth-child(2) > .response')
+    }
+
+    getTagXcardTitle() {
+        return cy.get('#twitter-title')
+    }
+
+    getTagXcardDescription() {
+        return cy.get('#twitter-description')
+    }
+
+    getTagXcardError() {
+        return cy.get('.gh-alert')
+    }
+
+    getTagFacebookTitle() {
+        return cy.get('#og-title')
+    }
+
+    getTagFacebookDescription() {
+        return cy.get('#og-description')
+    }
+
+    getTagFacebookError() {
+        return cy.get('.gh-alert')
+    }
+
+    getTagCodeInjectionHeader() {
+        return cy.get('#tag-setting-codeinjection-head > .CodeMirror > .CodeMirror-scroll')
+    }
+
+    getTagCodeInjectionFooter() {
+        return cy.get('#tag-setting-codeinjection-foot > .CodeMirror > .CodeMirror-scroll')
+    }
+
+    getTagColorInput(){
+        return cy.get('div.input-color>input')
+    }
+
+    clickButtonGoogleMetadata() {
+        return cy.get(':nth-child(1) > .gh-expandable-header > .gh-btn > span').click()
+    }
+
+    clickButtonXcard() {
+        return cy.get(':nth-child(2) > .gh-expandable-header > .gh-btn > span').click()
+    }
+
+    clickButtonFacebookCard() {
+        return cy.get(':nth-child(3) > .gh-expandable-header > .gh-btn > span').click()
+    }
+
+    clickButtonCodeInjection() {
+        return cy.get(':nth-child(4) > .gh-expandable-header > .gh-btn > span').click()
+    }
+
+    clickButtonSaveTag() {
+        return cy.get('button.gh-btn.gh-btn-primary.gh-btn-icon.ember-view')
+            .first().click()
+    }
+
+    clickButtonNewTag() {
+        return cy.get('section.view-actions>a.ember-view.gh-btn.gh-btn-primary')
+            .first().click()
+    }
+
+    clickBreadcrumbTag() {
+        return cy.get('div.gh-canvas-breadcrumb>a')
+            .first().click()
+    }
+
+    clickButtonFooterModalLeaveTagForm() {
+        return cy.get('div.modal-footer>button.gh-btn.gh-btn-red')
+            .first().click()
     }
 
     clickButtonDeleteTag() {
@@ -85,6 +157,58 @@ class Tags {
             .first().click()
     }
 
+
+    fillTagNameInput(contentInput) {
+        return this.getTagTitleInput().type(contentInput, { parseSpecialCharSequences: false })
+    }
+
+    cleanFillTagNameInput(contentInput) {
+        return this.getTagTitleInput().clear().type(contentInput)
+    }
+
+    fillTagColorInput(contentInput) {
+        return this.getTagColorInput().type(contentInput)
+    }
+
+    fillTagDescription(contentInput) {
+        return this.getTagDescriptionInput().type(contentInput, { parseSpecialCharSequences: false })
+    }
+
+    fillTagMetadataTitle(contentInput) {
+        return this.getTagMetadataTitle().type(contentInput)
+    }
+
+    fillTagMetadataDescription(contentInput) {
+        return this.getTagMetadataDescription().type(contentInput)
+    }
+
+    fillTagMetadataUrl(contentInput) {
+        return this.getTagMetadataUrl().type(contentInput)
+    }
+
+    fillTagXcardTitle(contentInput) {
+        return this.getTagXcardTitle().type(contentInput)
+    }
+
+    fillTagXcardDescription(contentInput) {
+        return this.getTagXcardDescription().type(contentInput)
+    }
+
+    fillTagFacebookTitle(contentInput) {
+        return this.getTagFacebookTitle().type(contentInput)
+    }
+
+    fillTagFacebookDescription(contentInput) {
+        return this.getTagFacebookDescription().type(contentInput)
+    }
+
+    fillTagCodeInjectionHeader(contentInput) {
+        return this.getTagCodeInjectionHeader().click().type(contentInput, { parseSpecialCharSequences: false })
+    }
+
+    fillTagCodeInjectionFooter(contentInput) {
+        return this.getTagCodeInjectionFooter().click().wait(3000).type(contentInput, { parseSpecialCharSequences: false })
+    }
 }
 
 module.exports = Tags
