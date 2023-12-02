@@ -60,7 +60,6 @@ async function compararArchivos(archivosGhost1, archivosGhost2) {
             });
         }
     }
-    debugger
     fs.writeFileSync(`./report.html`, createReport(ArchivosComparados));
     console.log(ArchivosComparados);
 }
