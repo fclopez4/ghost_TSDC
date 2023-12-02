@@ -5,12 +5,14 @@ import { faker } from '@faker-js/faker'
 const login = new Login()
 const newsLetterPage = new Boletin()
 
-describe("EP001 Crear Newsletter ", () => {
+describe("EP043 Crear Newsletter ", () => {
     context('Given I go to newsletter page', () => {
         let cookieValue
+        let indicator = 'F005-EP017';
         before(() => {
             cy.viewport(550, 750);
             login.insertLogin()
+            login.tomarPantallazo(indicator,'01')
             cy.getCookie('ghost-admin-api-session').then((cookie) => {
                 cookieValue = cookie.value;
             });
@@ -21,6 +23,7 @@ describe("EP001 Crear Newsletter ", () => {
             newsLetterPage.visit()
             cy.wait(1000)
             newsLetterPage.clickNewLetter();
+            login.tomarPantallazo(indicator,'02')
         })
 
         context("When I create a newsletter", () => {
@@ -34,6 +37,7 @@ describe("EP001 Crear Newsletter ", () => {
                 newsLetterPage.fillTagById('#newsletter-title', name)
                 newsLetterPage.fillTagById('#newsletter-description', description)
                 newsLetterPage.clickCreate();
+                login.tomarPantallazo(indicator,'03')
                 cy.wait(3000)
             })
             it("Then I should add a new element  to the card'", () => {
@@ -44,13 +48,15 @@ describe("EP001 Crear Newsletter ", () => {
     })
 })
 
-describe("EP002 Archive newsletter ", () => {
+describe("EP019 Archive newsletter ", () => {
     context('Given I go to newsletter page', () => {
         let cookieValue
+        let indicator = 'F005-EP019';
         let size = 0;
         before(() => {
             cy.viewport(550, 750);
             login.insertLogin()
+            login.tomarPantallazo(indicator,'01')
             cy.getCookie('ghost-admin-api-session').then((cookie) => {
                 cookieValue = cookie.value;
             });
@@ -69,6 +75,7 @@ describe("EP002 Archive newsletter ", () => {
                 cy.viewport(550, 750);
                 cy.wait(2000)
                 newsLetterPage.selectSelectOptions()
+                login.tomarPantallazo(indicator,'02')
                 cy.wait(3000)
             })
             it("Then I should see menu options", () => {
@@ -83,6 +90,7 @@ describe("EP002 Archive newsletter ", () => {
                 newsLetterPage.selectSelectOptions()
                 cy.wait(2000)
                 newsLetterPage.clickOnArchive()
+                login.tomarPantallazo(indicator,'02')
             })
             it("Then I should see the modal confirm", () => {
                 newsLetterPage.getTitleModalConfirm().should('contain.text', 'Archive newsletter');
@@ -98,6 +106,7 @@ describe("EP002 Archive newsletter ", () => {
                 newsLetterPage.clickOnArchive()
                 cy.wait(2000)
                 newsLetterPage.clickOnArchiveConfirm()
+                login.tomarPantallazo(indicator,'02')
             })
             it("Then I should remove the Newsletter from the card'", () => {
                 cy.get('.sortable-objects').find('div.draggable-object').should('have.length', (size-1));
