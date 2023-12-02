@@ -10,7 +10,6 @@ describe("EP043 Crear Newsletter ", () => {
         let cookieValue
         let indicator = 'F005-EP017';
         before(() => {
-            cy.viewport(550, 750);
             login.insertLogin()
             login.tomarPantallazo(indicator,'01')
             cy.getCookie('ghost-admin-api-session').then((cookie) => {
@@ -54,7 +53,6 @@ describe("EP019 Archive newsletter ", () => {
         let indicator = 'F005-EP019';
         let size = 0;
         before(() => {
-            cy.viewport(550, 750);
             login.insertLogin()
             login.tomarPantallazo(indicator,'01')
             cy.getCookie('ghost-admin-api-session').then((cookie) => {
@@ -72,7 +70,6 @@ describe("EP019 Archive newsletter ", () => {
 
         context("When I select options newsletter", () => {
             beforeEach(() => {
-                cy.viewport(550, 750);
                 cy.wait(2000)
                 newsLetterPage.selectSelectOptions()
                 login.tomarPantallazo(indicator,'02')
@@ -85,7 +82,6 @@ describe("EP019 Archive newsletter ", () => {
 
         context("When I select a archive option", () => {
             beforeEach(() => {
-                cy.viewport(550, 750);
                 cy.wait(2000)
                 newsLetterPage.selectSelectOptions()
                 cy.wait(2000)
@@ -99,7 +95,6 @@ describe("EP019 Archive newsletter ", () => {
 
         context("When I click on Archive confirm", () => {
             beforeEach(() => {
-                cy.viewport(550, 750);
                 cy.wait(2000)
                 newsLetterPage.selectSelectOptions()
                 cy.wait(2000)

@@ -2,7 +2,6 @@ class Boletin {
 
     visit() {
         const url = Cypress.env('urlGhost568')
-        cy.viewport(550, 750);
         Cypress.config('baseUrl', url)
         cy.visit("/ghost/#/settings/newsletters")
         cy.wait(1000)
