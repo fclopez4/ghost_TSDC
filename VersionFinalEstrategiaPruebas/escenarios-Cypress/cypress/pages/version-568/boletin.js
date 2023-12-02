@@ -2,6 +2,7 @@ class Boletin {
 
     visit() {
         const url = Cypress.env('urlGhost568')
+        cy.viewport(550, 750);
         Cypress.config('baseUrl', url)
         cy.visit("/ghost/#/settings/newsletters")
         cy.wait(1000)
@@ -11,27 +12,16 @@ class Boletin {
         return cy.get('.gh-add-newsletter').click()
     }
 
-    selectNewsLetter() {
-        return cy.get('.sortable-objects')
-            .find('div.draggable-object')
-            .first()
-            .click();
-    }
-
-    selectSelectOptions() {
-        return cy.get('.gh-tier-card-actions-button:first-child').first().click()
-    }
-
-    clickSaveAndClose() {
-        return cy.get('.gh-btn-icon').contains('Save and close').click()
-    }
-
     clickCreate() {
         return cy.get('.gh-btn-primary').contains('Create').click()
     }
 
-    getModalContent(){
-        return cy.get('.modal-content')
+    fillTagById(idTag,value) {
+        return cy.get(idTag).type(value);
+    }
+
+    selectSelectOptions() {
+        return cy.get('.gh-tier-card-actions-button:first-child').first().click()
     }
 
     getMenuArchive(){
@@ -42,28 +32,24 @@ class Boletin {
         return cy.get('.dropdown-triangle-top-right li:eq(1)').click()
     }
 
-    clickOnArchiveConfirm(){
-        return cy.get('.gh-btn-icon').contains('Archive').click()
+    getTitleModalConfirm() {
+        return cy.get(".modal-header").first()
     }
 
-    getTitleEdit() {
-        return cy.get(".modal-fullsettings-heading-labs").first()
+    clickOnArchiveConfirm(){
+        return cy.get('.gh-btn-icon').contains('Archive').click()
     }
 
     getTitle() {
         return cy.get(".gh-canvas-title").first()
     }
 
-    getTitleModalConfirm() {
-        return cy.get(".modal-header").first()
+    getRespose() {
+        return cy.get('.response');
     }
 
-    getTextBody() {
-        return cy.get("h5").first()
-    }
-
-    fillTagById(idTag,value) {
-        return cy.get(idTag).type(value);
+    getSpan() {
+        return cy.get("span");
     }
 }
 

@@ -3,13 +3,13 @@ import Login from "../../pages/version-500/login"
 import { faker } from '@faker-js/faker'
 
 const login = new Login()
-const boletinPage = new BoletinPage()
+const newsLetterPage = new BoletinPage()
 
-describe("EP017 create newsletter ", () => {
+describe("EP001 Crear Newsletter ", () => {
     context('Given I go to newsletter page', () => {
         let cookieValue
-
         before(() => {
+            cy.viewport(550, 750);
             login.insertLogin()
             cy.getCookie('ghost-admin-api-session').then((cookie) => {
                 cookieValue = cookie.value;
@@ -18,58 +18,38 @@ describe("EP017 create newsletter ", () => {
 
         beforeEach(() => {
             cy.setCookie('ghost-admin-api-session', cookieValue)
-            boletinPage.visit()
+            newsLetterPage.visit()
+            cy.wait(1000)
+            newsLetterPage.clickNewLetter();
         })
 
-        context("When I click on Newletter button", () => {
-            beforeEach(() => {
-                boletinPage.clickNewLetter()
-                cy.wait(3000)
-            })
-            it("Then I should see modal content", () => {
-                boletinPage.getModalContent().should('exist');
-                login.tomarPantallazo("F005-EP017", "01")
-            })
-        })
-
-        context("When I fill name and description", () => {
-            let name = faker.animal.bear();
-            let description = faker.lorem.paragraph(1);
-            beforeEach(() => {
-                fillData(name, description)
-                cy.wait(3000)
-            })
-            it("Then I should see modal content", () => {
-                boletinPage.getModalContent().should('exist');
-                login.tomarPantallazo("F005-EP017", "02")
-            })
-        })
-
-        context("When I click on Create button", () => {
-            let name = faker.animal.bear();
-            let description = faker.lorem.paragraph(1);
+        context("When I create a newsletter", () => {
             let size = 0;
             beforeEach(() => {
-                cy.get('.sortable-objects')
-                    .find('div.draggable-object')
-                    .should(($divs) => {
-                        size = $divs.length;
-                    });
-                create(name, description)
+                cy.get('.sortable-objects').find('div.draggable-object').should(($divs) => {
+                    size = $divs.length;
+                });
+                let name = faker.word.adjective(4);
+                let description = faker.lorem.paragraph(1);
+                newsLetterPage.fillTagById('#newsletter-title', name)
+                newsLetterPage.fillTagById('#newsletter-description', description)
+                newsLetterPage.clickCreate();
+                cy.wait(3000)
             })
-            it("Then I should add a new element  to the card", () => {
+            it("Then I should add a new element  to the card'", () => {
                 cy.get('.sortable-objects').find('div.draggable-object').should('have.length', (size+1));
-                login.tomarPantallazo("F005-EP017", "03")
             })
         })
 
     })
 })
 
-describe("EP018 edit newsletter ", () => {
+describe("EP002 Archive newsletter ", () => {
     context('Given I go to newsletter page', () => {
         let cookieValue
+        let size = 0;
         before(() => {
+            cy.viewport(550, 750);
             login.insertLogin()
             cy.getCookie('ghost-admin-api-session').then((cookie) => {
                 cookieValue = cookie.value;
@@ -78,169 +58,50 @@ describe("EP018 edit newsletter ", () => {
 
         beforeEach(() => {
             cy.setCookie('ghost-admin-api-session', cookieValue)
-            boletinPage.visit()
-        })
-
-        context("When I select a Newsletter from de list ", () => {
-            let name = faker.word.adjective(4);
-            let description = faker.lorem.paragraph(1);
-            beforeEach(() => {
-                create(name, description)
-                cy.wait(3000)
-                boletinPage.selectNewsLetter()
-                cy.wait(3000)
-            })
-            it("Then I should see modal content", () => {
-                boletinPage.getTitleEdit().should('contain.text', 'Edit newsletter');
-                login.tomarPantallazo("F005-EP018", "01")
-            })
-        })
-
-
-        context("When I change name and description data", () => {
-            let name = faker.word.adjective(4);
-            let description = faker.lorem.paragraph(1);
-            beforeEach(() => {
-                boletinPage.selectNewsLetter()
-                boletinPage.openEditName()
-                cy.wait(3000)
-                editFillData(name, description)
-                cy.wait(2000)
-            })
-            it("Then I should see the name typed on the body", () => {
-                boletinPage.getTextBody().should('contain.text', name);
-                login.tomarPantallazo("F005-EP018", "02")
-            })
-        })
-
-        context("When I click on Save and close button", () => {
-            let name = faker.word.adjective(4);
-            let description = faker.lorem.paragraph(1);
-            beforeEach(() => {
-                boletinPage.selectNewsLetter()
-                boletinPage.openEditName()
-                cy.wait(3000)
-                editFillData(name, description)
-                cy.wait(2000)
-                boletinPage.clickSaveAndClose()
-                cy.wait(2000)
-            })
-            it("Then I should see Email newsletter page", () => {
-                boletinPage.getTitle().should('contain.text', 'Email newsletter');
-                login.tomarPantallazo("F005-EP018", "03")
-            })
-        })
-
-
-    })
-})
-
-describe("EP019 archive newsletter ", () => {
-    context('Given I go to newsletter page', () => {
-        let cookieValue
-        before(() => {
-            login.insertLogin()
-            cy.getCookie('ghost-admin-api-session').then((cookie) => {
-                cookieValue = cookie.value;
+            newsLetterPage.visit();
+            cy.get('.sortable-objects').find('div.draggable-object').should(($divs) => {
+                size = $divs.length;
             });
-        })
-
-        beforeEach(() => {
-            cy.setCookie('ghost-admin-api-session', cookieValue)
-            boletinPage.visit()
         })
 
         context("When I select options newsletter", () => {
             beforeEach(() => {
+                cy.viewport(550, 750);
                 cy.wait(2000)
-                boletinPage.selectSelectOptions()
+                newsLetterPage.selectSelectOptions()
                 cy.wait(3000)
             })
             it("Then I should see menu options", () => {
-                boletinPage.getMenuArchive().should('exist');
-                login.tomarPantallazo("F005-EP019", "01")
+                newsLetterPage.getMenuArchive().should('exist');
             })
         })
 
-        context("When I select archive option", () => {
+        context("When I select a archive option", () => {
             beforeEach(() => {
+                cy.viewport(550, 750);
                 cy.wait(2000)
-                boletinPage.selectSelectOptions()
+                newsLetterPage.selectSelectOptions()
                 cy.wait(2000)
-                boletinPage.clickOnArchive()
+                newsLetterPage.clickOnArchive()
             })
             it("Then I should see the modal confirm", () => {
-                boletinPage.getTitleModalConfirm().should('contain.text', 'Archive newsletter');
-                login.tomarPantallazo("F005-EP019", "02")
+                newsLetterPage.getTitleModalConfirm().should('contain.text', 'Archive newsletter');
             })
         })
 
         context("When I click on Archive confirm", () => {
             beforeEach(() => {
+                cy.viewport(550, 750);
                 cy.wait(2000)
-                boletinPage.selectSelectOptions()
+                newsLetterPage.selectSelectOptions()
                 cy.wait(2000)
-                boletinPage.clickOnArchive()
+                newsLetterPage.clickOnArchive()
                 cy.wait(2000)
-                boletinPage.clickOnArchiveConfirm()
+                newsLetterPage.clickOnArchiveConfirm()
             })
-            it("Then I should see Email newsletter page", () => {
-                boletinPage.getTitle().should('contain.text', 'Email newsletter');
-                login.tomarPantallazo("F005-EP019", "03")
+            it("Then I should remove the Newsletter from the card'", () => {
+                cy.get('.sortable-objects').find('div.draggable-object').should('have.length', (size-1));
             })
         })
     })
 })
-
-
-describe("EP020 list newsletter ", () => {
-    context('Given I go to newsletter page', () => {
-        let cookieValue
-        before(() => {
-            login.insertLogin()
-            cy.getCookie('ghost-admin-api-session').then((cookie) => {
-                cookieValue = cookie.value;
-            });
-        })
-
-        beforeEach(() => {
-            cy.setCookie('ghost-admin-api-session', cookieValue)
-            boletinPage.visit()
-        })
-
-        context("When I list Email newsletter", () => {
-            let size = 0;
-            beforeEach(() => {
-                cy.get('.sortable-objects')
-                    .find('div.draggable-object')
-                    .should(($divs) => {
-                        size = $divs.length;
-                    });
-            })
-            it("Then I should see more than one newsletter", () => {
-                cy.get('.sortable-objects').find('div.draggable-object').should('have.length.greaterThan', 0);
-                login.tomarPantallazo("F005-EP020", "01")
-            })
-        })
-
-    })
-})
-
-function fillData(name, description) {
-    boletinPage.clickNewLetter()
-    cy.wait(1000)
-    boletinPage.fillTagById('#newsletter-title',name)
-    boletinPage.fillTagById('#newsletter-description',description)
-}
-
-function editFillData(name, description) {
-    boletinPage.fillTagById('#newsletter-title',name)
-    boletinPage.fillTagById('#newsletter-description',description)
-}
-
-function create(name, description) {
-    fillData(name, description)
-    cy.wait(2000)
-    boletinPage.clickCreate()
-    cy.wait(2000)
-}
